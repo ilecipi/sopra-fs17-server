@@ -29,7 +29,7 @@ public class UserResource
 
     Logger                 logger  = LoggerFactory.getLogger(UserResource.class);
 
-    static final String    CONTEXT = "/user";
+    static final String    CONTEXT = "/users";
 
     @Autowired
     private UserRepository userRepo;
@@ -59,7 +59,7 @@ public class UserResource
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "{userId}")
+    @RequestMapping(method = RequestMethod.GET, value = "user/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
