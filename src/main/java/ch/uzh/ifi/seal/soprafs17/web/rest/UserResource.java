@@ -59,7 +59,7 @@ public class UserResource
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "user/{userId}")
+    @RequestMapping(method = RequestMethod.GET, value = "users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);

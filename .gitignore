@@ -15,6 +15,7 @@
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/*
 
 # Gradle:
 .idea/gradle.xml
@@ -45,4 +46,4 @@ fabric.properties
 
 #DS_Store
 *.DS_Store
-
+.build/
