@@ -71,7 +71,6 @@ public class UserResource
     @ResponseStatus(HttpStatus.OK)
     public User login(@PathVariable Long userId) {
         logger.debug("login: " + userId);
-
         User user = userRepo.findOne(userId);
         if (user != null) {
             user.setToken(UUID.randomUUID().toString());

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sopra-fs17-group11-server.iml" filepath="$PROJECT_DIR$/.idea/sopra-fs17-group11-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sopra-fs17-group11-server.iml" filepath="$PROJECT_DIR$/.idea/modules/sopra-fs17-group11-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sopra-fs17-group11-server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sopra-fs17-group11-server_main.iml" group="sopra-fs17-group11-server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sopra-fs17-group11-server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sopra-fs17-group11-server_test.iml" group="sopra-fs17-group11-server" />
     </modules>
   </component>
 </project>
