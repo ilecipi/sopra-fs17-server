@@ -5,6 +5,4 @@ import java.util.stream.Collector;
 
 public enum UserStatus {
 	ONLINE, OFFLINE;
-
-
 }

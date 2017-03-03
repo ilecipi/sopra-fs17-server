@@ -27,10 +27,9 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 // You can refer to the UserService as example
 
 @RestController
-public class GameResource
-        extends GenericResource {
+public class GameResource extends GenericResource {
 
-    Logger                 logger  = LoggerFactory.getLogger(GameResource.class);
+    Logger logger  = LoggerFactory.getLogger(GameResource.class);
 
     @Autowired
     private UserRepository userRepo;
