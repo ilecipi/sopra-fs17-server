@@ -38,9 +38,13 @@ public class UserResource
     @ResponseStatus(HttpStatus.OK)
     public List<User> listUsers() {
         logger.debug("listUsers");
+        User user = new User();
 
         List<User> result = new ArrayList<>();
-        userRepo.findAll().forEach(result::add);
+        //userRepo.findAll().forEach(result::add);
+        for (User u: userRepo.findAll()) {
+            result.add(u);
+        }
 
         return result;
     }
