@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.uzh.ifi.seal.soprafs17.DTOs.GameDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,16 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 // You can refer to the UserService as example
 
 @RestController
-public class GameResource
-        extends GenericResource {
+public class GameResource extends GenericResource {
 
-    Logger                 logger  = LoggerFactory.getLogger(GameResource.class);
+    Logger logger  = LoggerFactory.getLogger(GameResource.class);
 
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private GameRepository gameRepo;
 
-    private final String   CONTEXT = "/games";
+    private final String CONTEXT = "/games";
 
     /*
      * Context: /game
@@ -45,11 +45,19 @@ public class GameResource
 
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> listGames() {
+    public List<GameDTO> listGames() {
         logger.debug("listGames");
-        List<Game> result = new ArrayList<>();
-        gameRepo.findAll().forEach(result::add);
-        return result;
+        // List<Game> result = new ArrayList<>();
+        // gameRepo.findAll().forEach(result::add);
+        // return result;
+        List<GameDTO> GameDTOS = new ArrayList<>();
+        for(Game g: gameRepo.findAll()){
+            GameDTO gameDTO = new GameDTO(g.getId(),g.getName(),g.getOwner(),g.getStatus(),g.getCurrentPlayer());
+            GameDTOS.add(gameDTO);
+        }
+        return GameDTOS;
+
+
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
@@ -74,12 +82,13 @@ public class GameResource
      */
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
-    public Game getGame(@PathVariable Long gameId) {
+    public GameDTO getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
 
         Game game = gameRepo.findOne(gameId);
+        GameDTO gameDTO = new GameDTO(game.getId(),game.getName(),game.getOwner(),game.getStatus(),game.getCurrentPlayer());
 
-        return game;
+        return gameDTO;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
