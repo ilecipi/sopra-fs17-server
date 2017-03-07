@@ -27,9 +27,9 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 public class UserResource
         extends GenericResource {
 
-    Logger                 logger  = LoggerFactory.getLogger(UserResource.class);
+    Logger logger  = LoggerFactory.getLogger(UserResource.class);
 
-    static final String    CONTEXT = "/users";
+    static final String CONTEXT = "/users";
 
     @Autowired
     private UserRepository userRepo;
@@ -67,7 +67,6 @@ public class UserResource
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
-
         return userRepo.findOne(userId);
     }
 
