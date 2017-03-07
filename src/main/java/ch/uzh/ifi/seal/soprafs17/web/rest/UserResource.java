@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ch.uzh.ifi.seal.soprafs17.DTOs.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +28,35 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 public class UserResource
         extends GenericResource {
 
-    Logger                 logger  = LoggerFactory.getLogger(UserResource.class);
+    Logger logger = LoggerFactory.getLogger(UserResource.class);
 
-    static final String    CONTEXT = "/users";
+    static final String CONTEXT = "/users";
 
     @Autowired
     private UserRepository userRepo;
 
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<User> listUsers() {
+    public List<UserDTO> listUsers() {
         logger.debug("listUsers");
-        User user = new User();
+        //User user = new User();
 
-        List<User> result = new ArrayList<>();
-        //userRepo.findAll().forEach(result::add);
-        for (User u: userRepo.findAll()) {
-            result.add(u);
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for (User u : userRepo.findAll()) {
+            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
+            userDTOS.add(userDTO);
         }
 
-        return result;
+        /**
+         List<User> result = new ArrayList<>();
+         //userRepo.findAll().forEach(result::add);
+         for (User u: userRepo.findAll()) {
+         result.add(u);
+         }
+         */
+
+        return userDTOS;
     }
 
     @RequestMapping(method = RequestMethod.POST)

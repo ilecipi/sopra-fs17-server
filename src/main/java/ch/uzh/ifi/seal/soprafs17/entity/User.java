@@ -14,85 +14,96 @@ import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 
 @Entity
 public class User implements Serializable {
-	
 
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@Column(nullable = false) 
-	private String name;
-	
-	@Column(nullable = false, unique = true) 
-	private String username;
-	
-	@Column(nullable = false, unique = true) 
-	private String token;
-	
-	@Column(nullable = false) 
-	private UserStatus status;
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false, unique = true)
+    private String token;
+
+    @Column(nullable = false)
+    private UserStatus status;
 
     @ManyToMany
     private List<Game> games;
-	
-    @OneToMany(mappedBy="user")
+
+    @OneToMany(mappedBy = "user")
     private List<Move> moves;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(nullable = true)
+    private String color;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getColor() {
+        return color;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setColor(String color) {
+        this.color = color;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<Game> getGames() {
-		return games;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setGames(List<Game> games) {
-		this.games = games;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public List<Move> getMoves() {
-		return moves;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setMoves(List<Move> moves) {
-		this.moves = moves;
-	}
+    public List<Game> getGames() {
+        return games;
+    }
 
-	public String getToken() {
-		return token;
-	}
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    public List<Move> getMoves() {
+        return moves;
+    }
 
-	public UserStatus getStatus() {
-		return status;
-	}
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
 
-	public void setStatus(UserStatus status) {
-		this.status = status;
-	}
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
 }
