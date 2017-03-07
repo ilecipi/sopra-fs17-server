@@ -7,18 +7,15 @@ public class UserDTO {
 
     public String name;
     public String token;
-    public String nickname;
+    public String username;
     public String color;
 
 
-    public UserDTO(String name, String token, String nickname, String color) {
+    public UserDTO(String name, String token, String username, String color) {
         this.name = name;
         this.token = token;
-        this.nickname = nickname;
+        this.username = username;
         this.color = color;
     }
 
-    public UserDTO() {
-
-    }
 }

@@ -76,14 +76,18 @@ public class UserResource
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "users/{userId}")
+    @RequestMapping(method = RequestMethod.GET, value = "user/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable Long userId) {
+    public UserDTO getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
-        return userRepo.findOne(userId);
+        User u = userRepo.findById(userId);
+        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor());
+
+        return userDTO;
+        //return userRepo.findOne(userId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "{userId}/login")
+    @RequestMapping(method = RequestMethod.POST, value = "user/{userId}/login")
     @ResponseStatus(HttpStatus.OK)
     public User login(@PathVariable Long userId) {
         logger.debug("login: " + userId);
