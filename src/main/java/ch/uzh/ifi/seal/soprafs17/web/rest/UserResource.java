@@ -30,6 +30,7 @@ public class UserResource
 
     Logger logger = LoggerFactory.getLogger(UserResource.class);
 
+
     static final String CONTEXT = "/users";
 
     @Autowired
@@ -77,7 +78,6 @@ public class UserResource
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
-
         return userRepo.findOne(userId);
     }
 
