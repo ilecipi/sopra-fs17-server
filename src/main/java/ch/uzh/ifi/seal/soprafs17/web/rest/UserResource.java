@@ -71,6 +71,8 @@ public class UserResource
         user = userRepo.save(user);
 
         return user;
+        //u = userRepo.save(user);
+        //return new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
     }
 
 
