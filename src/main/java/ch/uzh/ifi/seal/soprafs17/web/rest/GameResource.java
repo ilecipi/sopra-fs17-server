@@ -80,7 +80,7 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}
      */
-    @RequestMapping(value = CONTEXT + "/{gameId}")
+    @RequestMapping(value = CONTEXT + "game/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
@@ -91,7 +91,7 @@ public class GameResource extends GenericResource {
         return gameDTO;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "game/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("startGame: " + gameId);
@@ -104,7 +104,7 @@ public class GameResource extends GenericResource {
         }
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "game/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("stopGame: " + gameId);
@@ -120,7 +120,7 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}/move
      */
-    @RequestMapping(value = CONTEXT + "/{gameId}/move")
+    @RequestMapping(value = CONTEXT + "game/{gameId}/move")
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
@@ -133,14 +133,14 @@ public class GameResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/move", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "game/{gameId}/move", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         logger.debug("addMove: " + move);
         // TODO Mapping into Move + execution of move
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/move/{moveId}")
+    @RequestMapping(value = CONTEXT + "game/{gameId}/move/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
@@ -156,7 +156,7 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}/player
      */
-    @RequestMapping(value = CONTEXT + "/{gameId}/player")
+    @RequestMapping(value = CONTEXT + "game/{gameId}/player")
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
         logger.debug("listPlayers");
@@ -169,7 +169,7 @@ public class GameResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "game/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
@@ -188,10 +188,9 @@ public class GameResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/player/{playerId}")
+    @RequestMapping(value = CONTEXT + "game/{gameId}/player/{playerId}")
     @ResponseStatus(HttpStatus.OK)
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
-        logger.debug("getPlayer: " + gameId);
 
         Game game = gameRepo.findOne(gameId);
 
