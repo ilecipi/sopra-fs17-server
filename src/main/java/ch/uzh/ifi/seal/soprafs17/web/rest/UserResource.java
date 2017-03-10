@@ -93,7 +93,7 @@ public class UserResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "{userId}/logout")
+    @RequestMapping(method = RequestMethod.POST, value = "user/{userId}/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(@PathVariable Long userId, @RequestParam("token") String userToken) {
         logger.debug("getUser: " + userId);
