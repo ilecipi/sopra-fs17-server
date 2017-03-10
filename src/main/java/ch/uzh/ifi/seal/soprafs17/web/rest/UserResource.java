@@ -25,11 +25,9 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 
 @RestController
 @RequestMapping(UserResource.CONTEXT)
-public class UserResource
-        extends GenericResource {
+public class UserResource extends GenericResource {
 
     Logger logger = LoggerFactory.getLogger(UserResource.class);
-
 
     static final String CONTEXT = "/users";
 
@@ -48,14 +46,6 @@ public class UserResource
             UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
             userDTOS.add(userDTO);
         }
-
-        /**
-         List<User> result = new ArrayList<>();
-         //userRepo.findAll().forEach(result::add);
-         for (User u: userRepo.findAll()) {
-         result.add(u);
-         }
-         */
 
         return userDTOS;
     }
