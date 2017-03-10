@@ -99,6 +99,7 @@ public class GameResource extends GenericResource {
         Game game = gameRepo.findOne(gameId);
         User owner = userRepo.findByToken(userToken);
 
+        //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             // TODO: Start game in GameService
         }
