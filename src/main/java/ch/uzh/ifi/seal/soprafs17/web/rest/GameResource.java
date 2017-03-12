@@ -27,6 +27,7 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 // For this controlles the correspndant service is missing
 // Todo create a GameService in which you implement the logic of the game
 // You can refer to the UserService as example
+// per heroku :D
 
 @RestController
 public class GameResource extends GenericResource {

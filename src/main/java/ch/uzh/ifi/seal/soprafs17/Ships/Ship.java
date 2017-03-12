@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ilecipi on 10.03.17.
+ * Created by Ile Cepilov on 10.03.17.
  */
 
 public abstract class Ship {
