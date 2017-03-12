@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.DTOs.GameDTO;
+import ch.uzh.ifi.seal.soprafs17.Ships.OneSeatedShip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,8 +100,10 @@ public class GameResource extends GenericResource {
         Game game = gameRepo.findOne(gameId);
         User owner = userRepo.findByToken(userToken);
 
+
         //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
+
             // TODO: Start game in GameService
         }
     }

@@ -1,4 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.Ships;
+
+import ch.uzh.ifi.seal.soprafs17.entity.Stone;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.List;
 /**
  * Created by ilecipi on 10.03.17.
  */
-@Entity
+
 public abstract class Ship {
 
     private List<Stone> stones;

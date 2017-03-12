@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import ch.uzh.ifi.seal.soprafs17.Ships.Ship;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 
 @Entity
@@ -42,6 +43,12 @@ public class User implements Serializable {
 
     @Column(nullable = true)
     private String color;
+
+    /**
+    @Column
+    private Stone[] stone;
+    */
+
 
     public String getColor() {
         return color;
