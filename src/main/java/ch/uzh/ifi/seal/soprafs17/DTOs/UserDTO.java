@@ -13,7 +13,7 @@ public class UserDTO {
     public String token;
     public String username;
     public String color;
-    private List<Game> games;
+    public List<Game> games;
 
 
     public UserDTO(String name, String token, String username, String color,List<Game> games) {

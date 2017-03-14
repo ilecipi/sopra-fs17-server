@@ -31,8 +31,8 @@ public class Game implements Serializable {
 	@Column
 	private GameStatus status;
 
-	@Column
-	private Integer currentPlayer;
+	@OneToOne
+	private User currentPlayer;
 
 	//The colors aren't taken yet
 	@ElementCollection
@@ -46,7 +46,7 @@ public class Game implements Serializable {
     @OneToMany(mappedBy="game")
     private List<Move> moves;
     
-    @ManyToMany(mappedBy="games")
+    @ManyToMany
     private List<User> players;
     
 	public Long getId() {
@@ -97,20 +97,32 @@ public class Game implements Serializable {
 		this.status = status;
 	}
 
-	public Integer getCurrentPlayer() {
+	public User getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	public void setCurrentPlayer(Integer currentPlayer) {
+	public void setCurrentPlayer(User currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
    
-	public User getNextPlayer() {
-		return getPlayers().get((getCurrentPlayer() + 1) % getPlayers().size());
+//	public User getNextPlayer() {
+//		return getPlayers().get((getCurrentPlayer() + 1) % getPlayers().size());
+//	}
+	public User getNextPlayer(){
+		int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
+		int indexOfNextPlayer=(indexOfCurrentPlayer+1)%getPlayers().size();
+		setCurrentPlayer(getPlayers().get(indexOfNextPlayer));
+		return	getCurrentPlayer();
+//	    return getPlayers().get(0);
 	}
+
 
 	public Map<String, Boolean> getColors() {
 		return colors;
 	}
+
+	public void initPlayer(){
+	    this.players=new ArrayList<User>();
+    }
 
 }

@@ -37,17 +37,21 @@ public class UserResource extends GenericResource {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> listUsers() {
+    public List<User> listUsers() {
         logger.debug("listUsers");
-        //User user = new User();
+//        //User user = new User();
+//
+//        List<User> user = new ArrayList<>();
+//        for (User u : userRepo.findAll()) {
+//            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor(),u.getGames());
+//            userDTOS.add(userDTO);
+//        }
+//
+//        return userDTOS;
+            List<User> result = new ArrayList<>();
+            userRepo.findAll().forEach(result::add);
 
-        List<UserDTO> userDTOS = new ArrayList<>();
-        for (User u : userRepo.findAll()) {
-            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor(),u.getGames());
-            userDTOS.add(userDTO);
-        }
-
-        return userDTOS;
+            return result;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -64,18 +68,18 @@ public class UserResource extends GenericResource {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "user/{userId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUser(@PathVariable Long userId) {
+    public User getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
         User u = userRepo.findById(userId);
-        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor(),u.getGames());
+//        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor(),u.getGames());
 
-        return userDTO;
-        //return userRepo.findOne(userId);
+//        return userDTO;
+        return userRepo.findOne(userId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "user/{userId}/login")
+    @RequestMapping(method = RequestMethod.POST, value = "/user/{userId}/login")
     @ResponseStatus(HttpStatus.OK)
     public User login(@PathVariable Long userId) {
         logger.debug("login: " + userId);
@@ -91,7 +95,7 @@ public class UserResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "user/{userId}/logout")
+    @RequestMapping(method = RequestMethod.POST, value = "/user/{userId}/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(@PathVariable Long userId, @RequestParam("token") String userToken) {
         logger.debug("getUser: " + userId);

@@ -47,19 +47,11 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
-    public List<GameDTO> listGames() {
+    public List<Game> listGames() {
         logger.debug("listGames");
-        // List<Game> result = new ArrayList<>();
-        // gameRepo.findAll().forEach(result::add);
-        // return result;
-        List<GameDTO> GameDTOS = new ArrayList<>();
-        for(Game g: gameRepo.findAll()){
-            GameDTO gameDTO = new GameDTO(g.getId(),g.getName(),g.getOwner(),g.getStatus(),g.getCurrentPlayer());
-            GameDTOS.add(gameDTO);
-        }
-        return GameDTOS;
-
-
+        List<Game> result = new ArrayList<>();
+        gameRepo.findAll().forEach(result::add);
+        return result;
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
@@ -70,8 +62,11 @@ public class GameResource extends GenericResource {
         User owner = userRepo.findByToken(userToken);
         if (owner != null) {
             // TODO Mapping into Game
-            game = gameRepo.save(game);
-
+            game.setCurrentPlayer(owner);
+            List<User> players = new ArrayList<User>();
+            players.add(owner);
+            game.setPlayers(players);
+            gameRepo.save(game);
             return CONTEXT + "/" + game.getId();
         }
 
@@ -81,18 +76,18 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}
      */
-    @RequestMapping(value = CONTEXT + "game/{gameId}")
+    @RequestMapping(value = CONTEXT + "/game/{gameId}")
     @ResponseStatus(HttpStatus.OK)
-    public GameDTO getGame(@PathVariable Long gameId) {
+    public Game getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
 
         Game game = gameRepo.findOne(gameId);
-        GameDTO gameDTO = new GameDTO(game.getId(),game.getName(),game.getOwner(),game.getStatus(),game.getCurrentPlayer());
+//        GameDTO gameDTO = new GameDTO(game.getId(),game.getName(),game.getOwner(),game.getStatus(),game.getCurrentPlayer());
 
-        return gameDTO;
+        return game;
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/start", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("startGame: " + gameId);
@@ -102,13 +97,16 @@ public class GameResource extends GenericResource {
 
 
         //the game can be started only from the owner
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
+        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
+                && game.getPlayers().size()>=GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS){
+            game.setCurrentPlayer(owner);
+
 
             // TODO: Start game in GameService
         }
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("stopGame: " + gameId);
@@ -124,7 +122,7 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}/move
      */
-    @RequestMapping(value = CONTEXT + "game/{gameId}/move")
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/move")
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
@@ -137,14 +135,14 @@ public class GameResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/move", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/move", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         logger.debug("addMove: " + move);
         // TODO Mapping into Move + execution of move
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/move/{moveId}")
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/move/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
@@ -160,7 +158,7 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}/player
      */
-    @RequestMapping(value = CONTEXT + "game/{gameId}/player")
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/player")
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
         logger.debug("listPlayers");
@@ -173,7 +171,7 @@ public class GameResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/player", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
@@ -183,7 +181,9 @@ public class GameResource extends GenericResource {
 
         if (game != null && player != null
                 && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
+//            game.getPlayers().add(player);
+            gameRepo.findOne(game.getId()).getPlayers().add(player);
+            gameRepo.save(game);
             logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
             return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
         } else {
@@ -192,13 +192,34 @@ public class GameResource extends GenericResource {
         return null;
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/player/{playerId}")
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/player/{playerId}")
     @ResponseStatus(HttpStatus.OK)
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
 
         Game game = gameRepo.findOne(gameId);
 
         return game.getPlayers().get(playerId);
+    }
+
+    //when the user joins a game, he becomes a Player.
+    @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void createPlayer(@PathVariable Long gameId,@RequestParam("token") String userToken, @RequestParam("color") String color) {
+
+        User user = userRepo.findByToken(userToken);
+        Game game = gameRepo.findOne(gameId);
+
+        //check whether the color choosen is already taken
+
+        if (user.equals(game.getCurrentPlayer())&&!game.getColors().get(color)) {
+            System.out.print("ENTRATO NEL IF");
+            user.setColor(color);
+            game.getColors().put(color,true);
+            game.getNextPlayer();
+        }
+        System.out.println(user.getColor());
+        gameRepo.save(game);
+        userRepo.save(user);
     }
 
 }
