@@ -47,7 +47,7 @@ public class UserService {
 
 
     public void deleteUser(Long id) {
-        User user = userRepository.findById(id); //TODO check if user exists
+        User user = userRepository.findById(id);
         if (user != null) {
             userRepository.delete(id);
             log.debug("Deleted User: {}", user);

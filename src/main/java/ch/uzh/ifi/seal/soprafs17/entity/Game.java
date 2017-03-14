@@ -1,40 +1,47 @@
 package ch.uzh.ifi.seal.soprafs17.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 
 @Entity
 public class Game implements Serializable {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(nullable = false) 
+
+	@Column(nullable = false)
 	private String name;
-	
-	@Column(nullable = false) 
+
+	@Column(nullable = false)
 	private String owner;
-	
-	@Column 
+
+	@Column
 	private GameStatus status;
-	
-	@Column 
+
+	@Column
 	private Integer currentPlayer;
+
+	//The colors aren't taken yet
+	@ElementCollection
+	private Map<String, Boolean> colors = new HashMap<String,Boolean>(){{
+            put("black", false);
+            put("white", false);
+            put("brown", false);
+            put("grey", false);
+        }};
 
     @OneToMany(mappedBy="game")
     private List<Move> moves;
@@ -101,4 +108,9 @@ public class Game implements Serializable {
 	public User getNextPlayer() {
 		return getPlayers().get((getCurrentPlayer() + 1) % getPlayers().size());
 	}
+
+	public Map<String, Boolean> getColors() {
+		return colors;
+	}
+
 }

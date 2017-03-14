@@ -43,7 +43,7 @@ public class UserResource extends GenericResource {
 
         List<UserDTO> userDTOS = new ArrayList<>();
         for (User u : userRepo.findAll()) {
-            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
+            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor(),u.getGames());
             userDTOS.add(userDTO);
         }
 
@@ -61,8 +61,6 @@ public class UserResource extends GenericResource {
         user = userRepo.save(user);
 
         return user;
-        //u = userRepo.save(user);
-        //return new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
     }
 
 
@@ -71,7 +69,7 @@ public class UserResource extends GenericResource {
     public UserDTO getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
         User u = userRepo.findById(userId);
-        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor());
+        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor(),u.getGames());
 
         return userDTO;
         //return userRepo.findOne(userId);

@@ -42,7 +42,7 @@ public class GameResource extends GenericResource {
     private final String CONTEXT = "/games";
 
     /*
-     * Context: /game
+     * Context: /games
      */
 
     @RequestMapping(value = CONTEXT)
@@ -68,7 +68,6 @@ public class GameResource extends GenericResource {
         logger.debug("addGame: " + game);
 
         User owner = userRepo.findByToken(userToken);
-
         if (owner != null) {
             // TODO Mapping into Game
             game = gameRepo.save(game);
