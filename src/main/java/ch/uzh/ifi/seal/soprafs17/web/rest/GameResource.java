@@ -5,6 +5,8 @@ import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.Ships.OneSeatedShip;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +65,10 @@ public class GameResource extends GenericResource {
         if (owner != null) {
             // TODO Mapping into Game
             game.setCurrentPlayer(owner);
-            List<User> players = new ArrayList<User>();
-            players.add(owner);
-            game.setPlayers(players);
+            game=gameRepo.save(game);
+            owner.getGames().add(game);
+            owner.setStatus(UserStatus.ONLINE);
+            game.setStatus(GameStatus.PENDING);
             gameRepo.save(game);
             return CONTEXT + "/" + game.getId();
         }

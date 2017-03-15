@@ -45,7 +45,8 @@ public class Game implements Serializable {
 
     @OneToMany(mappedBy="game")
     private List<Move> moves;
-    
+
+    //(mappedBy="games") omitted?
     @ManyToMany
     private List<User> players;
     
@@ -104,25 +105,17 @@ public class Game implements Serializable {
 	public void setCurrentPlayer(User currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
-   
-//	public User getNextPlayer() {
-//		return getPlayers().get((getCurrentPlayer() + 1) % getPlayers().size());
-//	}
+
 	public User getNextPlayer(){
 		int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
 		int indexOfNextPlayer=(indexOfCurrentPlayer+1)%getPlayers().size();
 		setCurrentPlayer(getPlayers().get(indexOfNextPlayer));
 		return	getCurrentPlayer();
-//	    return getPlayers().get(0);
-	}
 
+	}
 
 	public Map<String, Boolean> getColors() {
 		return colors;
 	}
-
-	public void initPlayer(){
-	    this.players=new ArrayList<User>();
-    }
 
 }

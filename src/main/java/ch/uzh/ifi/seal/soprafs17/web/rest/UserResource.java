@@ -61,7 +61,8 @@ public class UserResource extends GenericResource {
         logger.debug("addUser: " + user);
 
         user.setStatus(UserStatus.OFFLINE);
-        user.setToken(UUID.randomUUID().toString());
+//        user.setToken(UUID.randomUUID().toString());
+        user.setToken(""+(listUsers().size()+1));
         user = userRepo.save(user);
 
         return user;
@@ -85,7 +86,8 @@ public class UserResource extends GenericResource {
         logger.debug("login: " + userId);
         User user = userRepo.findOne(userId);
         if (user != null) {
-            user.setToken(UUID.randomUUID().toString());
+//            user.setToken(UUID.randomUUID().toString());
+            user.setToken(user.getId().toString());
             user.setStatus(UserStatus.ONLINE);
             user = userRepo.save(user);
 
