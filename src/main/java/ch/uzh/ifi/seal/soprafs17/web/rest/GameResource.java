@@ -63,13 +63,21 @@ public class GameResource extends GenericResource {
 
         User owner = userRepo.findByToken(userToken);
         if (owner != null) {
-            // TODO Mapping into Game
+
+            game.setOwner(owner.getName());
             game.setCurrentPlayer(owner);
-            game=gameRepo.save(game);
+            game.setStatus(GameStatus.PENDING);
+
+            if (null == owner.getGames()) {
+                owner.setGames(new ArrayList<>());
+            }
+
             owner.getGames().add(game);
             owner.setStatus(UserStatus.ONLINE);
-            game.setStatus(GameStatus.PENDING);
-            gameRepo.save(game);
+
+            game = gameRepo.save(game);
+            owner = userRepo.save(owner);
+
             return CONTEXT + "/" + game.getId();
         }
 

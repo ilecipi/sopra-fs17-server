@@ -46,8 +46,7 @@ public class Game implements Serializable {
     @OneToMany(mappedBy="game")
     private List<Move> moves;
 
-    //(mappedBy="games") omitted?
-    @ManyToMany
+    @ManyToMany(mappedBy="games")
     private List<User> players;
     
 	public Long getId() {
