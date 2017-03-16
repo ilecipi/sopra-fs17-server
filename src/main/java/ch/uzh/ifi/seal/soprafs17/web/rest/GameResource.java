@@ -7,6 +7,10 @@ import ch.uzh.ifi.seal.soprafs17.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.Ships.OneSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +50,6 @@ public class GameResource extends GenericResource {
     /*
      * Context: /games
      */
-
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
     public List<Game> listGames() {
@@ -63,7 +66,8 @@ public class GameResource extends GenericResource {
 
         User owner = userRepo.findByToken(userToken);
         if (owner != null) {
-
+            owner = userRepo.save(owner);
+            game = gameRepo.save(game);
             game.setOwner(owner.getName());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);
@@ -75,8 +79,8 @@ public class GameResource extends GenericResource {
             owner.getGames().add(game);
             owner.setStatus(UserStatus.ONLINE);
 
-            game = gameRepo.save(game);
             owner = userRepo.save(owner);
+            game = gameRepo.save(game);
 
             return CONTEXT + "/" + game.getId();
         }
@@ -190,10 +194,11 @@ public class GameResource extends GenericResource {
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findByToken(userToken);
 
-        if (game != null && player != null
-                && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-//            game.getPlayers().add(player);
-            gameRepo.findOne(game.getId()).getPlayers().add(player);
+        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
+            player.getGames().add(game);
+            player.setStatus(UserStatus.ONLINE);
+            game.getPlayers().add(player);
+            userRepo.save(player);
             gameRepo.save(game);
             logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
             return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
@@ -223,12 +228,10 @@ public class GameResource extends GenericResource {
         //check whether the color choosen is already taken
 
         if (user.equals(game.getCurrentPlayer())&&!game.getColors().get(color)) {
-            System.out.print("ENTRATO NEL IF");
             user.setColor(color);
             game.getColors().put(color,true);
             game.getNextPlayer();
         }
-        System.out.println(user.getColor());
         gameRepo.save(game);
         userRepo.save(user);
     }

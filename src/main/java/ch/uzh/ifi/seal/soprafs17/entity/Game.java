@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 public class Game implements Serializable {
@@ -42,6 +43,7 @@ public class Game implements Serializable {
             put("brown", false);
             put("grey", false);
         }};
+
 
     @OneToMany(mappedBy="game")
     private List<Move> moves;

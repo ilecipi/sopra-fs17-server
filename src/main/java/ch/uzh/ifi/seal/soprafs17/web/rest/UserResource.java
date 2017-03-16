@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 import ch.uzh.ifi.seal.soprafs17.DTOs.UserDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +37,11 @@ public class UserResource extends GenericResource {
     @Autowired
     private UserRepository userRepo;
 
-
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<User> listUsers() {
         logger.debug("listUsers");
-//        //User user = new User();
-//
-//        List<User> user = new ArrayList<>();
-//        for (User u : userRepo.findAll()) {
-//            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor(),u.getGames());
-//            userDTOS.add(userDTO);
-//        }
-//
-//        return userDTOS;
+
             List<User> result = new ArrayList<>();
             userRepo.findAll().forEach(result::add);
 
@@ -73,10 +67,6 @@ public class UserResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
-        User u = userRepo.findById(userId);
-//        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor(),u.getGames());
-
-//        return userDTO;
         return userRepo.findOne(userId);
     }
 
@@ -87,7 +77,7 @@ public class UserResource extends GenericResource {
         User user = userRepo.findOne(userId);
         if (user != null) {
 //            user.setToken(UUID.randomUUID().toString());
-            user.setToken(user.getId().toString());
+//            user.setToken(user.getId().toString());
             user.setStatus(UserStatus.ONLINE);
             user = userRepo.save(user);
 

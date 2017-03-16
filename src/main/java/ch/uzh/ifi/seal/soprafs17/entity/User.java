@@ -12,12 +12,14 @@ import javax.persistence.OneToMany;
 
 import ch.uzh.ifi.seal.soprafs17.Ships.Ship;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 public class User implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
 
     @Id
     @GeneratedValue
@@ -35,7 +37,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
+
     @ManyToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Game> games;
 
     @OneToMany(mappedBy = "user")
@@ -43,11 +47,6 @@ public class User implements Serializable {
 
     @Column(nullable = true)
     private String color;
-
-    /**
-    @Column
-    private Stone[] stone;
-    */
 
 
     public String getColor() {
