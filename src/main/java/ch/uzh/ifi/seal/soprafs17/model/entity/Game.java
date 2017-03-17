@@ -33,7 +33,7 @@ public class Game implements Serializable {
 	@OneToOne
 	private User currentPlayer;
 
-	//The colors aren't taken yet
+	//Colors that are not chosen yet
 	@ElementCollection
 	private Map<String, Boolean> colors = new HashMap<String,Boolean>(){{
             put("black", false);
@@ -115,6 +115,10 @@ public class Game implements Serializable {
 
 	public Map<String, Boolean> getColors() {
 		return colors;
+	}
+
+	public void setColors(Map<String, Boolean> colors) {
+		this.colors = colors;
 	}
 
 }

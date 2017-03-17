@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
@@ -208,18 +209,40 @@ public class GameResource extends GenericResource {
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void createPlayer(@PathVariable Long gameId,@RequestParam("token") String userToken, @RequestParam("color") String color) {
+    public void createPlayer(@PathVariable Long gameId,@RequestParam("token") String userToken) {
 
         User user = userRepo.findByToken(userToken);
         Game game = gameRepo.findOne(gameId);
 
         //check whether the color choosen is already taken
 
-        if (user.equals(game.getCurrentPlayer())&&!game.getColors().get(color)) {
-            user.setColor(color);
-            game.getColors().put(color,true);
-            game.getNextPlayer();
-        }
+        if (true) {
+            boolean colorNotChosen = true;
+            String color;
+            while(colorNotChosen) {
+                Random rn = new Random();
+                int i = rn.nextInt()%4;
+                if (i == 0) {
+                    color = "black";
+                } else if (i == 1) {
+                    color = "white";
+                } else if (i == 2) {
+                    color = "brown";
+                } else{
+                    color = "grey";
+                }
+                if (!game.getColors().get(color)) {
+
+                    user.setColor(color);
+                    game.getColors().put(color, true);
+                    colorNotChosen = false;
+
+                }
+            }
+
+            }
+
+//        }
         gameRepo.save(game);
         userRepo.save(user);
     }
