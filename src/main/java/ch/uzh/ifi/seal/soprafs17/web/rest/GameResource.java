@@ -3,14 +3,8 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.uzh.ifi.seal.soprafs17.DTOs.GameDTO;
-import ch.uzh.ifi.seal.soprafs17.Ships.OneSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
-import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 
 // For this controlles the correspndant service is missing
 // Todo create a GameService in which you implement the logic of the game
@@ -66,19 +60,14 @@ public class GameResource extends GenericResource {
 
         User owner = userRepo.findByToken(userToken);
         if (owner != null) {
+
             owner = userRepo.save(owner);
             game = gameRepo.save(game);
             game.setOwner(owner.getName());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);
-
-            if (null == owner.getGames()) {
-                owner.setGames(new ArrayList<>());
-            }
-
             owner.getGames().add(game);
             owner.setStatus(UserStatus.ONLINE);
-
             owner = userRepo.save(owner);
             game = gameRepo.save(game);
 
@@ -97,7 +86,6 @@ public class GameResource extends GenericResource {
         logger.debug("getGame: " + gameId);
 
         Game game = gameRepo.findOne(gameId);
-//        GameDTO gameDTO = new GameDTO(game.getId(),game.getName(),game.getOwner(),game.getStatus(),game.getCurrentPlayer());
 
         return game;
     }

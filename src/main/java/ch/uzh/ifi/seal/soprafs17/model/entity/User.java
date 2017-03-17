@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import ch.uzh.ifi.seal.soprafs17.Ships.Ship;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import com.fasterxml.jackson.annotation.*;
 
@@ -47,7 +46,6 @@ public class User implements Serializable {
 
     @Column(nullable = true)
     private String color;
-
 
     public String getColor() {
         return color;

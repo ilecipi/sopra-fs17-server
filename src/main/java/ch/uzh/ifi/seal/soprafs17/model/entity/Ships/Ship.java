@@ -1,8 +1,7 @@
-package ch.uzh.ifi.seal.soprafs17.Ships;
+package ch.uzh.ifi.seal.soprafs17.model.entity.Ships;
 
-import ch.uzh.ifi.seal.soprafs17.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,6 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import com.fasterxml.jackson.annotation.*;
 
 @Entity
 public class Game implements Serializable {

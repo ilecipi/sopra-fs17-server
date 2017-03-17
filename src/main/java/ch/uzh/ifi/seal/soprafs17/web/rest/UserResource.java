@@ -2,12 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import ch.uzh.ifi.seal.soprafs17.DTOs.UserDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 
 
 @RestController

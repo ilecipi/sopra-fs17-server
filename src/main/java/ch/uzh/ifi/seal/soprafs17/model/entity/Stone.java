@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 /**
  * Created by ilecipi on 10.03.17.
