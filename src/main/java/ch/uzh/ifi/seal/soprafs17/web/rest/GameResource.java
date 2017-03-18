@@ -246,8 +246,6 @@ public class GameResource extends GenericResource {
                 }
 
             }
-
-//        }
             gameRepo.save(game);
             userRepo.save(user);
         }
