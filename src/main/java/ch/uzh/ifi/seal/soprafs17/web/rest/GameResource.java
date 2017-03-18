@@ -103,16 +103,24 @@ public class GameResource extends GenericResource {
         //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
                 && game.getPlayers().size()>=GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS){
-            game.setCurrentPlayer(owner);
-            System.out.println("START GAME INIZIATO");
-            // TODO: Start game in GameService
-            game.setNextPlayer(game.getPlayers().get(game.getPlayers().indexOf(game.getCurrentPlayer())+1));
-            game.setStatus(GameStatus.RUNNING);
+
+            //The game cannot start if not every player is ready
+            boolean allPlayersReady = true;
             for(User u : game.getPlayers()){
-                u.setStatus(UserStatus.IS_PLAYING);
-                userRepo.save(u);
+                if(u.getStatus()!=UserStatus.IS_READY){
+                    allPlayersReady=false;
+                }
             }
-            gameRepo.save(game);
+            if(allPlayersReady) {
+                game.setCurrentPlayer(owner);
+                // TODO: Start game in GameService
+                game.setStatus(GameStatus.RUNNING);
+                for (User u : game.getPlayers()) {
+                    u.setStatus(UserStatus.IS_PLAYING);
+                    u = userRepo.save(u);
+                }
+                gameRepo.save(game);
+            }
         }
     }
 
@@ -192,6 +200,9 @@ public class GameResource extends GenericResource {
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
             player.getGames().add(game);
             player.setStatus(UserStatus.ONLINE);
+            if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
+                game.setNextPlayer(player);
+            }
             game.getPlayers().add(player);
             userRepo.save(player);
             gameRepo.save(game);
@@ -219,9 +230,8 @@ public class GameResource extends GenericResource {
 
         User user = userRepo.findByToken(userToken);
         Game game = gameRepo.findOne(gameId);
-        if(game.getPlayers().contains(user)) {
             //assign color to user
-            if (true) {
+            if (game.getPlayers().contains(user)) {
                 boolean colorNotChosen = true;
                 String color;
                 while (colorNotChosen) {
@@ -250,5 +260,3 @@ public class GameResource extends GenericResource {
             userRepo.save(user);
         }
     }
-
-}

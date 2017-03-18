@@ -113,12 +113,16 @@ public class Game implements Serializable {
 	}
 
 	public User getNextPlayer(){
-		int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
+		return this.nextPlayer;
+
+	}
+
+	public User findNextPlayer(){
+        int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
 		int indexOfNextPlayer=(indexOfCurrentPlayer+1)%getPlayers().size();
 		setCurrentPlayer(getPlayers().get(indexOfNextPlayer));
 		return	getCurrentPlayer();
-
-	}
+    }
 
 	public Map<String, Boolean> getColors() {
 		return colors;
