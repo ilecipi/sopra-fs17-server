@@ -64,7 +64,7 @@ public class GameResource extends GenericResource {
 
             owner = userRepo.save(owner);
             game = gameRepo.save(game);
-            game.setOwner(owner.getName());
+            game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);
             owner.getGames().add(game);
@@ -104,9 +104,15 @@ public class GameResource extends GenericResource {
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
                 && game.getPlayers().size()>=GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS){
             game.setCurrentPlayer(owner);
-
-
+            System.out.println("START GAME INIZIATO");
             // TODO: Start game in GameService
+            game.setNextPlayer(game.getPlayers().get(game.getPlayers().indexOf(game.getCurrentPlayer())+1));
+            game.setStatus(GameStatus.RUNNING);
+            for(User u : game.getPlayers()){
+                u.setStatus(UserStatus.IS_PLAYING);
+                userRepo.save(u);
+            }
+            gameRepo.save(game);
         }
     }
 
@@ -177,7 +183,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+    public String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
 
         Game game = gameRepo.findOne(gameId);
@@ -213,38 +219,38 @@ public class GameResource extends GenericResource {
 
         User user = userRepo.findByToken(userToken);
         Game game = gameRepo.findOne(gameId);
+        if(game.getPlayers().contains(user)) {
+            //assign color to user
+            if (true) {
+                boolean colorNotChosen = true;
+                String color;
+                while (colorNotChosen) {
+                    Random rn = new Random();
+                    int i = rn.nextInt() % 4;
+                    if (i == 0) {
+                        color = "black";
+                    } else if (i == 1) {
+                        color = "white";
+                    } else if (i == 2) {
+                        color = "brown";
+                    } else {
+                        color = "grey";
+                    }
+                    if (!game.getColors().get(color)) {
+                        user.setColor(color);
+                        game.getColors().put(color, true);
+                        user.setStatus(UserStatus.IS_READY);
+                        colorNotChosen = false;
 
-        //check whether the color choosen is already taken
-
-        if (true) {
-            boolean colorNotChosen = true;
-            String color;
-            while(colorNotChosen) {
-                Random rn = new Random();
-                int i = rn.nextInt()%4;
-                if (i == 0) {
-                    color = "black";
-                } else if (i == 1) {
-                    color = "white";
-                } else if (i == 2) {
-                    color = "brown";
-                } else{
-                    color = "grey";
+                    }
                 }
-                if (!game.getColors().get(color)) {
-
-                    user.setColor(color);
-                    game.getColors().put(color, true);
-                    colorNotChosen = false;
-
-                }
-            }
 
             }
 
 //        }
-        gameRepo.save(game);
-        userRepo.save(user);
+            gameRepo.save(game);
+            userRepo.save(user);
+        }
     }
 
 }

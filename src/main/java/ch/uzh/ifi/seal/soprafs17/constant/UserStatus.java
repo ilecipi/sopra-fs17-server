@@ -4,5 +4,5 @@ import java.util.Set;
 import java.util.stream.Collector;
 
 public enum UserStatus {
-	ONLINE, OFFLINE;
+	ONLINE, OFFLINE, IS_READY, IS_PLAYING;
 }

@@ -33,6 +33,13 @@ public class Game implements Serializable {
 	@OneToOne
 	private User currentPlayer;
 
+	public void setNextPlayer(User nextPlayer) {
+		this.nextPlayer = nextPlayer;
+	}
+
+	@OneToOne
+	private User nextPlayer;
+
 	//Colors that are not chosen yet
 	@ElementCollection
 	private Map<String, Boolean> colors = new HashMap<String,Boolean>(){{
