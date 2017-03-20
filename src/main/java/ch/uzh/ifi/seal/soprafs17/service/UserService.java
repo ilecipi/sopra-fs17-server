@@ -24,7 +24,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -51,6 +50,32 @@ public class UserService {
         if (user != null) {
             userRepository.delete(id);
             log.debug("Deleted User: {}", user);
+        }
+    }
+
+    public Iterable<User> listUsers(){
+        return userRepository.findAll();
+    }
+
+    public User getUser(long userId){
+        return userRepository.findById(userId);
+    }
+
+    public User login(long userId){
+        User user = userRepository.findOne(userId);
+        if (user != null) {
+            user.setStatus(UserStatus.ONLINE);
+            user = userRepository.save(user);
+            return user;
+        }
+        return null;
+    }
+
+    public void logout(long userId, String userToken){
+        User user = userRepository.findOne(userId);
+        if (user != null && user.getToken().equals(userToken)) {
+            user.setStatus(UserStatus.OFFLINE);
+            userRepository.save(user);
         }
     }
 
