@@ -117,6 +117,7 @@ public class Game implements Serializable {
 
 	}
 
+
 	public User findNextPlayer(){
         int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
 		int indexOfNextPlayer=(indexOfCurrentPlayer+1)%getPlayers().size();

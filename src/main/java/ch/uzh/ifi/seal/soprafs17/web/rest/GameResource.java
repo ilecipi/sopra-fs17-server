@@ -6,6 +6,7 @@ import java.util.Random;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,10 @@ import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 @RestController
 public class GameResource extends GenericResource {
 
-    Logger logger  = LoggerFactory.getLogger(GameResource.class);
+    Logger logger = LoggerFactory.getLogger(GameResource.class);
 
     @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private GameRepository gameRepo;
+    GameService gameService;
 
     private final String CONTEXT = "/games";
 
@@ -49,33 +48,19 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public List<Game> listGames() {
         logger.debug("listGames");
-        List<Game> result = new ArrayList<>();
-        gameRepo.findAll().forEach(result::add);
-        return result;
+        return gameService.listGames();
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
-
-        User owner = userRepo.findByToken(userToken);
-        if (owner != null) {
-
-            owner = userRepo.save(owner);
-            game = gameRepo.save(game);
-            game.setOwner(owner.getUsername());
-            game.setCurrentPlayer(owner);
-            game.setStatus(GameStatus.PENDING);
-            owner.getGames().add(game);
-            owner.setStatus(UserStatus.ONLINE);
-            owner = userRepo.save(owner);
-            game = gameRepo.save(game);
-
-            return CONTEXT + "/" + game.getId();
+        String addedGame = gameService.addGame(game, userToken);
+        if (game == null) {
+            return null;
+        } else {
+            return CONTEXT + addedGame;
         }
-
-        return null;
     }
 
     /*
@@ -86,9 +71,7 @@ public class GameResource extends GenericResource {
     public Game getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-
-        return game;
+        return gameService.getGame(gameId);
     }
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/start", method = RequestMethod.POST)
@@ -96,32 +79,7 @@ public class GameResource extends GenericResource {
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("startGame: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-
-        //the game can be started only from the owner
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
-                && game.getPlayers().size()>=GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS){
-
-            //The game cannot start if not every player is ready
-            boolean allPlayersReady = true;
-            for(User u : game.getPlayers()){
-                if(u.getStatus()!=UserStatus.IS_READY){
-                    allPlayersReady=false;
-                }
-            }
-            if(allPlayersReady) {
-                game.setCurrentPlayer(owner);
-                // TODO: Start game in GameService
-                game.setStatus(GameStatus.RUNNING);
-                for (User u : game.getPlayers()) {
-                    u.setStatus(UserStatus.IS_PLAYING);
-                    u = userRepo.save(u);
-                }
-                gameRepo.save(game);
-            }
-        }
+        gameService.startGame(gameId, userToken);
     }
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/stop", method = RequestMethod.POST)
@@ -129,12 +87,7 @@ public class GameResource extends GenericResource {
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("stopGame: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }
+        gameService.stopGame(gameId, userToken);
     }
 
     /*
@@ -145,12 +98,7 @@ public class GameResource extends GenericResource {
     public List<Move> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
 
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves();
-        }
-
-        return null;
+        return gameService.listMoves(gameId);
     }
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/move", method = RequestMethod.POST)
@@ -165,12 +113,7 @@ public class GameResource extends GenericResource {
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves().get(moveId);
-        }
-
-        return null;
+        return gameService.getMove(gameId, moveId);
     }
 
     /*
@@ -180,13 +123,7 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public List<User> listPlayers(@PathVariable Long gameId) {
         logger.debug("listPlayers");
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getPlayers();
-        }
-
-        return null;
+        return gameService.listPlayers(gameId);
     }
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/player", method = RequestMethod.POST)
@@ -194,69 +131,20 @@ public class GameResource extends GenericResource {
     public String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
 
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(userToken);
-
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            player.getGames().add(game);
-            player.setStatus(UserStatus.ONLINE);
-            if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
-                game.setNextPlayer(player);
-            }
-            game.getPlayers().add(player);
-            userRepo.save(player);
-            gameRepo.save(game);
-            logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
-        } else {
-            logger.error("Error adding player with token: " + userToken);
-        }
-        return null;
+        return gameService.addUser(gameId, userToken);
     }
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/player/{playerId}")
     @ResponseStatus(HttpStatus.OK)
     public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
 
-        Game game = gameRepo.findOne(gameId);
-
-        return game.getPlayers().get(playerId);
+        return gameService.getPlayer(gameId, playerId);
     }
 
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void createPlayer(@PathVariable Long gameId,@RequestParam("token") String userToken) {
-
-        User user = userRepo.findByToken(userToken);
-        Game game = gameRepo.findOne(gameId);
-            //assign color to user
-            if (game.getPlayers().contains(user)) {
-                boolean colorNotChosen = true;
-                String color;
-                while (colorNotChosen) {
-                    Random rn = new Random();
-                    int i = rn.nextInt() % 4;
-                    if (i == 0) {
-                        color = "black";
-                    } else if (i == 1) {
-                        color = "white";
-                    } else if (i == 2) {
-                        color = "brown";
-                    } else {
-                        color = "grey";
-                    }
-                    if (!game.getColors().get(color)) {
-                        user.setColor(color);
-                        game.getColors().put(color, true);
-                        user.setStatus(UserStatus.IS_READY);
-                        colorNotChosen = false;
-
-                    }
-                }
-
-            }
-            gameRepo.save(game);
-            userRepo.save(user);
-        }
+    public void createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+        gameService.createPlayer(gameId, userToken);
     }
+}
