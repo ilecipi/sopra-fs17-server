@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 
 @Entity
 public class Game implements Serializable {
@@ -55,6 +56,18 @@ public class Game implements Serializable {
 
     @ManyToMany(mappedBy="games")
     private List<User> players;
+
+	@OneToOne
+	private Temple temple;
+
+	public Temple getTemple() {
+		return temple;
+	}
+
+	public void setTemple(Temple temple) {
+		this.temple = temple;
+	}
+
     
 	public Long getId() {
 		return id;

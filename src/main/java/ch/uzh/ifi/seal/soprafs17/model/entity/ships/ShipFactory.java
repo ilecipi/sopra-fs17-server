@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.model.entity.Ships;
+package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 /**
  * Created by erion on 17.03.17.
