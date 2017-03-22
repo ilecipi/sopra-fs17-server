@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.repository;
 
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("templeRepository")
 public interface TempleRepository extends CrudRepository<Temple,Long> {
-
+    Temple findById(Long id);
 }

@@ -4,14 +4,16 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by erion on 20.03.17.
  */
 @Entity
-public class Temple extends StoneBoard {
+public class Temple extends StoneBoard implements Serializable {
 
+    public Temple(){}
 
     @Id
     @GeneratedValue
@@ -19,6 +21,7 @@ public class Temple extends StoneBoard {
 
     @Column
     private Stone[] stones;
+
     @Column
     int addedStones=0;
 

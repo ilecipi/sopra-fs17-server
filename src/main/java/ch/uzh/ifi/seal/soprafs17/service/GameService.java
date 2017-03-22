@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.TempleRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,11 @@ public class GameService {
     @Autowired
     private GameRepository gameRepo;
 
+    @Autowired
+    private SiteBoardsService siteBoardsService;
+
+
+
     public UserRepository getUserRepo() {
         return userRepo;
     }
@@ -51,7 +57,6 @@ public class GameService {
     public String addGame(Game game, String userToken){
         User owner = userRepo.findByToken(userToken);
         if (owner != null) {
-
             userRepo.save(owner);
             gameRepo.save(game);
             game.setOwner(owner.getUsername());
@@ -90,6 +95,7 @@ public class GameService {
                 }
             }
             if(allPlayersReady) {
+                siteBoardsService.addTemple(game.getId());
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
@@ -97,6 +103,7 @@ public class GameService {
                     u.setStatus(UserStatus.IS_PLAYING);
                     userRepo.save(u);
                 }
+
                 gameRepo.save(game);
             }
         }

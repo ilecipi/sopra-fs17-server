@@ -1,6 +1,7 @@
-package ch.uzh.ifi.seal.soprafs17.service.SiteBoardsServices;
+package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.TempleRepository;
@@ -9,11 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Class for managing the Temple
+ * Created by erion on 21.03.17.
  */
 @Service
 @Transactional
-public class TempleService {
+public class SiteBoardsService {
 
     @Autowired
     private TempleRepository templeRepo;
@@ -26,12 +27,13 @@ public class TempleService {
     public String addTemple(Long gameId){
         Game game = gameRepo.findOne(gameId);
         Temple temple = new Temple(game.getPlayers().size());
-        templeRepo.save(temple);
-        game.setTemple(temple);
+        System.out.println(game.getPlayers().size());
+        game.getSiteBoards().add(temple);
         temple.setGame(game);
-        gameRepo.save(game);
         templeRepo.save(temple);
-        return "/game/{gameId}/" + temple.getId();
+
+        gameRepo.save(game);
+        return "/game/"+gameId + "/" + temple.getId();
     }
 
 
@@ -39,6 +41,5 @@ public class TempleService {
         Temple temple = templeRepo.findOne(templeId);
         return temple;
     }
-
 
 }
