@@ -30,12 +30,11 @@ public class SiteBoardsService {
         System.out.println(game.getPlayers().size());
         game.getSiteBoards().add(temple);
         temple.setGame(game);
-        templeRepo.save(temple);
+        temple=templeRepo.save(temple);
 
         gameRepo.save(game);
         return "/game/"+gameId + "/" + temple.getId();
     }
-
 
     public Temple getTemple(Long templeId){
         Temple temple = templeRepo.findOne(templeId);
