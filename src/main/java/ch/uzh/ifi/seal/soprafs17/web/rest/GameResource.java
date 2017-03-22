@@ -141,7 +141,6 @@ public class GameResource extends GenericResource {
 
         return gameService.getPlayer(gameId, playerId);
     }
-
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
