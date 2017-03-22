@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
  * Created by erion on 20.03.17.
  */
 @RestController
-//@RequestMapping(TempleResource.CONTEXT)
 public class TempleResource extends GenericResource {
 
     @Autowired
@@ -21,15 +20,15 @@ public class TempleResource extends GenericResource {
 
     static final String CONTEXT = "/games";
 
-//    @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
-//    @ResponseStatus(HttpStatus.OK)
-//    public String addTemple(@RequestParam("gameId") Long gameId) {
-//        return CONTEXT + siteBoardsService.addTemple(gameId);
-//    }
+    @RequestMapping(value = CONTEXT + "/game/{gameId}/temple/{templeId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void addStone(@PathVariable Long gameId,@PathVariable Long templeId,@RequestParam("playerToken") Long playerToken) {
+        siteBoardsService.addStoneToTemple(templeId,playerToken,gameId);
+    }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/temple/{templeId}")
     @ResponseStatus(HttpStatus.OK)
-    public Temple getTemple(@PathVariable Long templeId, @PathVariable Long gameId) {
+    public Temple getTemple(@PathVariable Long templeId) {
 //        logger.debug("getTemple: " + templeId);
 
         return siteBoardsService.getTemple(templeId);

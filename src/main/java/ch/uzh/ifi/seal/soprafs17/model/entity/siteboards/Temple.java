@@ -82,11 +82,12 @@ public class Temple extends StoneBoard implements Serializable {
 
     @Override
     public void addStone(Stone stone) {
+        System.out.println(addedStones);
         if(addedStones == stones.length-1){
-            stones[addedStones]=stone;
-            addedStones= addedStones%stones.length-1;
+            stones[addedStones++]=stone;
+            addedStones= addedStones%stones.length;
         }else {
-            stones[addedStones] = stone;
+            stones[addedStones++] = stone;
         }
     }
 }
