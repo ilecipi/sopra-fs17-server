@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.TempleRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,11 @@ public class GameService {
     @Autowired
     private GameRepository gameRepo;
 
+    @Autowired
+    private SiteBoardsService siteBoardsService;
+
+
+
     public UserRepository getUserRepo() {
         return userRepo;
     }
@@ -50,17 +56,17 @@ public class GameService {
 
     public String addGame(Game game, String userToken){
         User owner = userRepo.findByToken(userToken);
-        if (owner != null) {
-
-            userRepo.save(owner);
-            gameRepo.save(game);
+        if (owner != null&&owner.getStatus()!=UserStatus.IS_PLAYING) {
+//            userRepo.save(owner);
+//            gameRepo.save(game);
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);
+            game = gameRepo.save(game);
             owner.getGames().add(game);
             owner.setStatus(UserStatus.ONLINE);
             userRepo.save(owner);
-            gameRepo.save(game);
+//            gameRepo.save(game);
 
             return "/" + game.getId();
         }
@@ -80,7 +86,8 @@ public class GameService {
 
         //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
-                && game.getPlayers().size()>= GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS){
+                && game.getPlayers().size()>= GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS
+                && game.getStatus() != GameStatus.RUNNING){
 
             //The game cannot start if not every player is ready
             boolean allPlayersReady = true;
@@ -90,6 +97,7 @@ public class GameService {
                 }
             }
             if(allPlayersReady) {
+                siteBoardsService.addTemple(game.getId());
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
@@ -97,6 +105,7 @@ public class GameService {
                     u.setStatus(UserStatus.IS_PLAYING);
                     userRepo.save(u);
                 }
+
                 gameRepo.save(game);
             }
         }

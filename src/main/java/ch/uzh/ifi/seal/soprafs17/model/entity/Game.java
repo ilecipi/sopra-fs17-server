@@ -8,6 +8,13 @@ import java.util.Map;
 import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.eclipse.persistence.annotations.OrderCorrection;
+import org.hibernate.annotations.IndexColumn;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Game implements Serializable {
@@ -55,7 +62,24 @@ public class Game implements Serializable {
 
     @ManyToMany(mappedBy="games")
     private List<User> players;
-    
+
+	public List<SiteBoard> getSiteBoards() {
+		return siteBoards;
+	}
+
+	public void setSiteBoards(List<SiteBoard> siteBoards) {
+		this.siteBoards = siteBoards;
+	}
+
+	@OneToMany
+	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+	private List<SiteBoard> siteBoards;
+
+
+//	@Autowired
+//	@OrderColumn
+//	private SiteBoard[] siteBoards;
+
 	public Long getId() {
 		return id;
 	}

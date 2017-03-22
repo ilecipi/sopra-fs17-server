@@ -1,21 +1,22 @@
-package ch.uzh.ifi.seal.soprafs17.model.entity.Ships;
+package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 
 /**
  * Created by ilecipi on 10.03.17.
  */
-public class ThreeSeatedShip implements IShip {
+public class TwoSeatedShip implements IShip{
+    final int MIN_STONES_REQUIRED=1;
+    final int MAX_STONES_POSSIBLE=2;
 
-    final int MIN_STONES_REQUIRED=2;
-    final int MAX_STONES_POSSIBLE=3;
+    Stone[] stones = new Stone[MAX_STONES_POSSIBLE];
 
-    Stone[] stones = new Stone[3];
     int addedStones = 0;
+
 
     @Override
     public void addStone(Stone stone, int i) {
-        if(addedStones < MAX_STONES_POSSIBLE && i >= 0 && i < MAX_STONES_POSSIBLE && stones[i] == null){
+        if(addedStones < MAX_STONES_POSSIBLE && stones[i] == null && i >= 0 && i < MAX_STONES_POSSIBLE){
             stones[i] = stone;
             addedStones++;
         }
@@ -23,8 +24,8 @@ public class ThreeSeatedShip implements IShip {
 
     @Override
     public Stone removeStone(int i) {
-        if(i >= 0 && i < MAX_STONES_POSSIBLE && addedStones>0 && stones[i] != null){
-            Stone removedStone = stones[i];
+        if(addedStones >= 0 && i >= 0 && i < MAX_STONES_POSSIBLE && stones[i] != null){
+            Stone removedStone= stones[i];
             stones[i] = null;
             addedStones--;
             return removedStone;
@@ -35,9 +36,9 @@ public class ThreeSeatedShip implements IShip {
 
     @Override
     public boolean isReady() {
-        if(addedStones >= MIN_STONES_REQUIRED){
+        if(addedStones >= MIN_STONES_REQUIRED && addedStones <= MAX_STONES_POSSIBLE){
             return true;
-        }else {
+        }else{
             return false;
         }
     }

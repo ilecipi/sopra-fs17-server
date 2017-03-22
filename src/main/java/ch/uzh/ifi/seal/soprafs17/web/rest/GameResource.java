@@ -7,6 +7,7 @@ import java.util.Random;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,7 +141,6 @@ public class GameResource extends GenericResource {
 
         return gameService.getPlayer(gameId, playerId);
     }
-
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
