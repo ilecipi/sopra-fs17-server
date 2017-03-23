@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.OneSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.ShipFactory;
@@ -9,6 +10,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.ShipRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.TempleRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -31,6 +33,9 @@ public class ShipService {
 
         @Autowired
         private GameRepository gameRepo;
+
+        @Autowired
+        private UserRepository userRepo;
 
 //        //4 player ships' cards
 //        List<List<ShipFactory>> fourPlayerShips = new ArrayList<List<ShipFactory>>(){{
@@ -252,5 +257,23 @@ public class ShipService {
         public ShipFactory getShips(Long gameId){
              ShipFactory ships = gameRepo.findOne(gameId).getShips().get(0);
             return ships;
+        }
+
+        public void addStone(Long gameId, Long shipId,Long playerToken,int position){
+            ShipFactory ship = shipRepo.findById(shipId);
+            Game game = gameRepo.findOne(gameId);
+            User player = userRepo.findById(playerToken);
+//            Stone[] stonesOfTheShip = ship.getStones();
+            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null){
+                Stone stone = new Stone(player.getColor());
+                ship.getStones()[position] = stone;
+//                ship.setStones(stonesOfTheShip);
+
+//                System.out.println(ship.getStones()[0]);
+                shipRepo.save(ship);
+                userRepo.save(player);
+                game.findNextPlayer();
+                gameRepo.save(game);
+            }
         }
 }

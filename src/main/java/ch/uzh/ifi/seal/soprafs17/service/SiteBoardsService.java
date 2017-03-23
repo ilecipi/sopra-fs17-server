@@ -52,13 +52,11 @@ public class SiteBoardsService {
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findById(playerId);
         if(player == game.getCurrentPlayer()){
-            System.out.println(game.getPlayers().indexOf(player) + "INDEX CURRENT:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             Stone stone = new Stone(player.getColor());
             temple.addStone(stone);
             userRepo.save(player);
             game.findNextPlayer();
             game=gameRepo.save(game);
-            System.out.println(game.getPlayers().indexOf(game.getCurrentPlayer().getId()) + "INDEX NEXT:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             gameRepo.save(game);
             templeRepo.save(temple);
         }

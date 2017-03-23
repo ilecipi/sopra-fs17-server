@@ -14,7 +14,7 @@ public class FourSeatedShip extends ShipFactory implements IShip, Serializable {
 
     final int MIN_STONES_REQUIRED=3;
     final int MAX_STONES_POSSIBLE=4;
-    
+
     @Id
     @GeneratedValue
     private long id;
