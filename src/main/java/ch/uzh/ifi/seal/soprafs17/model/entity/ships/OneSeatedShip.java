@@ -2,8 +2,10 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 
+import java.io.Serializable;
 
-public class OneSeatedShip implements IShip{
+
+public class OneSeatedShip extends ShipFactory implements IShip, Serializable {
     final int MIN_STONES_REQUIRED=1;
     final int MAX_STONES_POSSIBLE=1;
 
