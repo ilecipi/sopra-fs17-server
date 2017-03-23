@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.ShipFactory;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -74,6 +76,19 @@ public class Game implements Serializable {
 	@OneToMany
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private List<SiteBoard> siteBoards;
+
+
+	public List<ShipFactory> getShips() {
+		return ships;
+	}
+
+	public void setShips(List<ShipFactory> ships) {
+		this.ships = ships;
+	}
+
+	@OneToMany
+	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+	private List<ShipFactory> ships;
 
 
 //	@Autowired

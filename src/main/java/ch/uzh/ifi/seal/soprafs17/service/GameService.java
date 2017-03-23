@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.TempleRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.ShipRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,9 @@ public class GameService {
     @Autowired
     private SiteBoardsService siteBoardsService;
 
+    @Autowired
+    private ShipService shipService;
+
 
 
     public UserRepository getUserRepo() {
@@ -46,6 +50,10 @@ public class GameService {
 
     public GameRepository getGameRepo() {
         return gameRepo;
+    }
+
+    public ShipService getShipService() {
+        return shipService;
     }
 
     public List<Game> listGames(){
@@ -98,6 +106,7 @@ public class GameService {
             }
             if(allPlayersReady) {
                 siteBoardsService.addTemple(game.getId());
+                shipService.addShips(game.getId());
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
