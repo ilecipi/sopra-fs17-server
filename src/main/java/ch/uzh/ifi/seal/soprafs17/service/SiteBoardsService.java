@@ -56,7 +56,9 @@ public class SiteBoardsService {
             temple.addStone(stone);
             userRepo.save(player);
             game.findNextPlayer();
-            game=gameRepo.save(game);
+            int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
+            game.setNextPlayer(game.getPlayers().get(index));
+            gameRepo.save(game);
             gameRepo.save(game);
             templeRepo.save(temple);
         }

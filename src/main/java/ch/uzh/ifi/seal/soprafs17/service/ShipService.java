@@ -37,6 +37,9 @@ public class ShipService {
         @Autowired
         private UserRepository userRepo;
 
+        @Autowired
+        private GameService gameService;
+
 //        //4 player ships' cards
 //        List<List<ShipFactory>> fourPlayerShips = new ArrayList<List<ShipFactory>>(){{
 //
@@ -263,16 +266,15 @@ public class ShipService {
             ShipFactory ship = shipRepo.findById(shipId);
             Game game = gameRepo.findOne(gameId);
             User player = userRepo.findById(playerToken);
-//            Stone[] stonesOfTheShip = ship.getStones();
             if(player == game.getCurrentPlayer() && ship.getStones()[position] == null){
                 Stone stone = new Stone(player.getColor());
                 ship.getStones()[position] = stone;
-//                ship.setStones(stonesOfTheShip);
-
-//                System.out.println(ship.getStones()[0]);
                 shipRepo.save(ship);
                 userRepo.save(player);
                 game.findNextPlayer();
+                int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
+                game.setNextPlayer(game.getPlayers().get(index));
+
                 gameRepo.save(game);
             }
         }
