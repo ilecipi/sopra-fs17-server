@@ -65,6 +65,13 @@ public class Game implements Serializable {
     @ManyToMany(mappedBy="games")
     private List<User> players;
 
+	@OneToMany
+	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+	private List<SiteBoard> siteBoards;
+
+	@OneToMany
+	private List<ShipFactory> ships;
+
 	public List<SiteBoard> getSiteBoards() {
 		return siteBoards;
 	}
@@ -72,11 +79,6 @@ public class Game implements Serializable {
 	public void setSiteBoards(List<SiteBoard> siteBoards) {
 		this.siteBoards = siteBoards;
 	}
-
-	@OneToMany
-	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-	private List<SiteBoard> siteBoards;
-
 
 	public List<ShipFactory> getShips() {
 		return ships;
@@ -86,14 +88,6 @@ public class Game implements Serializable {
 		this.ships = ships;
 	}
 
-	@OneToMany
-	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-	private List<ShipFactory> ships;
-
-
-//	@Autowired
-//	@OrderColumn
-//	private SiteBoard[] siteBoards;
 
 	public Long getId() {
 		return id;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by erion on 20.03.17.
  */
+
 @Repository("templeRepository")
 public interface TempleRepository extends CrudRepository<Temple,Long> {
     Temple findById(Long id);

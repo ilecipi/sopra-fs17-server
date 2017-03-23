@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.OneSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.ShipFactory;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
@@ -30,7 +32,7 @@ public class ShipService {
         @Autowired
         private GameRepository gameRepo;
 
-//        //4 player Ships' cards
+//        //4 player ships' cards
 //        List<List<ShipFactory>> fourPlayerShips = new ArrayList<List<ShipFactory>>(){{
 //
 //
@@ -85,7 +87,7 @@ public class ShipService {
 //            }});
 //    }};
 //
-//        //3 players Ships' cards
+//        //3 players ships' cards
 //        List<ArrayList<ShipFactory>> threePlayerShips = new ArrayList<ArrayList<ShipFactory>>(){{
 //
 //
@@ -205,10 +207,10 @@ public class ShipService {
 //
 //            gameRepo.save(game);
                 Game game = gameRepo.findOne(gameId);
-                int countPlayer = game.getPlayers().size();
-                Random rn = new Random();
-                int cardToDelete = rn.nextInt()%7;
-                int selectCard = rn.nextInt()%6;
+//                int countPlayer = game.getPlayers().size();
+//                Random rn = new Random();
+//                int cardToDelete = rn.nextInt()%7;
+//                int selectCard = rn.nextInt()%6;
 //                if(countPlayer==4){
 ////                    fourPlayerShips.remove(cardToDelete);
 //                    game.setShips(fourPlayerShips.get(selectCard));
@@ -227,6 +229,10 @@ public class ShipService {
 //                    game=gameRepo.save(game);
 //                }
                   ShipFactory shipFactory = new ShipFactory();
+            ShipFactory navetta = shipFactory.createFourSeatedShip();
+            navetta.setGame(game);
+            shipRepo.save(navetta);
+                game.getShips().add(navetta);
 ////                  shipFactory.getShips().add(shipFactory.createFourSeatedShip());
 //            shipFactory.setShips(new ArrayList<ShipFactory>());
 //                  shipFactory=shipRepo.save(shipFactory);
@@ -236,9 +242,9 @@ public class ShipService {
 //            shipFactory=shipRepo.save(shipFactory);
 //            game.setShips(shipFactory.getShips());
 //                shipFactory.setGame(game);
-                shipFactory = shipRepo.save(shipFactory);
+//              shipFactory = shipRepo.save(shipFactory);
 //                game.setShips(shipFactory.getShips());
-                game=gameRepo.save(game);
+//                game=gameRepo.save(game);
 
             return "/game/"+gameId + "/" + "ships";
         }

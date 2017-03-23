@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
  * Created by ilecipi on 22.03.17.
  */
 
-
 @Repository("shipRepository")
 public interface ShipRepository extends CrudRepository<ShipFactory,Long>{
         ShipFactory findById(Long id);

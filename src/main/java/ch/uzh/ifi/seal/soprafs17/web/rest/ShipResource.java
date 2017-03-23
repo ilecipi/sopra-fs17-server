@@ -37,12 +37,12 @@ public class ShipResource {
             return shipService.getShips(gameId);
         }
 
-//        @RequestMapping(value = CONTEXT + "/{gameId}/ship/{shipId}")
-//        @ResponseStatus(HttpStatus.OK)
-//        public ShipFactory getShip(@PathVariable Long gameId) {
-//                logger.debug("getShips: " + gameId);
-//
-//                return shipService.getShips(gameId);
-//        }
+        @RequestMapping(value = CONTEXT + "/{gameId}/ship/{shipId}")
+        @ResponseStatus(HttpStatus.OK)
+        public ShipFactory getShip(@PathVariable Long gameId) {
+                logger.debug("getShips: " + gameId);
+
+                return shipService.getShips(gameId);
+        }
 }
 
