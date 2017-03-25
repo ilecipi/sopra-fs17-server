@@ -42,8 +42,6 @@ public class ShipResource {
                 return shipService.getShips(gameId);
         }
 
-//        public void addStone(Long gameId, Long shipId,Long playerToken,int position)
-
         @RequestMapping(value = CONTEXT + "/{gameId}/ship/{shipId}", method = RequestMethod.PUT)
         @ResponseStatus(HttpStatus.OK)
         public void addStone(@PathVariable Long gameId,@PathVariable Long shipId,@RequestParam("playerToken") Long playerToken,@RequestParam("position") int position) {

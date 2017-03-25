@@ -230,4 +230,13 @@ public class GameService {
         userRepo.save(user);
     }
 
+    public Game setNextPlayer(Game game){
+       int indexOfCurrentPlayer= game.getPlayers().indexOf(game.getCurrentPlayer());
+        int indexOfNextPlayer=(indexOfCurrentPlayer+1)%game.getPlayers().size();
+        game.setCurrentPlayer(game.getPlayers().get(indexOfNextPlayer));
+        game.setNextPlayer(game.getPlayers().get(indexOfNextPlayer%game.getPlayers().size()));
+        gameRepo.save(game);
+
+        return game;
+    }
 }

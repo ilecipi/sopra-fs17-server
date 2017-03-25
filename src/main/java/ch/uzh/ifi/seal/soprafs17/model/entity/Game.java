@@ -42,9 +42,6 @@ public class Game implements Serializable {
 	@OneToOne
 	private User currentPlayer;
 
-	public void setNextPlayer(User nextPlayer) {
-		this.nextPlayer = nextPlayer;
-	}
 
 	@OneToOne
 	private User nextPlayer;
@@ -145,21 +142,19 @@ public class Game implements Serializable {
 		this.currentPlayer = currentPlayer;
 	}
 
+		public void setNextPlayer(User nextPlayer) {
+		this.nextPlayer = nextPlayer;
+	}
 	public User getNextPlayer(){
 		return this.nextPlayer;
 
 	}
 
 	public User findNextPlayer(){
-        int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
+      int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
 		int indexOfNextPlayer=(indexOfCurrentPlayer+1)%getPlayers().size();
 		setCurrentPlayer(getPlayers().get(indexOfNextPlayer));
 		setNextPlayer(getPlayers().get(indexOfNextPlayer%getPlayers().size()));
-		System.out.println(getCurrentPlayer().getId());
-
-		System.out.println(getNextPlayer().getId());
-//		System.out.println(indexOfCurrentPlayer+"CURRENT INDEX OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-//		System.out.println(indexOfNextPlayer+"NEXT INDEX OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
 		return	currentPlayer;
     }
