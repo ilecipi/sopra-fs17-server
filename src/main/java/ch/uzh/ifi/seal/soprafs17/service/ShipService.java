@@ -75,137 +75,136 @@ public class ShipService {
                 shipFactory.createTwoSeatedShip(),
                 shipFactory.createTwoSeatedShip()});
     }};
-//
-//        //3 players ships' cards
-//        List<ArrayList<ShipFactory>> threePlayerShips = new ArrayList<ArrayList<ShipFactory>>(){{
-//
-//
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//        }};
-//
-//        //2 players Ship's cards
-//        List<ArrayList<ShipFactory>> twoPlayerShips = new ArrayList<ArrayList<ShipFactory>>(){{
-//
-//
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//            add(new ArrayList<ShipFactory>(){{
-//                add(new ShipFactory().createFourSeatedShip());
-//                add(new ShipFactory().createThreeSeatedShip());
-//                add(new ShipFactory().createTwoSeatedShip());
-//                add(new ShipFactory().createOneSeatedShip());
-//
-//            }});
-//        }};
+
+        //3 players ships' cards
+        List<ShipFactory[]> threePlayerShips = new ArrayList<ShipFactory[]>(){{
+
+
+            add(new ShipFactory[]{shipFactory.createThreeSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+        }};
+
+        //2 players Ship's cards
+        List<ShipFactory[]> twoPlayerShips = new ArrayList<ShipFactory[]>(){{
+
+
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createTwoSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            add(new ShipFactory[]{
+                shipFactory.createFourSeatedShip(),
+                shipFactory.createThreeSeatedShip(),
+                shipFactory.createTwoSeatedShip(),
+                shipFactory.createOneSeatedShip()});
+            }};
+
+        private boolean firstInitialization = true;
 
         public String addShips(Long gameId) {
             Game game = gameRepo.findOne(gameId);
             int countPlayer = game.getPlayers().size();
             Random rn = new Random();
-            int cardToDelete = rn.nextInt() % 6;
-            int selectCard = rn.nextInt() % 5;
             if (countPlayer == 4) {
-                fourPlayerShips.remove(cardToDelete);
-                ShipFactory[] ships = fourPlayerShips.get(selectCard);
+                if(firstInitialization) {
+                    int cardToDelete = rn.nextInt() % 6;
+                    fourPlayerShips.remove(cardToDelete);
+                    firstInitialization=false;
+                }
+                int selectCard = rn.nextInt() %(2) ;
+                System.out.println(fourPlayerShips.size());
+                ShipFactory[] ships = fourPlayerShips.remove(selectCard);
                 for (ShipFactory s : ships) {
                     s.setGame(game);
                     shipRepo.save(s);
                     game.getShips().add(s);
                 }
             }
-                else if (countPlayer==3){
+//                else if (countPlayer==3) {
+//                if(firstInitialization) {
+//                    int cardToDelete = rn.nextInt() % 6;
 //                    threePlayerShips.remove(cardToDelete);
-                }else {
+//                    firstInitialization=false;
+//                }
+//                int selectCard = rn.nextInt() % (threePlayerShips.size() - 1);
+//                ShipFactory[] ships = threePlayerShips.remove(selectCard);
+//                for (ShipFactory s : ships) {
+//                    s.setGame(game);
+//                    shipRepo.save(s);
+//                    game.getShips().add(s);
+//                }
+//            }else {
+//                if(firstInitialization) {
+//                    int cardToDelete = rn.nextInt() % 6;
 //                    twoPlayerShips.remove(cardToDelete);
-            }
+//                    firstInitialization=false;
+//                }
+//                    int selectCard = rn.nextInt() %(twoPlayerShips.size()-1);
+//                    ShipFactory[] ships = twoPlayerShips.get(selectCard);
+//                    for (ShipFactory s : ships) {
+//                        s.setGame(game);
+//                        shipRepo.save(s);
+//                        game.getShips().add(s);
+//                }
+//            }
 
             gameRepo.save(game);
             return "/game/" + gameId + "/" + "ships";
