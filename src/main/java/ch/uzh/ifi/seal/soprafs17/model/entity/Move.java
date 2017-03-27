@@ -2,11 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Move implements Serializable {
@@ -20,9 +16,14 @@ public class Move implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-    @ManyToOne
-    @JoinColumn(name="GAME_ID")
-    private Game game;
+//    @ManyToOne
+//    @JoinColumn(name="GAME_ID")
+//    private Game game;
+
+	@OneToOne
+	@JoinColumn(name="ROUND_ID")
+	private Round round;
+
     
     @ManyToOne
     @JoinColumn(name="USER_ID")
@@ -36,13 +37,13 @@ public class Move implements Serializable {
 		this.id = id;
 	}
 
-	public Game getGame() {
-		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
+//	public Game getGame() {
+//		return game;
+//	}
+//
+//	public void setGame(Game game) {
+//		this.game = game;
+//	}
 
 	public User getUser() {
 		return user;

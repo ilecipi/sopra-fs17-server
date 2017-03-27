@@ -42,6 +42,9 @@ public class GameService {
     @Autowired
     private ShipService shipService;
 
+    @Autowired
+    private RoundService roundService;
+
     private static int counter = 1;
 
     public UserRepository getUserRepo() {
@@ -108,6 +111,9 @@ public class GameService {
             if(allPlayersReady) {
                 siteBoardsService.addTemple(game.getId());
                 game.initShipsCards();
+                game=gameRepo.save(game);
+//                roundService.addRound(game.getId());
+                //add a round to the game
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
@@ -140,7 +146,7 @@ public class GameService {
 
         Game game = gameRepo.findOne(gameId);
         if (game != null) {
-            return game.getMoves();
+//            return game.getMoves();
         }
 
         return null;
@@ -155,7 +161,7 @@ public class GameService {
     public Move getMove(Long gameId,Integer moveId){
         Game game = gameRepo.findOne(gameId);
         if (game != null) {
-            return game.getMoves().get(moveId);
+//            return game.getMoves().get(moveId);
         }
 
         return null;

@@ -41,6 +41,17 @@ public class Game implements Serializable {
 	@OneToOne
 	private User nextPlayer;
 
+	public List<Round> getRounds() {
+		return rounds;
+	}
+
+	public void setRounds(List<Round> rounds) {
+		this.rounds = rounds;
+	}
+
+	@OneToMany
+	private List<Round> rounds;
+
 	//Colors that are not chosen yet
 	@ElementCollection
 	private Map<String, Boolean> colors = new HashMap<String,Boolean>(){{
@@ -51,8 +62,8 @@ public class Game implements Serializable {
         }};
 
 
-    @OneToMany(mappedBy="game")
-    private List<Move> moves;
+//    @OneToMany
+//    private List<Move> moves;
 
     @ManyToMany(mappedBy="games")
     private List<User> players;
@@ -113,13 +124,13 @@ public class Game implements Serializable {
 		this.owner = owner;
 	}
 
-	public List<Move> getMoves() {
-		return moves;
-	}
-
-	public void setMoves(List<Move> moves) {
-		this.moves = moves;
-	}
+//	public List<Move> getMoves() {
+//		return moves;
+//	}
+//
+//	public void setMoves(List<Move> moves) {
+//		this.moves = moves;
+//	}
 
 	public List<User> getPlayers() {
 		return players;
