@@ -22,7 +22,7 @@ public class ExampleServiceTest {
 
 	@Autowired
 	ExampleService exampleService;
-	
+
 	@Test
 	public void testDoLogic() {
 		assertThat(exampleService.doLogic("a", "b"), is("ab"));

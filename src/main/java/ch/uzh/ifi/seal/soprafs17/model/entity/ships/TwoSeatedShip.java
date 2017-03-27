@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.ShipException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,46 +11,19 @@ import java.io.Serializable;
  */
 
 @Entity
-public class TwoSeatedShip  extends ShipFactory implements IShip, Serializable {
-    final int MIN_STONES_REQUIRED=1;
-    final int MAX_STONES_POSSIBLE=2;
-
-
-    @Id
-    @GeneratedValue
-    private long id;
-
+public class TwoSeatedShip  extends AShip {
     @Override
-    public void addStone(Stone stone, int i) {
-        if(addedStones < MAX_STONES_POSSIBLE && stones[i] == null && i >= 0 && i < MAX_STONES_POSSIBLE){
-            stones[i] = stone;
-            addedStones++;
-        }
+    public int getMaxStones() {
+        return 0;
     }
 
     @Override
-    public Stone removeStone(int i) {
-        if(addedStones >= 0 && i >= 0 && i < MAX_STONES_POSSIBLE && stones[i] != null){
-            Stone removedStone= stones[i];
-            stones[i] = null;
-            addedStones--;
-            return removedStone;
-        }else{
-            return null;
-        }
+    public int getMinStones() {
+        return 0;
     }
 
     @Override
-    public boolean isReady() {
-        if(addedStones >= MIN_STONES_REQUIRED && addedStones <= MAX_STONES_POSSIBLE){
-            return true;
-        }else{
-            return false;
-        }
-    }
+    protected void initShips() {
 
-    @Override
-    public void setStones(Stone[] stones) {
-        super.setStones(new Stone[this.MAX_STONES_POSSIBLE]);
     }
 }

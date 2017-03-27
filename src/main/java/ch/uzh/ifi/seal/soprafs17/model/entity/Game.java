@@ -1,22 +1,17 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.*;
-
-import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.ShipFactory;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.eclipse.persistence.annotations.OrderCorrection;
-import org.hibernate.annotations.IndexColumn;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Game implements Serializable {
@@ -67,7 +62,7 @@ public class Game implements Serializable {
 	private List<SiteBoard> siteBoards;
 
 	@OneToMany
-	private List<ShipFactory> ships;
+	private List<AShip> ships;
 
 	public List<SiteBoard> getSiteBoards() {
 		return siteBoards;
@@ -77,11 +72,11 @@ public class Game implements Serializable {
 		this.siteBoards = siteBoards;
 	}
 
-	public List<ShipFactory> getShips() {
+	public List<AShip> getShips() {
 		return ships;
 	}
 
-	public void setShips(List<ShipFactory> ships) {
+	public void setShips(List<AShip> ships) {
 		this.ships = ships;
 	}
 

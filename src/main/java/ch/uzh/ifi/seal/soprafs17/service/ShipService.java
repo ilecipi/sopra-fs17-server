@@ -38,196 +38,196 @@ public class ShipService {
         private UserRepository userRepo;
         ShipFactory shipFactory = new ShipFactory();
         //4 player ships' cards
-        List<ShipFactory[]> fourPlayerShips = new ArrayList<ShipFactory[]>(){{
-            add(new ShipFactory[]{shipFactory.createFourSeatedShip(),
-                    shipFactory.createFourSeatedShip(),
-                    shipFactory.createTwoSeatedShip(),
-                    shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-    }};
-        //3 players ships' cards
-        List<ShipFactory[]> threePlayerShips = new ArrayList<ShipFactory[]>(){{
-
-
-            add(new ShipFactory[]{shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-        }};
-
-        //2 players Ship's cards
-        List<ShipFactory[]> twoPlayerShips = new ArrayList<ShipFactory[]>(){{
-
-
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createTwoSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            add(new ShipFactory[]{
-                shipFactory.createFourSeatedShip(),
-                shipFactory.createThreeSeatedShip(),
-                shipFactory.createTwoSeatedShip(),
-                shipFactory.createOneSeatedShip()});
-            }};
-
-        private boolean firstInitialization = true;
-
-        public String addShips(Long gameId) {
-            Game game = gameRepo.findOne(gameId);
-            int countPlayer = game.getPlayers().size();
-            Random rn = new Random();
-            if (countPlayer == 4) {
-                if(firstInitialization) {
-                    int cardToDelete = rn.nextInt() % 6;
-                    fourPlayerShips.remove(cardToDelete);
-                    firstInitialization=false;
-                }
-                int selectCard = rn.nextInt() %(2) ;
-                System.out.println(fourPlayerShips.size());
-                ShipFactory[] ships = fourPlayerShips.remove(selectCard);
-                for (ShipFactory s : ships) {
-                    s.setGame(game);
-                    shipRepo.save(s);
-                    game.getShips().add(s);
-                }
-            }
-//                else if (countPlayer==3) {
+//        List<ShipFactory[]> fourPlayerShips = new ArrayList<ShipFactory[]>(){{
+//            add(new ShipFactory[]{shipFactory.createFourSeatedShip(),
+//                    shipFactory.createFourSeatedShip(),
+//                    shipFactory.createTwoSeatedShip(),
+//                    shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//    }};
+//        //3 players ships' cards
+//        List<ShipFactory[]> threePlayerShips = new ArrayList<ShipFactory[]>(){{
+//
+//
+//            add(new ShipFactory[]{shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//        }};
+//
+//        //2 players Ship's cards
+//        List<ShipFactory[]> twoPlayerShips = new ArrayList<ShipFactory[]>(){{
+//
+//
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createTwoSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            add(new ShipFactory[]{
+//                shipFactory.createFourSeatedShip(),
+//                shipFactory.createThreeSeatedShip(),
+//                shipFactory.createTwoSeatedShip(),
+//                shipFactory.createOneSeatedShip()});
+//            }};
+//
+//        private boolean firstInitialization = true;
+//
+//        public String addShips(Long gameId) {
+//            Game game = gameRepo.findOne(gameId);
+//            int countPlayer = game.getPlayers().size();
+//            Random rn = new Random();
+//            if (countPlayer == 4) {
 //                if(firstInitialization) {
 //                    int cardToDelete = rn.nextInt() % 6;
-//                    threePlayerShips.remove(cardToDelete);
+//                    fourPlayerShips.remove(cardToDelete);
 //                    firstInitialization=false;
 //                }
-//                int selectCard = rn.nextInt() % (threePlayerShips.size() - 1);
-//                ShipFactory[] ships = threePlayerShips.remove(selectCard);
+//                int selectCard = rn.nextInt() %(2) ;
+//                System.out.println(fourPlayerShips.size());
+//                ShipFactory[] ships = fourPlayerShips.remove(selectCard);
 //                for (ShipFactory s : ships) {
 //                    s.setGame(game);
 //                    shipRepo.save(s);
 //                    game.getShips().add(s);
 //                }
-//            }else {
-//                if(firstInitialization) {
-//                    int cardToDelete = rn.nextInt() % 6;
-//                    twoPlayerShips.remove(cardToDelete);
-//                    firstInitialization=false;
-//                }
-//                    int selectCard = rn.nextInt() %(twoPlayerShips.size()-1);
-//                    ShipFactory[] ships = twoPlayerShips.get(selectCard);
-//                    for (ShipFactory s : ships) {
-//                        s.setGame(game);
-//                        shipRepo.save(s);
-//                        game.getShips().add(s);
-//                }
 //            }
+////                else if (countPlayer==3) {
+////                if(firstInitialization) {
+////                    int cardToDelete = rn.nextInt() % 6;
+////                    threePlayerShips.remove(cardToDelete);
+////                    firstInitialization=false;
+////                }
+////                int selectCard = rn.nextInt() % (threePlayerShips.size() - 1);
+////                ShipFactory[] ships = threePlayerShips.remove(selectCard);
+////                for (ShipFactory s : ships) {
+////                    s.setGame(game);
+////                    shipRepo.save(s);
+////                    game.getShips().add(s);
+////                }
+////            }else {
+////                if(firstInitialization) {
+////                    int cardToDelete = rn.nextInt() % 6;
+////                    twoPlayerShips.remove(cardToDelete);
+////                    firstInitialization=false;
+////                }
+////                    int selectCard = rn.nextInt() %(twoPlayerShips.size()-1);
+////                    ShipFactory[] ships = twoPlayerShips.get(selectCard);
+////                    for (ShipFactory s : ships) {
+////                        s.setGame(game);
+////                        shipRepo.save(s);
+////                        game.getShips().add(s);
+////                }
+////            }
+//
+//            gameRepo.save(game);
+//            return "/game/" + gameId + "/" + "ships";
+//        }
+//
+//
+//        public ShipFactory getShips(Long gameId){
+//             ShipFactory ships = gameRepo.findOne(gameId).getShips().get(0);
+//            return ships;
+//        }
+//
+//        public void addStone(Long gameId, Long shipId,Long playerToken,int position){
+//            ShipFactory ship = shipRepo.findById(shipId);
+//            Game game = gameRepo.findOne(gameId);
+//            User player = userRepo.findById(playerToken);
+//            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null){
+//                Stone stone = new Stone(player.getColor());
+//                ship.getStones()[position] = stone;
+//                shipRepo.save(ship);
+//                userRepo.save(player);
+//                game.findNextPlayer();
+//                int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
+//                game.setNextPlayer(game.getPlayers().get(index));
 
-            gameRepo.save(game);
-            return "/game/" + gameId + "/" + "ships";
-        }
-
-
-        public ShipFactory getShips(Long gameId){
-             ShipFactory ships = gameRepo.findOne(gameId).getShips().get(0);
-            return ships;
-        }
-
-        public void addStone(Long gameId, Long shipId,Long playerToken,int position){
-            ShipFactory ship = shipRepo.findById(shipId);
-            Game game = gameRepo.findOne(gameId);
-            User player = userRepo.findById(playerToken);
-            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null){
-                Stone stone = new Stone(player.getColor());
-                ship.getStones()[position] = stone;
-                shipRepo.save(ship);
-                userRepo.save(player);
-                game.findNextPlayer();
-                int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
-                game.setNextPlayer(game.getPlayers().get(index));
-
-                gameRepo.save(game);
-            }
-        }
+//                gameRepo.save(game);
+//            }
+//        }
 }

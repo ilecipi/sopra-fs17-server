@@ -106,7 +106,7 @@ public class GameService {
             }
             if(allPlayersReady) {
                 siteBoardsService.addTemple(game.getId());
-                shipService.addShips(game.getId());
+//                shipService.addShips(game.getId());
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
