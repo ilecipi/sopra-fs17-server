@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,6 +30,7 @@ public class Round implements Serializable{
 
     @OneToOne
     @JoinColumn(name="GAME_ID")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private Game game;
 
     public List<Move> getMoves() {

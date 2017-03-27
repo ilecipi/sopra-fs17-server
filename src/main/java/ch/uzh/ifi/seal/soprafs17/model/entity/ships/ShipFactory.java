@@ -17,20 +17,20 @@ import java.util.List;
 @Component
 public class ShipFactory {
 
-    public static OneSeatedShip createOneSeatedShip() {
+    public OneSeatedShip createOneSeatedShip() {
 
         return new OneSeatedShip();
     }
 
-    public static TwoSeatedShip createTwoSeatedShip(){
+    public TwoSeatedShip createTwoSeatedShip(){
         return new TwoSeatedShip();
     }
 
-    public static ThreeSeatedShip createThreeSeatedShip(){
+    public ThreeSeatedShip createThreeSeatedShip(){
         return new ThreeSeatedShip();
     }
 
-    public static FourSeatedShip createFourSeatedShip(){
+    public FourSeatedShip createFourSeatedShip(){
         return new FourSeatedShip();
     }
 }

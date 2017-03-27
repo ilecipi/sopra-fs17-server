@@ -112,7 +112,7 @@ public class GameService {
                 siteBoardsService.addTemple(game.getId());
                 game.initShipsCards();
                 game=gameRepo.save(game);
-//                roundService.addRound(game.getId());
+                roundService.addRound(game.getId());
                 //add a round to the game
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
