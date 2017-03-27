@@ -11,19 +11,31 @@ import java.io.Serializable;
  */
 
 @Entity
+@DiscriminatorValue("two_seated")
 public class TwoSeatedShip  extends AShip {
+    private static final int MIN_STONES_REQUIRED = 1;
+    private static final int MAX_STONES_REQUIRED = 2;
+
+    @Id
+    @GeneratedValue
+    private long id;
+
+    public TwoSeatedShip(){
+        super();
+    }
+
     @Override
     public int getMaxStones() {
-        return 0;
+        return this.MAX_STONES_REQUIRED;
     }
 
     @Override
     public int getMinStones() {
-        return 0;
+        return this.MIN_STONES_REQUIRED;
     }
 
     @Override
     protected void initShips() {
-
+        this.stones= new Stone[MAX_STONES_REQUIRED];
     }
 }

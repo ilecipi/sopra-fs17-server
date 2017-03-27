@@ -2,16 +2,16 @@ package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.FourSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 public class Game implements Serializable {
@@ -61,8 +61,16 @@ public class Game implements Serializable {
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private List<SiteBoard> siteBoards;
 
-	@OneToMany
-	private List<AShip> ships;
+//	@OneToMany
+//	private List<AShip> ships;
+
+
+	public Map<Integer, Integer[]> getShipsCards() {
+		return shipsCards;
+	}
+	@JsonIgnore
+	@ElementCollection
+	private Map<Integer, Integer[]> shipsCards;
 
 	public List<SiteBoard> getSiteBoards() {
 		return siteBoards;
@@ -72,13 +80,13 @@ public class Game implements Serializable {
 		this.siteBoards = siteBoards;
 	}
 
-	public List<AShip> getShips() {
-		return ships;
-	}
-
-	public void setShips(List<AShip> ships) {
-		this.ships = ships;
-	}
+//	public List<AShip> getShips() {
+//		return ships;
+//	}
+//
+//	public void setShips(List<AShip> ships) {
+//		this.ships = ships;
+//	}
 
 
 	public Long getId() {
@@ -160,6 +168,47 @@ public class Game implements Serializable {
 
 	public void setColors(Map<String, Boolean> colors) {
 		this.colors = colors;
+	}
+
+	public void initShipsCards(){
+		Random rn = new Random();
+		int cardToDelete=rn.nextInt()%7;
+		if(players.size()==4){
+			this.shipsCards= new Hashtable<Integer, Integer[]>(){{
+				put(0,new Integer[]{4,4,2,1});
+				put(1,new Integer[]{4,3,3,2});
+				put(2,new Integer[]{4,3,3,3});
+				put(3,new Integer[]{3,3,3,2});
+				put(4,new Integer[]{4,4,3,2});
+				put(5,new Integer[]{4,4,2,2});
+				put(6,new Integer[]{4,3,2,2});
+			}};
+			this.shipsCards.remove(cardToDelete);
+		}
+		else if(players.size()==3){
+			this.shipsCards = new Hashtable<Integer, Integer[]>(){{
+				put(0,new Integer[]{3,3,2,2});
+				put(1,new Integer[]{3,3,3,2});
+				put(2,new Integer[]{4,3,2,1});
+				put(3,new Integer[]{4,3,2,2});
+				put(4,new Integer[]{4,4,2,1});
+				put(5,new Integer[]{4,2,2,1});
+				put(6,new Integer[]{4,2,2,1});
+			}};
+			this.shipsCards.remove(cardToDelete);
+		}
+		else{
+			this.shipsCards = new Hashtable<Integer, Integer[]>(){{
+				put(0,new Integer[]{4,3,2,2});
+				put(1,new Integer[]{4,3,3,1});
+				put(2,new Integer[]{4,2,2,1});
+				put(3,new Integer[]{3,2,2,1});
+				put(4,new Integer[]{3,3,2,2});
+				put(5,new Integer[]{3,3,2,1});
+				put(6,new Integer[]{4,3,2,1});
+			}};
+			this.shipsCards.remove(cardToDelete);
+		}
 	}
 
 }

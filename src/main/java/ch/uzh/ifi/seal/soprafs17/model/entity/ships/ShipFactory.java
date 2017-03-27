@@ -18,7 +18,19 @@ import java.util.List;
 public class ShipFactory {
 
     public OneSeatedShip createOneSeatedShip() {
+
         return new OneSeatedShip();
     }
 
+    public TwoSeatedShip createTwoSeatedShip(){
+        return new TwoSeatedShip();
+    }
+
+    public ThreeSeatedShip createThreeSeatedShip(){
+        return new ThreeSeatedShip();
+    }
+
+    public FourSeatedShip createFourSeatedShip(){
+        return new FourSeatedShip();
+    }
 }

@@ -10,24 +10,32 @@ import java.io.Serializable;
  * Created by ilecipi on 10.03.17.
  */
 
+@Entity
+@DiscriminatorValue("four_seated")
 public class FourSeatedShip extends AShip {
+    private static final int MIN_STONES_REQUIRED = 3;
+    private static final int MAX_STONES_REQUIRED = 4;
 
-    final int MIN_STONES_REQUIRED=3;
-    final int MAX_STONES_POSSIBLE=4;
+    @Id
+    @GeneratedValue
+    private long id;
 
+    public FourSeatedShip(){
+        super();
+    }
 
     @Override
     public int getMaxStones() {
-        return 0;
+        return this.MAX_STONES_REQUIRED;
     }
 
     @Override
     public int getMinStones() {
-        return 0;
+        return this.MIN_STONES_REQUIRED;
     }
 
     @Override
     protected void initShips() {
-
+        this.stones= new Stone[MAX_STONES_REQUIRED];
     }
 }

@@ -42,7 +42,7 @@ public class GameService {
     @Autowired
     private ShipService shipService;
 
-
+    private static int counter = 1;
 
     public UserRepository getUserRepo() {
         return userRepo;
@@ -67,6 +67,7 @@ public class GameService {
         if (owner != null&&owner.getStatus()!=UserStatus.IS_PLAYING) {
 //            userRepo.save(owner);
 //            gameRepo.save(game);
+            game.setName("Game " + counter++);
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);
@@ -106,7 +107,7 @@ public class GameService {
             }
             if(allPlayersReady) {
                 siteBoardsService.addTemple(game.getId());
-//                shipService.addShips(game.getId());
+                game.initShipsCards();
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);

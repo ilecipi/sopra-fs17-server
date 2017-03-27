@@ -1,9 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.PlaceUnavailableException;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.ShipException;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.ShipIsFullException;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.*;
 import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
@@ -32,8 +30,7 @@ public abstract class AShip implements IShip, Serializable {
     }
 
     @Override
-    public void addStone(Stone stone, int i)
-        throws ShipException {
+    public void addStone(Stone stone, int i) throws ShipException {
         if (this.addedStones >= this.getMaxStones()) {
             throw new ShipIsFullException();
         }
@@ -48,19 +45,25 @@ public abstract class AShip implements IShip, Serializable {
 
     @Override
     public Stone removeStone(int i) {
-        if(addedStones == this.getMinStones() && i == 0){
-            Stone removedStone = stones[i];
+        if(this.addedStones==0){
+            throw new ShipIsEmptyException();
+        }
+        if(stones[i]==null){
+            throw new RemoveUnavailableException();
+        }
+            Stone tmp = stones[i];
             stones[i] = null;
             addedStones--;
-            return removedStone;
-        }else{
-            return null;
-        }
+            return tmp;
     }
 
     @Override
     public boolean isReady() {
-        return false;
+        if(addedStones==this.getMinStones()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public long getId() {
