@@ -17,10 +17,9 @@ import java.util.List;
 /**
  * Created by ilecipi on 22.03.17.
  */
-
-
 @RestController
 public class ShipResource {
+
         @Autowired
         ShipService shipService;
 
@@ -32,32 +31,26 @@ public class ShipResource {
 
         static final String CONTEXT = "/games";
 
-        @RequestMapping(value = CONTEXT + "/{gameId}/ships/")
+        @RequestMapping(value = CONTEXT + "/rounds/{roundId}")
         @ResponseStatus(HttpStatus.OK)
-        public IShip getShips(@PathVariable Long gameId) {
-                logger.debug("getShips: " + gameId);
+        public List<AShip> getShips(@PathVariable Long roundId) {
+                logger.debug("getShips: " + roundId);
 
-                return null;
+                return shipService.getShips(roundId);
         }
 
-        @RequestMapping(value = CONTEXT + "/{gameId}/ships/", method = RequestMethod.POST)
+        @RequestMapping(value = CONTEXT + "/rounds/{roundId}/{shipId}")
         @ResponseStatus(HttpStatus.OK)
-        public IShip addShip() {
-         return this.shipRepository.save(new OneSeatedShip());
+        public AShip getShip(@PathVariable Long roundId,@PathVariable Long shipId) {
+                logger.debug("getShip: " + shipId);
+
+                return shipService.getShip(roundId,shipId);
         }
 
-        @RequestMapping(value = CONTEXT + "/{gameId}/ship/{shipId}")
-        @ResponseStatus(HttpStatus.OK)
-        public IShip getShip(@PathVariable Long gameId) {
-                logger.debug("getShips: " + gameId);
-
-                return null;
-        }
-
-        @RequestMapping(value = CONTEXT + "/{gameId}/ship/{shipId}", method = RequestMethod.PUT)
-        @ResponseStatus(HttpStatus.OK)
-        public void addStone(@PathVariable Long gameId,@PathVariable Long shipId,@RequestParam("playerToken") Long playerToken,@RequestParam("position") int position) {
-//                shipService.addStone(gameId,shipId,playerToken,position);
+        @RequestMapping(value = CONTEXT + "/{gameId}/{roundId}/{shipId}", method = RequestMethod.POST)
+        @ResponseStatus(HttpStatus.CREATED)
+        public void addStone(@PathVariable Long gameId,@PathVariable Long roundId,@PathVariable Long shipId,@RequestParam("playerToken") Long playerToken,@RequestParam("position") int position) {
+               shipService.addStone(gameId,roundId,shipId,playerToken,position);
         }
 }
 

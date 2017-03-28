@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
@@ -22,7 +23,12 @@ public abstract class AShip implements IShip, Serializable {
     @Column
     public Stone[] stones;
 
+
     @Column
+    private boolean isReady;
+
+    @Column
+    @JsonIgnore
     private int addedStones = 0;
 
     @Column
@@ -71,7 +77,7 @@ public abstract class AShip implements IShip, Serializable {
 
     @Override
     public boolean isReady() {
-        if(addedStones==this.getMinStones()){
+        if(this.addedStones==this.getMinStones()){
             return true;
         }else{
             return false;
@@ -90,4 +96,15 @@ public abstract class AShip implements IShip, Serializable {
     public abstract int getMinStones();
 
     protected abstract void initShips();
+
+    public Stone[] getStones() {
+        return stones;
+    }
+    public int getAddedStones() {
+        return addedStones;
+    }
+    public void setReady(boolean ready) {
+        this.isReady = ready;
+    }
+
 }
