@@ -20,7 +20,7 @@ public abstract class AShip implements IShip, Serializable {
     private Long id;
 
     @Column
-    protected Stone[] stones;
+    public Stone[] stones;
 
     @Column
     private int addedStones = 0;
