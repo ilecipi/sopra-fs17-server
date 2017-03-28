@@ -67,43 +67,19 @@ public class RoundService {
             Map<Integer, Integer[]> shipsCards = game.getShipsCards();
             Random rn = new Random();
             int selectShip;
-//            round.setGame(game);
-//            round=roundRepository.save(round);
-//            game.getRounds().add(round);
-//            gameRepo.save(game);
             ShipFactory shipFactory = new ShipFactory();
-
-//            round.getShips().add(shipRepository.save(new OneSeatedShip()));
-//            roundRepository.save(round);
             while(notChosen){
-                //TODO: Fix the bug for unsaved transient instance
-
                 selectShip = rn.nextInt()%6;
                 if(shipsCards.containsKey(selectShip)){
-//                    game=gameRepo.save(game);
                     for(Integer i : shipsCards.get(selectShip)){
-//                        switch (i){
-//                            case 1 : round.getShips().add(ShipFactory.createOneSeatedShip());
-//                                        break;
-//                            case 2 : round.getShips().add(ShipFactory.createTwoSeatedShip());
-//                                        break;
-//                            case 3 : round.getShips().add(ShipFactory.createThreeSeatedShip());
-//                                        break;
-//                            case 4 : round.getShips().add(ShipFactory.createFourSeatedShip());
-//                                        break;
-//                        }
                         if(i==1){
                             round.getShips().add(shipRepository.save(new OneSeatedShip()));
-//                            round = roundRepository.save(round);
                         }else if(i==2){
                             round.getShips().add(shipRepository.save(new TwoSeatedShip()));
-//                            round = roundRepository.save(round);
                         }else if(i==3){
                             round.getShips().add(shipRepository.save(new ThreeSeatedShip()));
-//                            round = roundRepository.save(round);
                         }else{
                             round.getShips().add(shipRepository.save(new FourSeatedShip()));
-//                            round = roundRepository.save(round);
                         }
 
                     }

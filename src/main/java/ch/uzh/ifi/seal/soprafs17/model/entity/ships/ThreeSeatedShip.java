@@ -16,9 +16,19 @@ public class ThreeSeatedShip extends AShip {
     private static final int MIN_STONES_REQUIRED = 2;
     private static final int MAX_STONES_REQUIRED = 3;
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     public ThreeSeatedShip(){
         super();

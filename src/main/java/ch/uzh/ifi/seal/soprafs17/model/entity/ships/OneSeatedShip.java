@@ -12,9 +12,19 @@ public class OneSeatedShip extends AShip {
     private static final int MAX_STONES_POSSIBLE=1;
 
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     public OneSeatedShip() {
         super();
