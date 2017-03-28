@@ -1,11 +1,15 @@
-package ch.uzh.ifi.seal.soprafs17.model.entity;
+package ch.uzh.ifi.seal.soprafs17.model.entity.moves;
+
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 
 import java.io.Serializable;
 
 import javax.persistence.*;
 
 @Entity
-public class Move implements Serializable {
+public abstract class Move implements Serializable {
 	
 	/**
 	 * 
@@ -52,4 +56,6 @@ public class Move implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public abstract Game makeMove(Game game);
 }

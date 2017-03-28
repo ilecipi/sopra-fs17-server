@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.FourSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -173,6 +174,11 @@ public class Game implements Serializable {
 		return	currentPlayer;
     }
 
+    //returns the current round
+    public Round getCurrentRound(){
+		return this.getRounds().get(this.getRounds().size()-1);
+	}
+
 	public Map<String, Boolean> getColors() {
 		return colors;
 	}
@@ -220,6 +226,10 @@ public class Game implements Serializable {
 			}};
 			this.shipsCards.remove(cardToDelete);
 		}
+	}
+
+	public SiteBoard getTemple(){
+		return siteBoards.get(0);
 	}
 
 }

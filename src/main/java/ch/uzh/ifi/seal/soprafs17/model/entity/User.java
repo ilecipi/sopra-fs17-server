@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;

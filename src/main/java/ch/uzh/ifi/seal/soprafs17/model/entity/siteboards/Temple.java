@@ -37,6 +37,7 @@ public class Temple extends StoneBoard implements Serializable {
         this.game = game;
     }
 
+    //Constructor
     public Temple(int users){
         setStones(this.stones,users);
     }

@@ -25,6 +25,18 @@ public abstract class AShip implements IShip, Serializable {
     @Column
     private int addedStones = 0;
 
+    @Column
+    private boolean docked;
+
+    public boolean isDocked() {
+        return docked;
+    }
+
+    public void setDocked(boolean docked) {
+        this.docked = docked;
+    }
+
+
     AShip() {
         this.initShips();
     }

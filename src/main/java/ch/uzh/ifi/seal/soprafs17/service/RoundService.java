@@ -2,16 +2,17 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.*;
-import ch.uzh.ifi.seal.soprafs17.model.repository.RoundRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.ShipRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,16 @@ public class RoundService {
     private ShipRepository shipRepository;
 
     private final int MAX_ROUNDS_POSSIBLE=6;
+
+    public boolean isAllShipsSailed() {
+        return allShipsSailed;
+    }
+
+    public void setAllShipsSailed(boolean allShipsSailed) {
+        this.allShipsSailed = allShipsSailed;
+    }
+
+    private boolean allShipsSailed;
 
     public List<Round> listRounds(){
         List<Round> result = new ArrayList<>();
@@ -104,6 +115,7 @@ public class RoundService {
 
     public void addRounds(Long gameId){
         Game game = gameService.getGame(gameId);
+        //check if it is not the first round
         if(game.getRounds().size()>0){
             Round round = game.getRounds().get(game.getRounds().size()-1);
             if(game.getRounds().size()<MAX_ROUNDS_POSSIBLE && round.getShips().isEmpty() ){
@@ -111,10 +123,12 @@ public class RoundService {
             }
 
         }
+        //in case it is the first round
         else{
             addRound(gameId);
         }
     }
+
 
 
 }

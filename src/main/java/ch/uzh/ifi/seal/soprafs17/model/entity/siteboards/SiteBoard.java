@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -19,6 +20,17 @@ public abstract class SiteBoard {
 
     @Column
     private boolean isOccupied;
+
+    public AShip getDockedShip() {
+        return dockedShip;
+    }
+
+    public void setDockedShip(AShip dockedShip) {
+        this.dockedShip = dockedShip;
+    }
+
+    //should it be private with get... or public? for client
+    private AShip dockedShip;
 
     public boolean isOccupied() {
         return isOccupied;

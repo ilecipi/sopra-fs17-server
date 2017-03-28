@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
+import ch.uzh.ifi.seal.soprafs17.service.TempleService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericResource;
 import ch.uzh.ifi.seal.soprafs17.web.rest.UserResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class TempleResource extends GenericResource {
     @Autowired
     SiteBoardsService siteBoardsService;
 
+    @Autowired
+    TempleService templeService;
+
     static final String CONTEXT = "/games";
 
     @RequestMapping(value = CONTEXT + "/game/{gameId}/temple/{templeId}", method = RequestMethod.PUT)
@@ -32,5 +36,12 @@ public class TempleResource extends GenericResource {
 //        logger.debug("getTemple: " + templeId);
 
         return siteBoardsService.getTemple(templeId);
+    }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/temple/{templeId}/user/{userId}/ship/{shipId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void sailShip(@PathVariable Long templeId, Long gameId, Long userId, Long shipId) {
+//        logger.debug("getTemple: " + templeId);
+        templeService.sailShip(gameId,userId,shipId,templeId);
     }
 }
