@@ -14,5 +14,4 @@ public interface IShip {
             throws ShipException;
     Stone removeStone(int i);
     boolean isReady();
-
 }

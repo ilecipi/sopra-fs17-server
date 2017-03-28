@@ -56,9 +56,11 @@ public class ShipService {
             Game game = gameRepo.findOne(gameId);
             User player = userRepo.findById(playerToken);
             Round currentRound = roundRepo.findById(roundId);
-            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null && currentRound.getShips().contains(ship)){
+            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null && currentRound.getShips().contains(ship)
+                    && position<ship.getStones().length){
+
                 Stone stone = new Stone(player.getColor());
-                ship.getStones()[position] = stone;
+                ship.addStone(stone,position);
                 shipRepo.save(ship);
                 userRepo.save(player);
                 game.findNextPlayer();
