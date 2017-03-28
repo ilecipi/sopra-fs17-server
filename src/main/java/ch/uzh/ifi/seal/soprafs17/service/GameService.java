@@ -67,7 +67,7 @@ public class GameService {
 
     public String addGame(Game game, String userToken){
         User owner = userRepo.findByToken(userToken);
-        if (owner != null&&owner.getStatus()!=UserStatus.IS_PLAYING) {
+        if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
 //            userRepo.save(owner);
 //            gameRepo.save(game);
             game.setName("Game " + counter++);
@@ -76,7 +76,7 @@ public class GameService {
             game.setStatus(GameStatus.PENDING);
             game = gameRepo.save(game);
             owner.getGames().add(game);
-            owner.setStatus(UserStatus.ONLINE);
+            owner.setStatus(UserStatus.IN_A_LOBBY);
             userRepo.save(owner);
 //            gameRepo.save(game);
 
@@ -180,9 +180,10 @@ public class GameService {
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findByToken(userToken);
 
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
+        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS
+                &&player.getStatus()==UserStatus.ONLINE) {
             player.getGames().add(game);
-            player.setStatus(UserStatus.ONLINE);
+            player.setStatus(UserStatus.IN_A_LOBBY);
             if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
                 game.setNextPlayer(player);
             }
