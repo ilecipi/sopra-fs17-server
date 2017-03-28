@@ -78,4 +78,8 @@ public abstract class AShip implements IShip, Serializable {
     public abstract int getMinStones();
 
     protected abstract void initShips();
+
+    public Stone[] getStones() {
+        return stones;
+    }
 }
