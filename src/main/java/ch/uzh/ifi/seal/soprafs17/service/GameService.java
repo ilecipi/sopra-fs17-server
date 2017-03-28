@@ -67,7 +67,7 @@ public class GameService {
 
     public String addGame(Game game, String userToken){
         User owner = userRepo.findByToken(userToken);
-        if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
+        if (owner != null&&owner.getStatus()!=UserStatus.IS_PLAYING) {
 //            userRepo.save(owner);
 //            gameRepo.save(game);
             game.setName("Game " + counter++);
@@ -76,7 +76,7 @@ public class GameService {
             game.setStatus(GameStatus.PENDING);
             game = gameRepo.save(game);
             owner.getGames().add(game);
-            owner.setStatus(UserStatus.IN_A_LOBBY);
+            owner.setStatus(UserStatus.ONLINE);
             userRepo.save(owner);
 //            gameRepo.save(game);
 
@@ -112,7 +112,7 @@ public class GameService {
                 siteBoardsService.addTemple(game.getId());
                 game.initShipsCards();
                 game=gameRepo.save(game);
-                roundService.addRound(game.getId());
+                roundService.addRounds(game.getId());
                 //add a round to the game
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
@@ -180,10 +180,9 @@ public class GameService {
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findByToken(userToken);
 
-        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS
-                &&player.getStatus()==UserStatus.ONLINE) {
+        if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
             player.getGames().add(game);
-            player.setStatus(UserStatus.IN_A_LOBBY);
+            player.setStatus(UserStatus.ONLINE);
             if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
                 game.setNextPlayer(player);
             }
@@ -239,7 +238,7 @@ public class GameService {
     }
 
     public Game setNextPlayer(Game game){
-       int indexOfCurrentPlayer= game.getPlayers().indexOf(game.getCurrentPlayer());
+        int indexOfCurrentPlayer= game.getPlayers().indexOf(game.getCurrentPlayer());
         int indexOfNextPlayer=(indexOfCurrentPlayer+1)%game.getPlayers().size();
         game.setCurrentPlayer(game.getPlayers().get(indexOfNextPlayer));
         game.setNextPlayer(game.getPlayers().get(indexOfNextPlayer%game.getPlayers().size()));
