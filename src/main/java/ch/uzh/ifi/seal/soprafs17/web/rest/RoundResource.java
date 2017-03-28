@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
  * Created by ilecipi on 27.03.17.
  */
 @RestController
-@RequestMapping(ch.uzh.ifi.seal.soprafs17.web.rest.RoundResource.CONTEXT)
 public class RoundResource {
 
         Logger logger = LoggerFactory.getLogger(ch.uzh.ifi.seal.soprafs17.web.rest.RoundResource.class);
