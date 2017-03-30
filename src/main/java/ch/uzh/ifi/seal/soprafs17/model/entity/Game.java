@@ -38,9 +38,9 @@ public class Game implements Serializable {
 	@OneToOne
 	private User currentPlayer;
 
-
 	@OneToOne
 	private User nextPlayer;
+
 
 	public List<Round> getRounds() {
 		return rounds;
@@ -55,19 +55,19 @@ public class Game implements Serializable {
 
 	//Colors that are not chosen yet
 	@ElementCollection
-	private Map<String, Boolean> colors = new HashMap<String,Boolean>(){{
-            put("black", false);
-            put("white", false);
-            put("brown", false);
-            put("grey", false);
-        }};
+	private Map<String, Boolean> colors = new HashMap<String, Boolean>() {{
+		put("black", false);
+		put("white", false);
+		put("brown", false);
+		put("grey", false);
+	}};
 
 
 //    @OneToMany
 //    private List<Move> moves;
 
-    @ManyToMany(mappedBy="games")
-    private List<User> players;
+	@ManyToMany(mappedBy = "games")
+	private List<User> players;
 
 	@OneToMany
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
@@ -80,6 +80,7 @@ public class Game implements Serializable {
 	public Map<Integer, Integer[]> getShipsCards() {
 		return shipsCards;
 	}
+
 	@JsonIgnore
 	@ElementCollection
 	private Map<Integer, Integer[]> shipsCards;
@@ -157,27 +158,32 @@ public class Game implements Serializable {
 		this.currentPlayer = currentPlayer;
 	}
 
-		public void setNextPlayer(User nextPlayer) {
+	public void setNextPlayer(User nextPlayer) {
 		this.nextPlayer = nextPlayer;
 	}
-	public User getNextPlayer(){
+
+	public User getNextPlayer() {
 		return this.nextPlayer;
 
 	}
 
-	public User findNextPlayer(){
-      int indexOfCurrentPlayer=getPlayers().indexOf(getCurrentPlayer());
-		int indexOfNextPlayer=(indexOfCurrentPlayer+1)%getPlayers().size();
+	public User findNextPlayer() {
+		int indexOfCurrentPlayer = getPlayers().indexOf(getCurrentPlayer());
+		int indexOfNextPlayer = (indexOfCurrentPlayer + 1) % getPlayers().size();
 		setCurrentPlayer(getPlayers().get(indexOfNextPlayer));
-		setNextPlayer(getPlayers().get(indexOfNextPlayer%getPlayers().size()));
+		setNextPlayer(getPlayers().get(indexOfNextPlayer % getPlayers().size()));
 
-		return	currentPlayer;
-    }
-
-    //returns the current round
-    public Round getCurrentRound(){
-		return this.getRounds().get(this.getRounds().size()-1);
+		return currentPlayer;
 	}
+
+	//returns the current round
+//	public Round getCurrentRound() {
+//		if (!this.getRounds().isEmpty()) {
+//			return this.getRounds().get(this.getRounds().size() - 1);
+//		}
+//		return null;
+//	}
+
 
 	public Map<String, Boolean> getColors() {
 		return colors;
@@ -227,9 +233,9 @@ public class Game implements Serializable {
 			this.shipsCards.remove(cardToDelete);
 		}
 	}
-
-	public SiteBoard getTemple(){
-		return siteBoards.get(0);
-	}
+//
+//	public SiteBoard getTemple(){
+//		return siteBoards.get(0);
+//	}
 
 }

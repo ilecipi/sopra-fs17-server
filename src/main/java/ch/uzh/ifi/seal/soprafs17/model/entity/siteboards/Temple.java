@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by erion on 20.03.17.
  */
 @Entity
+//@DiscriminatorValue("temple")
 public class Temple extends StoneBoard implements Serializable {
 
     public Temple(){}

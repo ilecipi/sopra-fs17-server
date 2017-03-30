@@ -51,24 +51,24 @@ public class ShipService {
                         return null;
         }
 
-        public void addStone(Long gameId,Long roundId, Long shipId,Long playerToken,int position){
-            AShip ship = shipRepo.findById(shipId);
-            Game game = gameRepo.findOne(gameId);
-            User player = userRepo.findById(playerToken);
-            Round currentRound = roundRepo.findById(roundId);
-            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null && currentRound.getShips().contains(ship)
-                    && position<ship.getStones().length){
-
-                Stone stone = new Stone(player.getColor());
-                ship.addStone(stone,position);
-                shipRepo.save(ship);
-                userRepo.save(player);
-                game.findNextPlayer();
-                int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
-                game.setNextPlayer(game.getPlayers().get(index));
-
-                gameRepo.save(game);
-            }
-        }
+//        public void addStone(Long gameId,Long roundId, Long shipId,Long playerToken,int position){
+//            AShip ship = shipRepo.findById(shipId);
+//            Game game = gameRepo.findOne(gameId);
+//            User player = userRepo.findById(playerToken);
+//            Round currentRound = roundRepo.findById(roundId);
+//            if(player == game.getCurrentPlayer() && ship.getStones()[position] == null && currentRound.getShips().contains(ship)
+//                    && position<ship.getStones().length){
+//
+//                Stone stone = new Stone(player.getColor());
+//                ship.addStone(stone,position);
+//                shipRepo.save(ship);
+//                userRepo.save(player);
+//                game.findNextPlayer();
+//                int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
+//                game.setNextPlayer(game.getPlayers().get(index));
+//
+//                gameRepo.save(game);
+//            }
+//        }
 }
 

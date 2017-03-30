@@ -17,7 +17,7 @@ public class RoundResource {
 
         Logger logger = LoggerFactory.getLogger(ch.uzh.ifi.seal.soprafs17.web.rest.RoundResource.class);
 
-        static final String CONTEXT = "/round";
+        static final String CONTEXT = "/games";
 
         @Autowired
         private RoundService RoundService;
@@ -25,12 +25,19 @@ public class RoundResource {
         @Autowired
         GameService gameService;
 
-        @RequestMapping(method = RequestMethod.GET)
+        @RequestMapping(value = CONTEXT + "/{gameId}/rounds",method = RequestMethod.GET)
         @ResponseStatus(HttpStatus.OK)
-        public Iterable<Round> listRounds() {
+        public Iterable<Round> listRounds(@PathVariable Long gameId) {
             logger.debug("listRounds");
             return RoundService.listRounds();
         }
+
+         @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}",method = RequestMethod.GET)
+         @ResponseStatus(HttpStatus.OK)
+         public Round getSpecificRound(@PathVariable Long gameId,@PathVariable Long roundId) {
+             logger.debug("listSpecificRound");
+             return RoundService.getSpecificRound(roundId);
+         }
 
         @RequestMapping(value = CONTEXT + "/{gameId}",method = RequestMethod.PUT)
         @ResponseStatus(HttpStatus.ACCEPTED)

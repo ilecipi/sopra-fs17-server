@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +67,6 @@ public class GameService {
     public String addGame(Game game, String userToken){
         User owner = userRepo.findByToken(userToken);
         if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
-//            userRepo.save(owner);
-//            gameRepo.save(game);
             game.setName("Game " + counter++);
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
@@ -85,8 +84,7 @@ public class GameService {
     }
 
     public Game getGame(Long gameId){
-        Game game = gameRepo.findOne(gameId);
-        return game;
+        return gameRepo.findOne(gameId);
     }
 
     public void startGame(Long gameId, String userToken){

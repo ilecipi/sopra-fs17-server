@@ -42,6 +42,7 @@ public class User implements Serializable {
     private List<Game> games;
 
     @OneToMany(mappedBy = "user")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Move> moves;
 
     @Column(nullable = true)

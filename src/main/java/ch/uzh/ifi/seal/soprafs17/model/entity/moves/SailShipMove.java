@@ -5,26 +5,40 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * Created by tonio99tv on 28/03/17.
  */
+@Entity
 public class SailShipMove extends Move {
 
-    User user;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    AShip ship;
+    @OneToOne
+    private AShip ship;
 
-    SiteBoard siteBoard;
+    @OneToOne
+    private Temple temple;
 
-    public SailShipMove(User user, AShip ship, SiteBoard siteBoard){
-        this.user = user;
+    public SailShipMove(){}
+    public SailShipMove(Game game,User user, AShip ship,Round round, Temple temple){
+        super(user,game,round);
         this.ship = ship;
-        this.siteBoard = siteBoard;
+        this.temple = temple;
     }
 
+    @Override
     public Game makeMove(Game game){
-
         return sailShip(game);
     }
 
@@ -33,10 +47,10 @@ public class SailShipMove extends Move {
     * -check Siteboard available (No shipped docked)
     * */
     private Game sailShip(Game game){
-        Round currentRound = game.getCurrentRound();
-        currentRound.getShips().remove(this.ship);
-        this.siteBoard.setDockedShip(this.ship);
-
+            this.ship.setDocked(true);
+            ship.setSiteBoard(this.temple);
+            this.temple.setOccupied(true);
+            temple.setDockedShip(this.ship);
         return game;
     }
 }

@@ -11,6 +11,7 @@ import javax.persistence.*;
  * Created by erion on 20.03.17.
  */
 @Entity
+//@DiscriminatorColumn(name="siteBoard_type")
 public abstract class SiteBoard {
 
 
@@ -29,7 +30,8 @@ public abstract class SiteBoard {
         this.dockedShip = dockedShip;
     }
 
-    //should it be private with get... or public? for client
+    @OneToOne
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private AShip dockedShip;
 
     public boolean isOccupied() {
@@ -41,7 +43,6 @@ public abstract class SiteBoard {
     }
 
     @OneToOne
-//    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     Game game;
 
 }

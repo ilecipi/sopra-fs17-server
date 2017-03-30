@@ -43,6 +43,7 @@ public class Round implements Serializable{
     }
 
     @OneToMany(mappedBy = "round")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Move> moves;
 
     public List<AShip> getShips() {
@@ -55,6 +56,7 @@ public class Round implements Serializable{
 
     //TODO: REVISE WHETHER WE NEED mappedBy or JoinColumn
     @OneToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AShip> ships;
 
 

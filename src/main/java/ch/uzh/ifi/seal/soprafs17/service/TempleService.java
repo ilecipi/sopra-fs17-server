@@ -24,12 +24,12 @@ public class TempleService {
 
         private final Logger log = LoggerFactory.getLogger(ch.uzh.ifi.seal.soprafs17.service.RoundService.class);
 
-        private final TempleRepository templeRepository;
-
-        @Autowired
-        public TempleService(TempleRepository templeRepository) {
-            this.templeRepository = templeRepository;
-        }
+//        private final TempleRepository templeRepository;
+//
+//        @Autowired
+//        public TempleService(TempleRepository templeRepository) {
+//            this.templeRepository = templeRepository;
+//        }
 
         @Autowired
         private UserRepository userRepo;
@@ -53,22 +53,22 @@ public class TempleService {
         private ShipRepository shipRepository;
 
     //Player Sails Ship
-    public void sailShip(Long gameId, Long userId, Long shipId, Long templeId){
-        Game game  = gameRepo.findOne(gameId);
-        User user = userRepo.findOne(userId);
-        AShip ship = shipRepository.findOne(shipId);
-        Temple temple = templeRepository.findOne(templeId);
-        Round round = game.getCurrentRound();
-        if(game.getCurrentPlayer()==user&&round.getShips().contains(ship)&&!temple.isOccupied()){
-            Move move = new SailShipMove(user,ship,temple);
-            move.makeMove(game);
-            move.setUser(user);
-            moveRepo.save(move);
-            gameRepo.save(game);
-            userRepo.save(user);
-            shipRepository.save(ship);
-            templeRepository.save(temple);
-        }
-
-    }
+//    public void sailShip(Long gameId, Long userId, Long shipId, Long templeId){
+//        Game game  = gameRepo.findOne(gameId);
+//        User user = userRepo.findOne(userId);
+//        AShip ship = shipRepository.findOne(shipId);
+//        Temple temple = templeRepository.findOne(templeId);
+//        Round round = game.getCurrentRound();
+//        if(game.getCurrentPlayer()==user&&round.getShips().contains(ship)&&!temple.isOccupied()){
+//            Move move = new SailShipMove(user,ship,temple);
+//            move.makeMove(game);
+//            move.setUser(user);
+//            moveRepo.save(move);
+//            gameRepo.save(game);
+//            userRepo.save(user);
+//            shipRepository.save(ship);
+//            templeRepository.save(temple);
+//        }
+//
+//    }
 }

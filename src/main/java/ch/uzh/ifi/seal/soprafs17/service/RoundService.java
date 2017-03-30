@@ -2,15 +2,11 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
-import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.*;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +24,6 @@ public class RoundService {
 
     private final Logger log = LoggerFactory.getLogger(ch.uzh.ifi.seal.soprafs17.service.RoundService.class);
 
-    private final RoundRepository roundRepository;
-
-    @Autowired
-    public RoundService(RoundRepository roundRepository) {
-        this.roundRepository = roundRepository;
-    }
 
     @Autowired
     private UserRepository userRepo;
@@ -51,7 +41,10 @@ public class RoundService {
     private GameService gameService;
 
     @Autowired
-    private ShipRepository shipRepository;
+    private ShipRepository shipRepo;
+
+    @Autowired
+    private RoundRepository roundRepo;
 
     private final int MAX_ROUNDS_POSSIBLE=6;
 
@@ -67,8 +60,12 @@ public class RoundService {
 
     public List<Round> listRounds(){
         List<Round> result = new ArrayList<>();
-        roundRepository.findAll().forEach(result::add);
+        roundRepo.findAll().forEach(result::add);
         return result;
+    }
+
+    public Round getSpecificRound(Long roundId){
+        return roundRepo.findById(roundId);
     }
 
     public void addRound(Long gameId){
@@ -76,7 +73,7 @@ public class RoundService {
 
         Round round = new Round();
         round.setShips(new ArrayList<AShip>());
-        roundRepository.save(round);
+        roundRepo.save(round);
         boolean notChosen = true;
         Map<Integer, Integer[]> shipsCards = game.getShipsCards();
         Random rn = new Random();
@@ -87,19 +84,19 @@ public class RoundService {
             if(shipsCards.containsKey(selectShip)){
                 for(Integer i : shipsCards.get(selectShip)){
                     if(i==1){
-                        round.getShips().add(shipRepository.save(new OneSeatedShip()));
+                        round.getShips().add(shipRepo.save(new OneSeatedShip()));
                     }else if(i==2){
-                        round.getShips().add(shipRepository.save(new TwoSeatedShip()));
+                        round.getShips().add(shipRepo.save(new TwoSeatedShip()));
                     }else if(i==3){
-                        round.getShips().add(shipRepository.save(new ThreeSeatedShip()));
+                        round.getShips().add(shipRepo.save(new ThreeSeatedShip()));
                     }else{
-                        round.getShips().add(shipRepository.save(new FourSeatedShip()));
+                        round.getShips().add(shipRepo.save(new FourSeatedShip()));
                     }
 
                 }
                 notChosen=false;
                 shipsCards.remove(selectShip);
-                round = roundRepository.save(round);
+                round = roundRepo.save(round);
                 game=gameRepo.save(game);
 
             }
@@ -108,7 +105,7 @@ public class RoundService {
         game.getRounds().add(round);
         gameRepo.save(game);
         round.setGame(game);
-        roundRepository.save(round);
+        roundRepo.save(round);
 
 
     }

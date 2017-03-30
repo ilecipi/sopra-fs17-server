@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.*;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.javafx.beans.IDProperty;
 
@@ -33,6 +34,17 @@ public abstract class AShip implements IShip, Serializable {
 
     @Column
     private boolean docked;
+
+    public SiteBoard getSiteBoard() {
+        return siteBoard;
+    }
+
+    public void setSiteBoard(SiteBoard siteBoard) {
+        this.siteBoard = siteBoard;
+    }
+
+    @OneToOne
+    private SiteBoard siteBoard;
 
     public boolean isDocked() {
         return docked;
