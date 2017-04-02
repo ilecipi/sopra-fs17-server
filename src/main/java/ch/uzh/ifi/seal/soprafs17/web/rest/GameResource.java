@@ -53,19 +53,34 @@ public class GameResource extends GenericResource {
         List<GameDTO> gamesDTO = new ArrayList<>();
             for (Game g : games) {
                 List<Long> roundsId = new ArrayList<>();
-                List<Long> playersId = new ArrayList<>();
                 List<Long> siteBoardsId = new ArrayList<>();
+                List<UserDTO> playersDTO = new ArrayList<>();
                 for (Round r : g.getRounds()) {
                     roundsId.add(r.getId());
                 }
                 for (User u : g.getPlayers()) {
-                    playersId.add(u.getId());
+                    //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
+
+                    List<Long> playerGamesDTO = new ArrayList<>();
+                    if(u.getGames()!=null) {
+                        for (Game pg : u.getGames()) {
+                            playerGamesDTO.add(pg.getId());
+                        }
+                    }
+
+                    List<Long> playerMovesDTO = new ArrayList<>();
+                    if(u.getMoves()!=null) {
+                        for (Move pm : u.getMoves()) {
+                            playerMovesDTO.add(pm.getId());
+                        }
+                    }
+                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor()));
                 }
                 for (SiteBoard s : g.getSiteBoards()) {
                     siteBoardsId.add(s.getId());
                 }
                 gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(),g.getStatus(), g.getCurrentPlayer().getId(),
-                        g.getNextPlayer().getId(), roundsId, playersId, siteBoardsId));
+                        g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId));
             }
             return gamesDTO;
     }
@@ -94,17 +109,27 @@ public class GameResource extends GenericResource {
         List<Long> roundsId = new ArrayList<>();
         List<Long> playersId = new ArrayList<>();
         List<Long> siteBoardsId = new ArrayList<>();
+        List<UserDTO> playersDTO = new ArrayList<>();
         for (Round r : g.getRounds()) {
             roundsId.add(r.getId());
         }
         for (User u : g.getPlayers()) {
-            playersId.add(u.getId());
+            List<Long> playerGamesDTO = new ArrayList<>();
+            for(Game pg : u.getGames()){
+                playerGamesDTO.add(pg.getId());
+            }
+            List<Long> playerMovesDTO = new ArrayList<>();
+            for(Move pm : u.getMoves()){
+                playerMovesDTO.add(pm.getId());
+            }
+
+            playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor()));
         }
         for (SiteBoard s : g.getSiteBoards()) {
             siteBoardsId.add(s.getId());
         }
         return new GameDTO(g.getId(), g.getName(), g.getOwner(),g.getStatus(), g.getCurrentPlayer().getId(),
-                g.getNextPlayer().getId(), roundsId, playersId, siteBoardsId);
+                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId);
 
     }
 

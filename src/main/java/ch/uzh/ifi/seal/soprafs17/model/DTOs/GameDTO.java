@@ -10,7 +10,7 @@ import java.util.List;
 public class GameDTO {
     GameDTO(){}
     public GameDTO(Long id, String name, String owner, GameStatus status, Long currentPlayer, Long nextPlayer,
-                   List<Long> rounds, List<Long> players, List<Long> siteBoards) {
+                   List<Long> rounds, List<UserDTO> players, List<Long> siteBoards) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -29,6 +29,6 @@ public class GameDTO {
     public Long currentPlayer;
     public Long nextPlayer;
     public List<Long> rounds;
-    public List<Long> players;
+    public List<UserDTO> players;
     public List<Long> siteBoards;
 }
