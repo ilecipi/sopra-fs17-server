@@ -64,7 +64,7 @@ public class GameService {
         return result;
     }
 
-    public String addGame(Game game, String userToken){
+    public Game addGame(Game game, String userToken){
         User owner = userRepo.findByToken(userToken);
         if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
             game.setName("Game " + counter++);
@@ -77,7 +77,8 @@ public class GameService {
             userRepo.save(owner);
 //            gameRepo.save(game);
 
-            return "/" + game.getId();
+//            return "/" + game.getId();
+            return game;
         }
 
         return null;

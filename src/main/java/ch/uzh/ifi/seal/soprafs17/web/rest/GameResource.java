@@ -95,9 +95,9 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
+    public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
-        String addedGame = gameService.addGame(game, userToken);
+        Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
             return null;
         } else {
