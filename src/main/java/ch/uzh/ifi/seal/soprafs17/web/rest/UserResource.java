@@ -3,6 +3,9 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +39,23 @@ public class UserResource extends GenericResource {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<User> listUsers() {
+    public Iterable<UserDTO> listUsers() {
         logger.debug("listUsers");
-        return userService.listUsers();
+        Iterable<User> users = userService.listUsers();
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (User u : users){
+            List<Long> gamesId = new ArrayList<>();
+            List<Long> movesId = new ArrayList<>();
+            for(Game g : u.getGames()){
+                gamesId.add(g.getId());
+            }
+            for(Move m : u.getMoves()){
+                movesId.add(m.getId());
+            }
+            //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor()));
+        }
+        return usersDTO;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -47,23 +64,50 @@ public class UserResource extends GenericResource {
     public User addUser(@RequestBody User user) {
         logger.debug("addUser: " + user);
         String token =""+counter++;
-        user = userService.createUser(user.getName(),user.getUsername(), token, UserStatus.ONLINE, null);
-        return user;
+        User u = userService.createUser(user.getName(),user.getUsername(), token, UserStatus.ONLINE, null);
+//        List<Long> gamesId = new ArrayList<>();
+//        List<Long> movesId = new ArrayList<>();
+//        for(Game g : u.getGames()){
+//            gamesId.add(g.getId());
+//        }
+//        for(Move m : u.getMoves()){
+//            movesId.add(m.getId());
+//        }
+//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
+        return u;
     }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable Long userId) {
+    public UserDTO getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
-        return userService.getUser(userId);
+        User u = userService.getUser(userId);
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
+        }
+        for(Move m : u.getMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/user/{userId}/login")
     @ResponseStatus(HttpStatus.OK)
-    public User login(@PathVariable Long userId) {
+    public UserDTO login(@PathVariable Long userId) {
         logger.debug("login: " + userId);
-            return userService.login(userId);
+        User u =userService.login(userId);
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
+        }
+        for(Move m : u.getMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/user/{userId}/logout")

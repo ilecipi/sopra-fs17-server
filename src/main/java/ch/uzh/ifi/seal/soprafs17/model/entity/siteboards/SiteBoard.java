@@ -15,6 +15,14 @@ import javax.persistence.*;
 public abstract class SiteBoard {
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue
     private Long id;

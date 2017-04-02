@@ -1,7 +1,12 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,35 +44,71 @@ public class GameResource extends GenericResource {
      */
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> listGames() {
+    public List<GameDTO> listGames() {
+        //public GameDTO(Long id, String name, Long owner, String status, Long currentPlayer, Long nextPlayer,
+        //List<Long> rounds, List<Long> players, List<Long> siteBoards) {
+
         logger.debug("listGames");
-        return gameService.listGames();
+        List<Game> games = gameService.listGames();
+        List<GameDTO> gamesDTO = new ArrayList<>();
+            for (Game g : games) {
+                List<Long> roundsId = new ArrayList<>();
+                List<Long> playersId = new ArrayList<>();
+                List<Long> siteBoardsId = new ArrayList<>();
+                for (Round r : g.getRounds()) {
+                    roundsId.add(r.getId());
+                }
+                for (User u : g.getPlayers()) {
+                    playersId.add(u.getId());
+                }
+                for (SiteBoard s : g.getSiteBoards()) {
+                    siteBoardsId.add(s.getId());
+                }
+                gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(),g.getStatus(), g.getCurrentPlayer().getId(),
+                        g.getNextPlayer().getId(), roundsId, playersId, siteBoardsId));
+            }
+            return gamesDTO;
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
+    public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
         String addedGame = gameService.addGame(game, userToken);
         if (game == null) {
             return null;
         } else {
-            return game;
+            return addedGame;
         }
     }
 
     /*
      * Context: /game/{game-id}
      */
-    @RequestMapping(value = CONTEXT + "/game/{gameId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
-    public Game getGame(@PathVariable Long gameId) {
+    public GameDTO getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
 
-        return gameService.getGame(gameId);
+        Game g  = gameService.getGame(gameId);
+        List<Long> roundsId = new ArrayList<>();
+        List<Long> playersId = new ArrayList<>();
+        List<Long> siteBoardsId = new ArrayList<>();
+        for (Round r : g.getRounds()) {
+            roundsId.add(r.getId());
+        }
+        for (User u : g.getPlayers()) {
+            playersId.add(u.getId());
+        }
+        for (SiteBoard s : g.getSiteBoards()) {
+            siteBoardsId.add(s.getId());
+        }
+        return new GameDTO(g.getId(), g.getName(), g.getOwner(),g.getStatus(), g.getCurrentPlayer().getId(),
+                g.getNextPlayer().getId(), roundsId, playersId, siteBoardsId);
+
     }
 
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/start", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("startGame: " + gameId);
@@ -75,7 +116,7 @@ public class GameResource extends GenericResource {
         gameService.startGame(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("stopGame: " + gameId);
@@ -86,7 +127,7 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}/move
      */
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/move")
+    @RequestMapping(value = CONTEXT + "/{gameId}/move")
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
@@ -94,14 +135,14 @@ public class GameResource extends GenericResource {
         return gameService.listMoves(gameId);
     }
 
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/move", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/move", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         logger.debug("addMove: " + move);
         // TODO Mapping into Move + execution of move
     }
 
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/move/{moveId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/move/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
@@ -112,14 +153,28 @@ public class GameResource extends GenericResource {
     /*
      * Context: /game/{game-id}/player
      */
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/player")
+    @RequestMapping(value = CONTEXT + "/{gameId}/player")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> listPlayers(@PathVariable Long gameId) {
+    public List<UserDTO> listPlayers(@PathVariable Long gameId) {
         logger.debug("listPlayers");
-        return gameService.listPlayers(gameId);
+        List<User> users = gameService.listPlayers(gameId);
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (User u : users){
+            List<Long> gamesId = new ArrayList<>();
+            List<Long> movesId = new ArrayList<>();
+            for(Game g : u.getGames()){
+                gamesId.add(g.getId());
+            }
+            for(Move m : u.getMoves()){
+                movesId.add(m.getId());
+            }
+            //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor()));
+        }
+        return usersDTO;
     }
 
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/player", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
@@ -127,14 +182,23 @@ public class GameResource extends GenericResource {
         return gameService.addUser(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "/game/{gameId}/player/{playerId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/player/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
+    public UserDTO getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
 
-        return gameService.getPlayer(gameId, playerId);
+        User u = gameService.getPlayer(gameId, playerId);
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
+        }
+        for(Move m : u.getMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
     }
     //when the user joins a game, he becomes a Player.
-    @RequestMapping(value = CONTEXT + "/game/{gameId}", method = RequestMethod.PUT)
+    @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.createPlayer(gameId, userToken);

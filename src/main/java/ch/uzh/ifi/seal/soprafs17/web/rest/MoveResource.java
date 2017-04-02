@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
@@ -14,6 +15,9 @@ import ch.uzh.ifi.seal.soprafs17.service.TempleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by erion on 29.03.17.
@@ -45,9 +49,10 @@ public class MoveResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "{gameId}")
     @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable Long moveId) {
+    public MoveDTO getMove(@PathVariable Long moveId) {
         logger.debug("getMove: " + moveId);
-        return moveService.getMove(moveId);
+        Move m = moveService.getMove(moveId);
+        return new MoveDTO(m.getId(),m.getUser().getId(),m.getRound().getId(),m.getGame().getId());
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/{roundId}/{shipId}", method = RequestMethod.POST)

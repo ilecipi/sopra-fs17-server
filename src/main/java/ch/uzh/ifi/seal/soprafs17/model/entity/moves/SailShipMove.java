@@ -20,6 +20,16 @@ import javax.persistence.OneToOne;
 @Entity
 public class SailShipMove extends Move {
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
