@@ -52,17 +52,24 @@ public class GameResource extends GenericResource {
         List<Game> games = gameService.listGames();
         List<GameDTO> gamesDTO = new ArrayList<>();
             for (Game g : games) {
+                System.out.println("GAME");
                 List<Long> roundsId = new ArrayList<>();
                 List<Long> siteBoardsId = new ArrayList<>();
                 List<UserDTO> playersDTO = new ArrayList<>();
                 for (Round r : g.getRounds()) {
+
+                    System.out.println("ROUND");
                     roundsId.add(r.getId());
                 }
                 for (User u : g.getPlayers()) {
+
+                    System.out.println("PLAYER");
                     //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
 
                     List<Long> playerGamesDTO = new ArrayList<>();
                     if(u.getGames()!=null) {
+
+                        System.out.println("GAMES NOT NULL");
                         for (Game pg : u.getGames()) {
                             playerGamesDTO.add(pg.getId());
                         }
@@ -70,17 +77,29 @@ public class GameResource extends GenericResource {
 
                     List<Long> playerMovesDTO = new ArrayList<>();
                     if(u.getMoves()!=null) {
+
+                        System.out.println("MOVES NOT NULL");
                         for (Move pm : u.getMoves()) {
                             playerMovesDTO.add(pm.getId());
                         }
                     }
                     playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor()));
                 }
-                for (SiteBoard s : g.getSiteBoards()) {
-                    siteBoardsId.add(s.getId());
+                if(g.getSiteBoards()!=null) {
+
+                    System.out.println("SITEBOARD NOT NULL");
+                    for (SiteBoard s : g.getSiteBoards()) {
+                        siteBoardsId.add(s.getId());
+                    }
                 }
-                gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(),g.getStatus(), g.getCurrentPlayer().getId(),
-                        g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId));
+                if(g.getNextPlayer()!=null) {
+                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId));
+                }
+                else{
+                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            null, roundsId, playersDTO, siteBoardsId));
+                }
             }
             return gamesDTO;
     }
@@ -128,8 +147,13 @@ public class GameResource extends GenericResource {
         for (SiteBoard s : g.getSiteBoards()) {
             siteBoardsId.add(s.getId());
         }
-        return new GameDTO(g.getId(), g.getName(), g.getOwner(),g.getStatus(), g.getCurrentPlayer().getId(),
-                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId);
+        if(g.getNextPlayer()!=null) {
+            return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                    g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId);
+        }else{
+            return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                    null, roundsId, playersDTO, siteBoardsId);
+        }
 
     }
 
