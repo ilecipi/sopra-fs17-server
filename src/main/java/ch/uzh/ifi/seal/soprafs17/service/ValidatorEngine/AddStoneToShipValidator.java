@@ -20,18 +20,17 @@ public class AddStoneToShipValidator implements IValidator {
     public boolean validate(Game game, AMove amove) {
         if(supports(amove)){
             AddStoneToShipMove castedMove = (AddStoneToShipMove)amove;
-
+            /*
+            *TODO: Add exceptions instead of returning false
+            */
             if(!BasicValidation.checkCurrentUser(game,amove.getUser())){
                 return false;
             }
             if(!BasicValidation.checkCurrentRound(game,amove.getRound())){
                 return false;
             }
-            if(castedMove.getShip().getStones()[castedMove.getPosition()]!=null){
+            if(castedMove.getShip().getStones()[castedMove.getPosition()]!=null) {
                 return false;
-            }
-            if(!castedMove.getShip().isDocked()){
-               return false;
             }
             return true;
         }

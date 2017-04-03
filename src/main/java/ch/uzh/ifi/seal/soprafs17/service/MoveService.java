@@ -62,9 +62,9 @@ public class MoveService {
         AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
 //        validatorManager.validateSync(game,(new AddStoneToShipMove((game,user,ship,position,round))));
 //        ruleBook.apply(gameRepo.findOne(gameId),moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round)));
-//        if(validatorManager.validateSync(game,move)){
+        if(validatorManager.validateSync(game,move)){
             ruleBook.apply(game,move);
-//        }
+        }
         gameRepo.save(game);
         userRepo.save(user);
         shipRepo.save(ship);
