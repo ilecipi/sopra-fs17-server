@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.TempleService;
@@ -26,7 +27,7 @@ public class TempleResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/temple/{templeId}")
     @ResponseStatus(HttpStatus.OK)
-    public Temple getTemple(@PathVariable Long templeId) {
+    public StoneBoard getTemple(@PathVariable Long templeId) {
         logger.debug("getTemple: " + templeId);
 
         return siteBoardsService.getTemple(templeId);

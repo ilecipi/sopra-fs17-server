@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,10 @@ public class MoveService {
     private RoundRepository roundRepo;
     @Autowired
     private MoveRepository moveRepo;
+//    @Autowired
+//    private TempleRepository templeRepo;
     @Autowired
-    private TempleRepository templeRepo;
+    private SiteBoardRepository siteBoardRepo;
 
 
     public Move getMove(Long moveId){
@@ -60,11 +63,11 @@ public class MoveService {
         }
     }
     public void addStoneToTemple(Long templeId,String playerToken,Long gameId,Long shipId){
-        Temple temple = templeRepo.findOne(templeId);
+        StoneBoard temple = siteBoardRepo.findById(templeId);
         Game game = gameRepo.findOne(gameId);
         User player = userRepo.findByToken(playerToken);
         AShip dockedShip = shipRepo.findById(shipId);
-        if(player == game.getCurrentPlayer()){
+        if(player == game.getCurrentPlayer() && temple.getDiscriminatorValue().equals("temple")){
 
             for(Stone s :dockedShip.getStones()){
                 temple.addStone(s);
@@ -75,7 +78,7 @@ public class MoveService {
             game.setNextPlayer(game.getPlayers().get(index));
             gameRepo.save(game);
             gameRepo.save(game);
-            templeRepo.save(temple);
+            siteBoardRepo.save(temple);
         }
     }
 
@@ -84,7 +87,7 @@ public class MoveService {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
-        Temple siteBoard = templeRepo.findById(siteBoardId);
+        SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
         if(user == game.getCurrentPlayer() && round.getShips().contains(ship) && ship.isReady() && !ship.isDocked() && !siteBoard.isOccupied()){
             Move move = new SailShipMove(game,user,ship,round,siteBoard);
 

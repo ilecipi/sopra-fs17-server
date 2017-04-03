@@ -11,11 +11,15 @@ import java.util.Map;
  * Created by erion on 20.03.17.
  */
 @Entity
-//@DiscriminatorValue("temple")
+@DiscriminatorValue("temple")
 public class Temple extends StoneBoard implements Serializable {
 
     public Temple(){}
 
+    @Transient
+    public String getDiscriminatorValue() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
     @Id
     @GeneratedValue
     private Long id;

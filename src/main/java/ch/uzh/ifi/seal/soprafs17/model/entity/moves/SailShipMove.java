@@ -38,13 +38,13 @@ public class SailShipMove extends Move {
     private AShip ship;
 
     @OneToOne
-    private Temple temple;
+    private SiteBoard siteBoard;
 
     public SailShipMove(){}
-    public SailShipMove(Game game,User user, AShip ship,Round round, Temple temple){
+    public SailShipMove(Game game,User user, AShip ship,Round round, SiteBoard siteBoard){
         super(user,game,round);
         this.ship = ship;
-        this.temple = temple;
+        this.siteBoard = siteBoard;
     }
 
     @Override
@@ -58,9 +58,9 @@ public class SailShipMove extends Move {
     * */
     private Game sailShip(Game game){
             this.ship.setDocked(true);
-            ship.setSiteBoard(this.temple);
-            this.temple.setOccupied(true);
-            temple.setDockedShip(this.ship);
+            ship.setSiteBoard(this.siteBoard);
+            this.siteBoard.setOccupied(true);
+            siteBoard.setDockedShip(this.ship);
         return game;
     }
 }
