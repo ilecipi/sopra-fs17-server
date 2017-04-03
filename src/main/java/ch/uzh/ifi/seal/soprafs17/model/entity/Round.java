@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -34,17 +34,17 @@ public class Round implements Serializable{
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private Game game;
 
-    public List<Move> getMoves() {
-        return moves;
+    public List<AMove> getAMoves() {
+        return AMoves;
     }
 
-    public void setMoves(List<Move> moves) {
-        this.moves = moves;
+    public void setAMoves(List<AMove> AMoves) {
+        this.AMoves = AMoves;
     }
 
     @OneToMany(mappedBy = "round")
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<Move> moves;
+    private List<AMove> AMoves;
 
     public List<AShip> getShips() {
         return ships;

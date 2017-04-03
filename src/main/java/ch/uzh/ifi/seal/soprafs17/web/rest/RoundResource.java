@@ -1,9 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.RoundDTO;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.RoundService;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -42,7 +40,7 @@ public class RoundResource {
             for(Round r : rounds){
                 List<Long> movesId = new ArrayList<>();
                 List<Long> shipsId = new ArrayList<>();
-                for(Move m : r.getMoves()){
+                for(AMove m : r.getAMoves()){
                     movesId.add(m.getId());
                 }
                 for(AShip s : r.getShips()){
@@ -60,7 +58,7 @@ public class RoundResource {
              Round r = RoundService.getSpecificRound(roundId);
              List<Long> movesId = new ArrayList<>();
              List<Long> shipsId = new ArrayList<>();
-             for(Move m : r.getMoves()){
+             for(AMove m : r.getAMoves()){
                  movesId.add(m.getId());
              }
              for(AShip s : r.getShips()){

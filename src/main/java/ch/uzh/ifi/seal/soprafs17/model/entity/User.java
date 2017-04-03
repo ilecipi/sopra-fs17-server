@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity
@@ -43,7 +43,7 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<Move> moves;
+    private List<AMove> AMoves;
 
     @Column(nullable = true)
     private String color;
@@ -88,12 +88,12 @@ public class User implements Serializable {
         this.games = games;
     }
 
-    public List<Move> getMoves() {
-        return moves;
+    public List<AMove> getAMoves() {
+        return AMoves;
     }
 
-    public void setMoves(List<Move> moves) {
-        this.moves = moves;
+    public void setAMoves(List<AMove> AMoves) {
+        this.AMoves = AMoves;
     }
 
     public String getToken() {

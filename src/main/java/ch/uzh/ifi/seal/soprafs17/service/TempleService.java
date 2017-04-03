@@ -1,13 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
-import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +52,7 @@ public class TempleService {
 //        Temple temple = templeRepository.findOne(templeId);
 //        Round round = game.getCurrentRound();
 //        if(game.getCurrentPlayer()==user&&round.getShips().contains(ship)&&!temple.isOccupied()){
-//            Move move = new SailShipMove(user,ship,temple);
+//            AMove move = new SailShipMove(user,ship,temple);
 //            move.makeMove(game);
 //            move.setUser(user);
 //            moveRepo.save(move);
