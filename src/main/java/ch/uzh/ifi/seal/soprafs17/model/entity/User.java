@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.entity;
+package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 public class User implements Serializable {
@@ -34,10 +36,13 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
+
     @ManyToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Game> games;
 
     @OneToMany(mappedBy = "user")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Move> moves;
 
     @Column(nullable = true)

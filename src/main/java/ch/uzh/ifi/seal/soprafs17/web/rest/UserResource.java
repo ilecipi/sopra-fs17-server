@@ -2,9 +2,11 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import ch.uzh.ifi.seal.soprafs17.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 
 
 @RestController
@@ -30,24 +32,30 @@ public class UserResource extends GenericResource {
     Logger logger = LoggerFactory.getLogger(UserResource.class);
 
     static final String CONTEXT = "/users";
+    public int counter = 1;
 
     @Autowired
-    private UserRepository userRepo;
-
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> listUsers() {
+    public Iterable<UserDTO> listUsers() {
         logger.debug("listUsers");
-        //User user = new User();
-
-        List<UserDTO> userDTOS = new ArrayList<>();
-        for (User u : userRepo.findAll()) {
-            UserDTO userDTO = new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
-            userDTOS.add(userDTO);
+        Iterable<User> users = userService.listUsers();
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (User u : users){
+            List<Long> gamesId = new ArrayList<>();
+            List<Long> movesId = new ArrayList<>();
+            for(Game g : u.getGames()){
+                gamesId.add(g.getId());
+            }
+            for(Move m : u.getMoves()){
+                movesId.add(m.getId());
+            }
+            //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor()));
         }
-
-        return userDTOS;
+        return usersDTO;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -55,54 +63,57 @@ public class UserResource extends GenericResource {
     @ResponseBody
     public User addUser(@RequestBody User user) {
         logger.debug("addUser: " + user);
-
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken(UUID.randomUUID().toString());
-        user = userRepo.save(user);
-
-        return user;
-        //u = userRepo.save(user);
-        //return new UserDTO(u.getName(), u.getToken(), u.getUsername(), u.getColor());
+        String token =""+counter++;
+        User u = userService.createUser(user.getName(),user.getUsername(), token, UserStatus.ONLINE, null);
+//        List<Long> gamesId = new ArrayList<>();
+//        List<Long> movesId = new ArrayList<>();
+//        for(Game g : u.getGames()){
+//            gamesId.add(g.getId());
+//        }
+//        for(Move m : u.getMoves()){
+//            movesId.add(m.getId());
+//        }
+//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
+        return u;
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "user/{userId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
-        User u = userRepo.findById(userId);
-        UserDTO userDTO = new UserDTO(u.getName(),u.getToken(),u.getUsername(),u.getColor());
-
-        return userDTO;
-        //return userRepo.findOne(userId);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "user/{userId}/login")
-    @ResponseStatus(HttpStatus.OK)
-    public User login(@PathVariable Long userId) {
-        logger.debug("login: " + userId);
-        User user = userRepo.findOne(userId);
-        if (user != null) {
-            user.setToken(UUID.randomUUID().toString());
-            user.setStatus(UserStatus.ONLINE);
-            user = userRepo.save(user);
-
-            return user;
+        User u = userService.getUser(userId);
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
         }
-
-        return null;
+        for(Move m : u.getMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "{userId}/logout")
+    @RequestMapping(method = RequestMethod.POST, value = "/user/{userId}/login")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO login(@PathVariable Long userId) {
+        logger.debug("login: " + userId);
+        User u =userService.login(userId);
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
+        }
+        for(Move m : u.getMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/user/{userId}/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(@PathVariable Long userId, @RequestParam("token") String userToken) {
         logger.debug("getUser: " + userId);
-
-        User user = userRepo.findOne(userId);
-
-        if (user != null && user.getToken().equals(userToken)) {
-            user.setStatus(UserStatus.OFFLINE);
-            userRepo.save(user);
-        }
+        userService.logout(userId,userToken);
     }
 }

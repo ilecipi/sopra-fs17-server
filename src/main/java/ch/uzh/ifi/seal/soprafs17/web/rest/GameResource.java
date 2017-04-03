@@ -3,7 +3,11 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.uzh.ifi.seal.soprafs17.DTOs.GameDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.uzh.ifi.seal.soprafs17.GameConstants;
-import ch.uzh.ifi.seal.soprafs17.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.entity.Move;
-import ch.uzh.ifi.seal.soprafs17.entity.User;
-import ch.uzh.ifi.seal.soprafs17.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 
 // For this controlles the correspndant service is missing
 // Todo create a GameService in which you implement the logic of the game
@@ -31,171 +32,213 @@ import ch.uzh.ifi.seal.soprafs17.repository.UserRepository;
 @RestController
 public class GameResource extends GenericResource {
 
-    Logger logger  = LoggerFactory.getLogger(GameResource.class);
+    Logger logger = LoggerFactory.getLogger(GameResource.class);
 
     @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private GameRepository gameRepo;
+    GameService gameService;
 
     private final String CONTEXT = "/games";
 
     /*
-     * Context: /game
+     * Context: /games
      */
-
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
     public List<GameDTO> listGames() {
+        //public GameDTO(Long id, String name, Long owner, String status, Long currentPlayer, Long nextPlayer,
+        //List<Long> rounds, List<Long> players, List<Long> siteBoards) {
+
         logger.debug("listGames");
-        // List<Game> result = new ArrayList<>();
-        // gameRepo.findAll().forEach(result::add);
-        // return result;
-        List<GameDTO> GameDTOS = new ArrayList<>();
-        for(Game g: gameRepo.findAll()){
-            GameDTO gameDTO = new GameDTO(g.getId(),g.getName(),g.getOwner(),g.getStatus(),g.getCurrentPlayer());
-            GameDTOS.add(gameDTO);
-        }
-        return GameDTOS;
+        List<Game> games = gameService.listGames();
+        List<GameDTO> gamesDTO = new ArrayList<>();
+            for (Game g : games) {
+                List<Long> roundsId = new ArrayList<>();
+                List<Long> siteBoardsId = new ArrayList<>();
+                List<UserDTO> playersDTO = new ArrayList<>();
+                for (Round r : g.getRounds()) {
+                    roundsId.add(r.getId());
+                }
+                for (User u : g.getPlayers()) {
+                    //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
 
+                    List<Long> playerGamesDTO = new ArrayList<>();
+                    if(u.getGames()!=null) {
+                        for (Game pg : u.getGames()) {
+                            playerGamesDTO.add(pg.getId());
+                        }
+                    }
 
+                    List<Long> playerMovesDTO = new ArrayList<>();
+                    if(u.getMoves()!=null) {
+                        for (Move pm : u.getMoves()) {
+                            playerMovesDTO.add(pm.getId());
+                        }
+                    }
+                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor()));
+                }
+                if(g.getSiteBoards()!=null) {
+                    for (SiteBoard s : g.getSiteBoards()) {
+                        siteBoardsId.add(s.getId());
+                    }
+                }
+                if(g.getNextPlayer()!=null) {
+                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId));
+                }
+                else{
+                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            null, roundsId, playersDTO, siteBoardsId));
+                }
+            }
+            return gamesDTO;
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
+    public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
-
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null) {
-            // TODO Mapping into Game
-            game = gameRepo.save(game);
-
-            return CONTEXT + "/" + game.getId();
+        Game addedGame = gameService.addGame(game, userToken);
+        if (game == null) {
+            return null;
+        } else {
+            return addedGame;
         }
-
-        return null;
     }
 
     /*
      * Context: /game/{game-id}
      */
-    @RequestMapping(value = CONTEXT + "game/{gameId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        GameDTO gameDTO = new GameDTO(game.getId(),game.getName(),game.getOwner(),game.getStatus(),game.getCurrentPlayer());
+        Game g  = gameService.getGame(gameId);
+        List<Long> roundsId = new ArrayList<>();
+        List<Long> playersId = new ArrayList<>();
+        List<Long> siteBoardsId = new ArrayList<>();
+        List<UserDTO> playersDTO = new ArrayList<>();
+        for (Round r : g.getRounds()) {
+            roundsId.add(r.getId());
+        }
+        for (User u : g.getPlayers()) {
+            List<Long> playerGamesDTO = new ArrayList<>();
+            for(Game pg : u.getGames()){
+                playerGamesDTO.add(pg.getId());
+            }
+            List<Long> playerMovesDTO = new ArrayList<>();
+            for(Move pm : u.getMoves()){
+                playerMovesDTO.add(pm.getId());
+            }
 
-        return gameDTO;
+            playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor()));
+        }
+        for (SiteBoard s : g.getSiteBoards()) {
+            siteBoardsId.add(s.getId());
+        }
+        if(g.getNextPlayer()!=null) {
+            return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                    g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId);
+        }else{
+            return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                    null, roundsId, playersDTO, siteBoardsId);
+        }
+
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/start", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("startGame: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Start game in GameService
-        }
+        gameService.startGame(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("stopGame: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            // TODO: Stop game in GameService
-        }
+        gameService.stopGame(gameId, userToken);
     }
 
     /*
      * Context: /game/{game-id}/move
      */
-    @RequestMapping(value = CONTEXT + "game/{gameId}/move")
+    @RequestMapping(value = CONTEXT + "/{gameId}/move")
     @ResponseStatus(HttpStatus.OK)
     public List<Move> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
 
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves();
-        }
-
-        return null;
+        return gameService.listMoves(gameId);
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/move", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/move", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void addMove(@RequestBody Move move) {
         logger.debug("addMove: " + move);
         // TODO Mapping into Move + execution of move
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/move/{moveId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/move/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
 
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getMoves().get(moveId);
-        }
-
-        return null;
+        return gameService.getMove(gameId, moveId);
     }
 
     /*
      * Context: /game/{game-id}/player
      */
-    @RequestMapping(value = CONTEXT + "game/{gameId}/player")
+    @RequestMapping(value = CONTEXT + "/{gameId}/player")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> listPlayers(@PathVariable Long gameId) {
+    public List<UserDTO> listPlayers(@PathVariable Long gameId) {
         logger.debug("listPlayers");
-
-        Game game = gameRepo.findOne(gameId);
-        if (game != null) {
-            return game.getPlayers();
+        List<User> users = gameService.listPlayers(gameId);
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (User u : users){
+            List<Long> gamesId = new ArrayList<>();
+            List<Long> movesId = new ArrayList<>();
+            for(Game g : u.getGames()){
+                gamesId.add(g.getId());
+            }
+            for(Move m : u.getMoves()){
+                movesId.add(m.getId());
+            }
+            //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor()));
         }
-
-        return null;
+        return usersDTO;
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/player", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String addPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+    public String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
 
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(userToken);
-
-        if (game != null && player != null
-                && game.getPlayers().size() < GameConstants.MAX_PLAYERS) {
-            game.getPlayers().add(player);
-            logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size() - 1);
-        } else {
-            logger.error("Error adding player with token: " + userToken);
-        }
-        return null;
+        return gameService.addUser(gameId, userToken);
     }
 
-    @RequestMapping(value = CONTEXT + "game/{gameId}/player/{playerId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/player/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
+    public UserDTO getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
 
-        Game game = gameRepo.findOne(gameId);
-
-        return game.getPlayers().get(playerId);
+        User u = gameService.getPlayer(gameId, playerId);
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
+        }
+        for(Move m : u.getMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
     }
-
+    //when the user joins a game, he becomes a Player.
+    @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+        gameService.createPlayer(gameId, userToken);
+    }
 }

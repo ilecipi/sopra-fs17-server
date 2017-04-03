@@ -21,7 +21,9 @@ public class Application {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
+                registry.addMapping("/**").allowedOrigins("*") //This accepts only GET, POST, and few other methods by default (excluding PUT).
+                        .allowedMethods("GET", "PUT", "POST", "OPTIONS", "DELETE"); //Allows specific methods to be used.
+                // otherwise add more as need arises
             }
         };
     }
