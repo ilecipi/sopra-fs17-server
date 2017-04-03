@@ -20,7 +20,7 @@ public class RuleBook {
 
 
     public void addRule(IRule rule){
-        rules.add(rule);
+        this.rules.add(rule);
     }
 
     public void apply(Game game, AMove move) {

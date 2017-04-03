@@ -14,6 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Controller
 public interface IRule {
-    void apply (Game game, AMove move);
     boolean supports(AMove move);
+    void apply (Game game, AMove move);
 }

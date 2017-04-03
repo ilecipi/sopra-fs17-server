@@ -11,6 +11,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.AddStoneToShipRule;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.AddStoneToShipValidator;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class GameResource extends GenericResource {
 
     @Autowired
     RuleBook ruleBook;
+
+    @Autowired
+    ValidatorManager validatorBook;
 
     private final String CONTEXT = "/games";
 
@@ -102,7 +107,9 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
+                validatorBook.addValidator(new AddStoneToShipValidator());
                 ruleBook.addRule(new AddStoneToShipRule());
+
         Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
             return null;

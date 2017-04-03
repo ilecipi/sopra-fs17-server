@@ -12,6 +12,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,9 @@ public class MoveService {
     @Autowired
     private RuleBook ruleBook;
 
+    @Autowired
+    private ValidatorManager validatorManager;
+
 
     public AMove getMove(Long moveId){
         return moveRepo.findOne(moveId);
@@ -55,7 +59,12 @@ public class MoveService {
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
-        ruleBook.apply(gameRepo.findOne(gameId),moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round)));
+        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
+//        validatorManager.validateSync(game,(new AddStoneToShipMove((game,user,ship,position,round))));
+//        ruleBook.apply(gameRepo.findOne(gameId),moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round)));
+//        if(validatorManager.validateSync(game,move)){
+            ruleBook.apply(game,move);
+//        }
         gameRepo.save(game);
         userRepo.save(user);
         shipRepo.save(ship);

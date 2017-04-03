@@ -17,18 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AddStoneToShipRule extends RuleBook implements IRule {
 
-    @Autowired
-    private MoveService moveService;
-    @Autowired
-    private GameRepository gameRepo;
-    @Autowired
-    private RoundRepository roundRepo;
-    @Autowired
-    private ShipRepository shipRepo;
-    @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private MoveRepository moveRepo;
     public boolean supports(AMove move){
         return move instanceof AddStoneToShipMove;
     }
@@ -42,6 +30,5 @@ public class AddStoneToShipRule extends RuleBook implements IRule {
             round.getAMoves().add(move);
         }
     }
-
 
 }
