@@ -33,7 +33,7 @@ public class ShipResource {
 
         static final String CONTEXT = "/games";
 
-        @RequestMapping(value = CONTEXT + "/rounds/{roundId}/ships")
+        @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships")
         @ResponseStatus(HttpStatus.OK)
         public List<ShipDTO> getShips(@PathVariable Long roundId) {
                 logger.debug("getShips: " + roundId);
@@ -54,7 +54,7 @@ public class ShipResource {
 //                return  shipService.getShips(roundId);
         }
 
-        @RequestMapping(value = CONTEXT + "/rounds/{roundId}/ships/{shipId}")
+        @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}")
         @ResponseStatus(HttpStatus.OK)
         public ShipDTO getShip(@PathVariable Long roundId,@PathVariable Long shipId) {
                 logger.debug("getShip: " + shipId);

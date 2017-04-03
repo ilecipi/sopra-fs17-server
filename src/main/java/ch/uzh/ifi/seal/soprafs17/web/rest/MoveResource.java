@@ -47,7 +47,7 @@ public class MoveResource extends GenericResource {
 
     static final String CONTEXT = "/games";
 
-    @RequestMapping(value = CONTEXT + "{gameId}")
+    @RequestMapping(value = CONTEXT + "{gameId}/move")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
         logger.debug("getMove: " + moveId);
@@ -55,7 +55,7 @@ public class MoveResource extends GenericResource {
         return new MoveDTO(m.getId(),m.getUser().getId(),m.getRound().getId(),m.getGame().getId());
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/{roundId}/{shipId}", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void addStoneToShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
         moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
@@ -67,7 +67,7 @@ public class MoveResource extends GenericResource {
 //        moveService.addStoneToTemple(templeId,playerToken,gameId);
 //    }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/{roundId}/{shipId}/{siteBoardId}", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void sailShip(@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
         moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardId);
