@@ -5,12 +5,11 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class MoveService {
     private SiteBoardRepository siteBoardRepo;
 
 
-    public Move getMove(Long moveId){
+    public AMove getMove(Long moveId){
         return moveRepo.findOne(moveId);
     }
 
@@ -54,10 +53,10 @@ public class MoveService {
         AShip ship = shipRepo.findById(shipId);
         if(user == game.getCurrentPlayer() && ship.getStones()[position] == null && round != null
                 && position<ship.getStones().length && game.getRounds().lastIndexOf(round) == game.getRounds().size()-1) {
-            Move move = new AddStoneToShipMove(gameRepo.findOne(gameId), userRepo.findByToken(playerToken), shipRepo.findById(shipId), position,round);
-            move = moveRepo.save(move);
-            game = move.makeMove(game);
-            round.getMoves().add(move);
+            AMove AMove = new AddStoneToShipMove(gameRepo.findOne(gameId), userRepo.findByToken(playerToken), shipRepo.findById(shipId), position,round);
+            AMove = moveRepo.save(AMove);
+            game = AMove.makeMove(game);
+            round.getAMoves().add(AMove);
             roundRepo.save(round);
             gameRepo.save(game);
         }
@@ -89,11 +88,11 @@ public class MoveService {
         AShip ship = shipRepo.findById(shipId);
         SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
         if(user == game.getCurrentPlayer() && round.getShips().contains(ship) && ship.isReady() && !ship.isDocked() && !siteBoard.isOccupied()){
-            Move move = new SailShipMove(game,user,ship,round,siteBoard);
+            AMove AMove = new SailShipMove(game,user,ship,round,siteBoard);
 
-            move = moveRepo.save(move);
-            game = move.makeMove(game);
-            round.getMoves().add(move);
+            AMove = moveRepo.save(AMove);
+            game = AMove.makeMove(game);
+            round.getAMoves().add(AMove);
             roundRepo.save(round);
             gameRepo.save(game);
         }

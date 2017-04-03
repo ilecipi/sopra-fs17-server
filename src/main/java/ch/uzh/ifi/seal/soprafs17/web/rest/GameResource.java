@@ -6,8 +6,11 @@ import java.util.List;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
+import ch.uzh.ifi.seal.soprafs17.service.AddStoneToShipRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleBook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 
 // For this controlles the correspndant service is missing
@@ -36,6 +38,9 @@ public class GameResource extends GenericResource {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    RuleBook ruleBook;
 
     private final String CONTEXT = "/games";
 
@@ -69,8 +74,8 @@ public class GameResource extends GenericResource {
                     }
 
                     List<Long> playerMovesDTO = new ArrayList<>();
-                    if(u.getMoves()!=null) {
-                        for (Move pm : u.getMoves()) {
+                    if(u.getAMoves()!=null) {
+                        for (AMove pm : u.getAMoves()) {
                             playerMovesDTO.add(pm.getId());
                         }
                     }
@@ -97,6 +102,7 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
+        ruleBook.addRule(new AddStoneToShipRule());
         Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
             return null;
@@ -127,7 +133,7 @@ public class GameResource extends GenericResource {
                 playerGamesDTO.add(pg.getId());
             }
             List<Long> playerMovesDTO = new ArrayList<>();
-            for(Move pm : u.getMoves()){
+            for(AMove pm : u.getAMoves()){
                 playerMovesDTO.add(pm.getId());
             }
 
@@ -167,22 +173,22 @@ public class GameResource extends GenericResource {
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/move")
     @ResponseStatus(HttpStatus.OK)
-    public List<Move> listMoves(@PathVariable Long gameId) {
+    public List<AMove> listMoves(@PathVariable Long gameId) {
         logger.debug("listMoves");
 
         return gameService.listMoves(gameId);
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/move", method = RequestMethod.POST)
+    @RequestMapping(value = CONTEXT + "/{gameId}/AMove", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody Move move) {
-        logger.debug("addMove: " + move);
-        // TODO Mapping into Move + execution of move
+    public void addMove(@RequestBody AMove AMove) {
+        logger.debug("addMove: " + AMove);
+        // TODO Mapping into AMove + execution of AMove
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/move/{moveId}")
     @ResponseStatus(HttpStatus.OK)
-    public Move getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
+    public AMove getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
         logger.debug("getMove: " + gameId);
 
         return gameService.getMove(gameId, moveId);
@@ -203,7 +209,7 @@ public class GameResource extends GenericResource {
             for(Game g : u.getGames()){
                 gamesId.add(g.getId());
             }
-            for(Move m : u.getMoves()){
+            for(AMove m : u.getAMoves()){
                 movesId.add(m.getId());
             }
             //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
@@ -230,7 +236,7 @@ public class GameResource extends GenericResource {
         for(Game g : u.getGames()){
             gamesId.add(g.getId());
         }
-        for(Move m : u.getMoves()){
+        for(AMove m : u.getAMoves()){
             movesId.add(m.getId());
         }
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());

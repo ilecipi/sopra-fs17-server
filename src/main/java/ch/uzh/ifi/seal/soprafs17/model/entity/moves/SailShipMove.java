@@ -5,9 +5,6 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +15,7 @@ import javax.persistence.OneToOne;
  * Created by tonio99tv on 28/03/17.
  */
 @Entity
-public class SailShipMove extends Move {
+public class SailShipMove extends AMove {
 
     @Override
     public Long getId() {
@@ -41,7 +38,7 @@ public class SailShipMove extends Move {
     private SiteBoard siteBoard;
 
     public SailShipMove(){}
-    public SailShipMove(Game game,User user, AShip ship,Round round, SiteBoard siteBoard){
+    public SailShipMove(Game game, User user, AShip ship, Round round, SiteBoard siteBoard){
         super(user,game,round);
         this.ship = ship;
         this.siteBoard = siteBoard;

@@ -4,10 +4,9 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,26 +138,26 @@ public class GameService {
         }
     }
 
-    public List<Move> listMoves(Long gameId){
+    public List<AMove> listMoves(Long gameId){
 
         Game game = gameRepo.findOne(gameId);
         if (game != null) {
-//            return game.getMoves();
+//            return game.getAMoves();
         }
 
         return null;
     }
 
-    public void addMove(){ // TODO Mapping into Move + execution of move
+    public void addMove(){ // TODO Mapping into AMove + execution of move
 
 
     }
 
 
-    public Move getMove(Long gameId,Integer moveId){
+    public AMove getMove(Long gameId, Integer moveId){
         Game game = gameRepo.findOne(gameId);
         if (game != null) {
-//            return game.getMoves().get(moveId);
+//            return game.getAMoves().get(moveId);
         }
 
         return null;

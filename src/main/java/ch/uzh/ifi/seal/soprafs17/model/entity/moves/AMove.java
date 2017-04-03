@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance
-public abstract class Move implements Serializable {
+public abstract class AMove implements Serializable {
 	
 	/**
 	 * 
@@ -36,8 +36,8 @@ public abstract class Move implements Serializable {
     @JoinColumn(name="GAME_ID")
 	private Game game;
 
-	Move(){}
-	Move(User user,Game game,Round round){
+	AMove(){}
+	AMove(User user, Game game, Round round){
 		this.user=user;
 		this.game=game;
 		this.round=round;

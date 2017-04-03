@@ -5,7 +5,7 @@ import java.util.List;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 
 
 @RestController
@@ -49,7 +48,7 @@ public class UserResource extends GenericResource {
             for(Game g : u.getGames()){
                 gamesId.add(g.getId());
             }
-            for(Move m : u.getMoves()){
+            for(AMove m : u.getAMoves()){
                 movesId.add(m.getId());
             }
             //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
@@ -70,7 +69,7 @@ public class UserResource extends GenericResource {
 //        for(Game g : u.getGames()){
 //            gamesId.add(g.getId());
 //        }
-//        for(Move m : u.getMoves()){
+//        for(AMove m : u.getAMoves()){
 //            movesId.add(m.getId());
 //        }
 //        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
@@ -88,7 +87,7 @@ public class UserResource extends GenericResource {
         for(Game g : u.getGames()){
             gamesId.add(g.getId());
         }
-        for(Move m : u.getMoves()){
+        for(AMove m : u.getAMoves()){
             movesId.add(m.getId());
         }
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
@@ -104,7 +103,7 @@ public class UserResource extends GenericResource {
         for(Game g : u.getGames()){
             gamesId.add(g.getId());
         }
-        for(Move m : u.getMoves()){
+        for(AMove m : u.getAMoves()){
             movesId.add(m.getId());
         }
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());

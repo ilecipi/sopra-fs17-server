@@ -64,7 +64,7 @@ public class Game implements Serializable {
 
 
 //    @OneToMany
-//    private List<Move> moves;
+//    private List<AMove> moves;
 
 	@ManyToMany(mappedBy = "games")
 	private List<User> players;
@@ -126,11 +126,11 @@ public class Game implements Serializable {
 		this.owner = owner;
 	}
 
-//	public List<Move> getMoves() {
+//	public List<AMove> getAMoves() {
 //		return moves;
 //	}
 //
-//	public void setMoves(List<Move> moves) {
+//	public void setAMoves(List<AMove> moves) {
 //		this.moves = moves;
 //	}
 

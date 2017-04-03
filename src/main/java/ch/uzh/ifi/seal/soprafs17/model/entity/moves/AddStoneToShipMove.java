@@ -5,12 +5,6 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.RoundRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.ShipRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
@@ -18,7 +12,7 @@ import javax.persistence.*;
  * Created by erion on 29.03.17.
  */
 @Entity
-public class AddStoneToShipMove extends Move {
+public class AddStoneToShipMove extends AMove {
 
     @Override
     public Long getId() {
@@ -36,11 +30,29 @@ public class AddStoneToShipMove extends Move {
 
     @OneToOne
     private AShip ship;
+
+    public AShip getShip() {
+        return ship;
+    }
+
+    public void setShip(AShip ship) {
+        this.ship = ship;
+    }
+
+    public int getPosition() {
+
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     @Column
     private int position;
 
     public AddStoneToShipMove(){}
-    public AddStoneToShipMove(Game game,User user, AShip ship,int position,Round round){
+    public AddStoneToShipMove(Game game, User user, AShip ship, int position, Round round){
             super(user,game,round);
             this.ship = ship;
             this.position=position;

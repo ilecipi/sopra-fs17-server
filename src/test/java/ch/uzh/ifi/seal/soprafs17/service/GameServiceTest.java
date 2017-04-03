@@ -5,7 +5,7 @@
 //import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 //import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 //import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-//import ch.uzh.ifi.seal.soprafs17.model.entity.moves.Move;
+//import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 //import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 //import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 //import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
