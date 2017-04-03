@@ -1,10 +1,8 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.service.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.ShipService;
@@ -55,9 +53,8 @@ public class MoveResource extends GenericResource {
     @ RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void addStoneToShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
-        ruleBook.apply(,moveRepo.save(new AddStoneToShipMove(gameRepo.findOne(gameId),
-                                userRepo.findByToken(playerToken),shipRepo.findById(shipId),position,roundRepo.findById(roundId))));
-//        moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
+        moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
+
     }
 
 //    @RequestMapping(value = CONTEXT + "/{gameId}/{templeId}", method = RequestMethod.POST)

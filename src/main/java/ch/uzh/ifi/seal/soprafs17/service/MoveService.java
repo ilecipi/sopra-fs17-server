@@ -11,6 +11,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +35,15 @@ public class MoveService {
 
     @Autowired
     private RoundRepository roundRepo;
+
     @Autowired
     private MoveRepository moveRepo;
-//    @Autowired
-//    private TempleRepository templeRepo;
+
     @Autowired
     private SiteBoardRepository siteBoardRepo;
+
+    @Autowired
+    private RuleBook ruleBook;
 
 
     public AMove getMove(Long moveId){
@@ -47,19 +51,15 @@ public class MoveService {
     }
 
     public void addStoneToShip(Long gameId,Long roundId, Long shipId, String playerToken, int position){
-        Round round = roundRepo.findById(roundId);
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
-        if(user == game.getCurrentPlayer() && ship.getStones()[position] == null && round != null
-                && position<ship.getStones().length && game.getRounds().lastIndexOf(round) == game.getRounds().size()-1) {
-            AMove AMove = new AddStoneToShipMove(gameRepo.findOne(gameId), userRepo.findByToken(playerToken), shipRepo.findById(shipId), position,round);
-            AMove = moveRepo.save(AMove);
-            game = AMove.makeMove(game);
-            round.getAMoves().add(AMove);
-            roundRepo.save(round);
-            gameRepo.save(game);
-        }
+        Round round = roundRepo.findById(roundId);
+        ruleBook.apply(gameRepo.findOne(gameId),moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round)));
+        gameRepo.save(game);
+        userRepo.save(user);
+        shipRepo.save(ship);
+        roundRepo.save(round);
     }
     public void addStoneToTemple(Long templeId,String playerToken,Long gameId,Long shipId){
         StoneBoard temple = siteBoardRepo.findById(templeId);

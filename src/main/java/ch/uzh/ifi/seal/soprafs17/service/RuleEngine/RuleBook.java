@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs17.service;
+package ch.uzh.ifi.seal.soprafs17.service.RuleEngine;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
@@ -26,9 +26,7 @@ public class RuleBook {
     public void apply(Game game, AMove move) {
         for(IRule rule:rules){
             if(rule.supports(move)){
-                System.out.println("XXX");
                 rule.apply(game,move);
-
             }
         }
     }
