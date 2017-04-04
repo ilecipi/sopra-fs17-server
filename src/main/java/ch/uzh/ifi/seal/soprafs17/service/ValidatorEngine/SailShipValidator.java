@@ -3,25 +3,24 @@ package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by ilecipi on 03.04.17.
+ * Created by liwitz on 04.04.17.
  */
 @Service
-public class AddStoneToShipValidator implements IValidator {
+public class SailShipValidator implements IValidator {
     @Override
     public boolean supports(AMove amove) {
-        return amove instanceof AddStoneToShipMove;
+        return amove instanceof SailShipMove;
     }
 
     @Override
-    public void validate(Game game, AMove amove) throws ValidationException {
+    public void validate(Game game, AMove amove) {
         if(supports(amove)){
-            AddStoneToShipMove castedMove = (AddStoneToShipMove)amove;
+            SailShipMove castedMove = (SailShipMove)amove;
             /*
             *TODO: Add exceptions instead of returning false
             */
@@ -30,7 +29,7 @@ public class AddStoneToShipValidator implements IValidator {
             }
             if(!BasicValidation.checkCurrentRound(game,amove.getRound())){
             }
-            if(castedMove.getShip().getStones()[castedMove.getPosition()]!=null) {
+            if(!castedMove.getShip().isDocked() && castedMove.getShip().isReady() && !castedMove.getSiteBoard().isOccupied()) {
             }
         }
     }

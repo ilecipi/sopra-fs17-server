@@ -36,19 +36,20 @@ public class TempleResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public TempleDTO getTemple(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Temple tmpTemple=null;
-        for(SiteBoard s:siteBoards){
-            if(s.getDiscriminatorValue().equals("temple")){
-                tmpTemple = (Temple)s;
+        SiteBoard tmpTemple=null;
+        for (SiteBoard s : siteBoards) {
+            if (s.getDiscriminatorValue().equals("temple")) {
+                tmpTemple = s;
+                System.out.println("IN S:"+((Temple)s).getStones()[0].getColor());
+//                System.out.println("IN TMPTEMPLE:"+((Temple)tmpTemple).getStones()[0].getColor());
             }
         }
-        if(tmpTemple == null) {
-            return null;
-        }
-        Stone[] stones = tmpTemple.getStones();
         boolean isOccupied = tmpTemple.isOccupied();
-        TempleDTO templeDTO = new TempleDTO(tmpTemple.getId(),stones,gameId,isOccupied);
+        Stone[] stones = ((Temple)tmpTemple).getStones();
+//        System.out.println(stones[0].getColor()+"ejrnvlqeurigqgblgr");
+        TempleDTO templeDTO = new TempleDTO(tmpTemple.getId(), stones, gameId, isOccupied);
         logger.debug("getTemple: " + tmpTemple.getId());
+
         return templeDTO;
     }
 }

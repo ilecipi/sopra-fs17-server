@@ -10,8 +10,10 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.AddStoneToShipRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.SailShipRule;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.AddStoneToShipValidator;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.SailShipValidator;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +111,8 @@ public class GameResource extends GenericResource {
         logger.debug("addGame: " + game);
                 validatorBook.addValidator(new AddStoneToShipValidator());
                 ruleBook.addRule(new AddStoneToShipRule());
+                validatorBook.addValidator(new SailShipValidator());
+                ruleBook.addRule(new SailShipRule());
 
         Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
