@@ -27,6 +27,10 @@ public class Temple extends StoneBoard implements Serializable {
     @Column
     private Stone[] stones;
 
+    public int getAddedStones() {
+        return addedStones;
+    }
+
     @Column
     int addedStones=0;
 

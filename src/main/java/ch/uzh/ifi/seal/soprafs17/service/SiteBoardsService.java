@@ -36,7 +36,6 @@ public class SiteBoardsService {
     public String addTemple(Long gameId){
         Game game = gameRepo.findOne(gameId);
         StoneBoard temple = new Temple(game.getPlayers().size());
-        System.out.println(game.getPlayers().size());
         game.getSiteBoards().add(temple);
         temple.setGame(game);
         temple=siteBoardRepo.save(temple);

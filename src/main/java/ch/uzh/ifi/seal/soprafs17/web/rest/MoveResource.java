@@ -23,7 +23,7 @@ public class MoveResource extends GenericResource {
     @Autowired
     TempleService templeService;
     @Autowired
-    SiteBoardsService siteBoardsService;
+    SiteBoardRepository siteBoardsService;
     @Autowired
     MoveService moveService;
     @Autowired

@@ -1,6 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.StoneBoardDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.TempleDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
@@ -27,10 +30,14 @@ public class TempleResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/temple/{templeId}")
     @ResponseStatus(HttpStatus.OK)
-    public StoneBoard getTemple(@PathVariable Long templeId) {
+    public TempleDTO getTemple(@PathVariable Long templeId) {
         logger.debug("getTemple: " + templeId);
-
-        return siteBoardsService.getTemple(templeId);
+        StoneBoard tmpTemple = siteBoardsService.getTemple(templeId);
+        Stone[] stones = ((Temple)siteBoardsService.getTemple(templeId)).getStones();
+        Long gameId= ((Temple) tmpTemple).getGame().getId();
+        boolean isOccupied = ((Temple)siteBoardsService.getTemple(templeId)).isOccupied();
+        TempleDTO templeDTO = new TempleDTO((tmpTemple).getId(),stones,((Temple) tmpTemple).getAddedStones(),gameId,isOccupied);
+        return templeDTO;
     }
 
 //    @RequestMapping(value = CONTEXT + "/{gameId}/temple/{templeId}/user/{userId}/ship/{shipId}")
