@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Temple extends StoneBoard implements Serializable {
     @Column
     int addedStones=0;
 
+    @JsonIgnore
     @OneToOne
     private Game game;
 

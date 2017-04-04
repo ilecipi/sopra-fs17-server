@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.TempleService;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericResource;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,26 +32,25 @@ public class TempleResource extends GenericResource {
     @Autowired
     GameRepository gameRepo;
 
+    @Autowired
+    SiteBoardRepository siteBoardRepo;
+
     static final String CONTEXT = "/games";
 
     @RequestMapping(value = CONTEXT + "/{gameId}/temple")
     @ResponseStatus(HttpStatus.OK)
     public TempleDTO getTemple(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        SiteBoard tmpTemple=null;
-        for (SiteBoard s : siteBoards) {
-            if (s.getDiscriminatorValue().equals("temple")) {
-                tmpTemple = s;
-                System.out.println("IN S:"+((Temple)s).getStones()[0].getColor());
-//                System.out.println("IN TMPTEMPLE:"+((Temple)tmpTemple).getStones()[0].getColor());
+        Temple temple = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("temple")){
+                   temple = (Temple)s;
+                }
             }
+            TempleDTO templeDTO = new TempleDTO(temple.getId(),temple.getStones(),gameId,temple.isOccupied());
+            return templeDTO;
         }
-        boolean isOccupied = tmpTemple.isOccupied();
-        Stone[] stones = ((Temple)tmpTemple).getStones();
-//        System.out.println(stones[0].getColor()+"ejrnvlqeurigqgblgr");
-        TempleDTO templeDTO = new TempleDTO(tmpTemple.getId(), stones, gameId, isOccupied);
-        logger.debug("getTemple: " + tmpTemple.getId());
-
-        return templeDTO;
+        return null;
     }
 }

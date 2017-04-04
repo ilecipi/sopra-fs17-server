@@ -56,22 +56,20 @@ public class MoveService {
         return moveRepo.findOne(moveId);
     }
 
-    public void addStoneToShip(Long gameId,Long roundId, Long shipId, String playerToken, int position){
-        Game game = gameRepo.findOne(gameId);
-        User user = userRepo.findByToken(playerToken);
-        AShip ship = shipRepo.findById(shipId);
-        Round round = roundRepo.findById(roundId);
-        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
+//    public void addStoneToShip(Long gameId,Long roundId, Long shipId, String playerToken, int position){
+        public void addStoneToShip(Game game, AMove move){
+//
+//    Game game = gameRepo.findOne(gameId);
+//        User user = userRepo.findByToken(playerToken);
+//        AShip ship = shipRepo.findById(shipId);
+//        Round round = roundRepo.findById(roundId);
+//        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
 //        try {
 //            validatorManager.validateSync(game,move);
 //        }
 //        catch(ValidationException validationException){
 //        }
         ruleBook.applyRule(game,move);
-        gameRepo.save(game);
-        userRepo.save(user);
-        shipRepo.save(ship);
-        roundRepo.save(round);
     }
     public void addStoneToTemple(Long templeId,String playerToken,Long gameId,Long shipId){
         StoneBoard temple = siteBoardRepo.findById(templeId);
@@ -93,39 +91,8 @@ public class MoveService {
         }
     }
 
-    public void sailShip(Long gameId,Long roundId, Long shipId, String playerToken,Long siteBoardId){
-//        Round round = roundRepo.findById(roundId);
-//        Game game = gameRepo.findOne(gameId);
-//        User user = userRepo.findByToken(playerToken);
-//        AShip ship = shipRepo.findById(shipId);
-//        SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
-//        if(user == game.getCurrentPlayer() && round.getShips().contains(ship) && ship.isReady() && !ship.isDocked() && !siteBoard.isOccupied()){
-//            AMove AMove = new SailShipMove(game,user,ship,round,siteBoard);
-//
-//            AMove = moveRepo.save(AMove);
-//            game = AMove.makeMove(game);
-//            round.getAMoves().add(AMove);
-//            roundRepo.save(round);
-//            gameRepo.save(game);
-        Game game = gameRepo.findOne(gameId);
-        User user = userRepo.findByToken(playerToken);
-        AShip ship = shipRepo.findById(shipId);
-        Round round = roundRepo.findById(roundId);
-        SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
-        SailShipMove move = moveRepo.save(new SailShipMove(game,user,ship,round, siteBoard));
-//        try {
-//            validatorManager.validateSync(game,move);
-//        }
-//        catch(ValidationException validationException){
-//        }
-        System.out.println("BEFORE APPLYING RULEBOOK");
-        ruleBook.applyRule(game,move);
+    public void sailShip(Game game,AMove move){
 
-        System.out.println(siteBoardRepo.findById(siteBoardId).getDockedShip().getStones()[0].getColor());
-        siteBoardRepo.save(siteBoard);
-        gameRepo.save(game);
-        userRepo.save(user);
-        shipRepo.save(ship);
-        roundRepo.save(round);
+        ruleBook.applyRule(game,move);
         }
 }

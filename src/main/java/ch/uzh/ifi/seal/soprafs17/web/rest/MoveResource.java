@@ -63,8 +63,9 @@ public class MoveResource extends GenericResource {
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
+        AMove m = moveRepo.findOne(moveId);
         logger.debug("getMove: " + moveId);
-        AMove m = moveService.getMove(moveId);
+        System.out.println(m.getId());
         return new MoveDTO(m.getId(),m.getUser().getId(),m.getRound().getId(),m.getGame().getId());
     }
 
@@ -84,7 +85,12 @@ public class MoveResource extends GenericResource {
                  return e.getMessage();
         }
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
+        moveService.addStoneToShip(game,move);
+
+        gameRepo.save(game);
+        userRepo.save(user);
+        shipRepo.save(ship);
+        roundRepo.save(round);
         return "OK";
     }
 
@@ -103,7 +109,13 @@ public class MoveResource extends GenericResource {
         catch(RuntimeException e){
             return e.getMessage();
         }
-        moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardId);
+        moveService.sailShip(game,move);
+        moveService.addStoneToTemple(siteBoardId,playerToken,gameId,shipId);
+        siteBoardRepo.save(siteBoard);
+        gameRepo.save(game);
+        userRepo.save(user);
+        shipRepo.save(ship);
+        roundRepo.save(round);
         return "OK";
     }
 
