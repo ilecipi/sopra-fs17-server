@@ -51,15 +51,12 @@ public class ShipResource {
                         }
                 }
                 return shipsDTO;
-//                return  shipService.getShips(roundId);
         }
 
         @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}")
         @ResponseStatus(HttpStatus.OK)
         public ShipDTO getShip(@PathVariable Long roundId,@PathVariable Long shipId) {
                 logger.debug("getShip: " + shipId);
-
-//                return shipService.getShip(roundId,shipId);
                 AShip s = shipService.getShip(roundId,shipId);
                 if(s.getStones()!=null&&s.getSiteBoard()!=null) {
                         return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getId());

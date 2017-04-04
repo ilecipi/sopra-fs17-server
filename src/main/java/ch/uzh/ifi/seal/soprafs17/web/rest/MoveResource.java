@@ -61,13 +61,13 @@ public class MoveResource extends GenericResource {
 
     static final String CONTEXT = "/games";
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves/{moveId}")
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
         AMove m = moveRepo.findOne(moveId);
         logger.debug("getMove: " + moveId);
         System.out.println(m.getId());
-        return new MoveDTO(m.getId(),m.getUser().getId(),m.getRound().getId(),m.getGame().getId());
+        return new MoveDTO(m.getId(), m.getUser().getId(), m.getRound().getId(), m.getGame().getId());
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
@@ -77,7 +77,7 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
-        if(game!=null&&user!=null&&ship!=null&&round!=null) {
+        if (game != null && user != null && ship != null && round != null) {
             AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game, user, ship, position, round));
             try {
                 validatorManager.validateSync(game, move);
@@ -93,26 +93,20 @@ public class MoveResource extends GenericResource {
             shipRepo.save(ship);
             roundRepo.save(round);
             return "OK";
-        }else{
+        } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "NullException";
         }
     }
 
-//    @RequestMapping(value = CONTEXT + "/{gameId}/{templeId}", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void addStoneToTemple(@PathVariable Long gameId,@PathVariable Long templeId,@RequestParam("playerToken") String playerToken) {
-//        moveService.addStoneToTemple(templeId,playerToken,gameId);
-//    }
-
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
-    public String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
+    public String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long siteBoardId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
         Round round = roundRepo.findById(roundId);
-        if(game!=null&&user!=null&&ship!=null&&siteBoard!=null&&round!=null) {
+        if (game != null && user != null && ship != null && siteBoard != null && round != null) {
             SailShipMove move = moveRepo.save(new SailShipMove(game, user, ship, round, siteBoard));
             try {
                 validatorManager.validateSync(game, move);
@@ -120,22 +114,20 @@ public class MoveResource extends GenericResource {
                 validationExceptionHandler(e,response);
                 return e.getMessage();
             }
-            moveService.sailShip(gameId, roundId, shipId, playerToken, siteBoardId);
+
+            moveService.sailShip(game, move);
+            moveService.addStoneToTemple(siteBoardId, playerToken, gameId, shipId);
+            siteBoardRepo.save(siteBoard);
+            gameRepo.save(game);
+            userRepo.save(user);
+            shipRepo.save(ship);
+            roundRepo.save(round);
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else{
-            throw new NullException();
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "NullException";
         }
     }
-
-
-//    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void sailShip(@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
-//        moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardId);
-//        moveService.addStoneToTemple(siteBoardId,playerToken,gameId,shipId);
-//    }
-
-
 
 }

@@ -44,13 +44,13 @@ public class UserServiceTest {
         assertNotNull(userRepository.findByToken("t123"));
         Assert.assertEquals(userRepository.findByToken("t123"), user);
     }
-
-    @Test
-    public void deleteUser() {
-        User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
-        userRepository.delete(user.getId());
-        Assert.assertNull(userRepository.findById(user.getId()));
-    }
+//
+//    @Test
+//    public void deleteUser() {
+//        User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
+//        userRepository.delete(user.getId());
+//        Assert.assertNull(userRepository.findById(user.getId()));
+//    }
 
 
 }

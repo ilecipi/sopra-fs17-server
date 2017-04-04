@@ -56,19 +56,7 @@ public class MoveService {
         return moveRepo.findOne(moveId);
     }
 
-//    public void addStoneToShip(Long gameId,Long roundId, Long shipId, String playerToken, int position){
-        public void addStoneToShip(Game game, AMove move){
-//
-//    Game game = gameRepo.findOne(gameId);
-//        User user = userRepo.findByToken(playerToken);
-//        AShip ship = shipRepo.findById(shipId);
-//        Round round = roundRepo.findById(roundId);
-//        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
-//        try {
-//            validatorManager.validateSync(game,move);
-//        }
-//        catch(ValidationException validationException){
-//        }
+    public void addStoneToShip(Game game, AMove move){
         ruleBook.applyRule(game,move);
     }
     public void addStoneToTemple(Long templeId,String playerToken,Long gameId,Long shipId){
@@ -90,21 +78,7 @@ public class MoveService {
             siteBoardRepo.save(temple);
         }
     }
-
-    public void sailShip(Long gameId,Long roundId, Long shipId, String playerToken,Long siteBoardId){
-        Round round = roundRepo.findById(roundId);
-        Game game = gameRepo.findOne(gameId);
-        User user = userRepo.findByToken(playerToken);
-        AShip ship = shipRepo.findById(shipId);
-        SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
-        if(user == game.getCurrentPlayer() && round.getShips().contains(ship) && ship.isReady() && !ship.isDocked() && !siteBoard.isOccupied()&&(round!=null)){
-            AMove AMove = new SailShipMove(game,user,ship,round,siteBoard);
-
-            AMove = moveRepo.save(AMove);
-            game = AMove.makeMove(game);
-            round.getAMoves().add(AMove);
-            roundRepo.save(round);
-            gameRepo.save(game);
+    public void sailShip(Game game,AMove move){
+        ruleBook.applyRule(game,move);
         }
-    }
 }
