@@ -29,7 +29,7 @@ public class SailShipValidator implements IValidator {
             }
             if(!BasicValidation.checkCurrentRound(game,amove.getRound())){
             }
-            if(!castedMove.getShip().isDocked() && castedMove.getShip().isReady()) {
+            if(!castedMove.getShip().isDocked() && castedMove.getShip().isReady() && !castedMove.getSiteBoard().isOccupied()) {
             }
         }
     }
