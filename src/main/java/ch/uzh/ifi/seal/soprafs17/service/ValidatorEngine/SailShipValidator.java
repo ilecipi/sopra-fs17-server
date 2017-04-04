@@ -4,10 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.DockedShipException;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotReadyShipException;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.SiteBoardIsOccupiedException;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.*;
 import org.springframework.stereotype.Service;
 
 /**

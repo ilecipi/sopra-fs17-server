@@ -17,6 +17,7 @@ import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.TempleService;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,22 +77,26 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
-        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
-        try {
-            validatorManager.validateSync(game,move);
-        }
-        catch(ValidationException e){
+        if(game!=null&&user!=null&&ship!=null&&round!=null) {
+            AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game, user, ship, position, round));
+            try {
+                validatorManager.validateSync(game, move);
+            } catch (ValidationException e) {
                 validationExceptionHandler(e, response);
-                 return e.getMessage();
-        }
-        response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        moveService.addStoneToShip(game,move);
+                return e.getMessage();
+            }
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            moveService.addStoneToShip(game, move);
 
-        gameRepo.save(game);
-        userRepo.save(user);
-        shipRepo.save(ship);
-        roundRepo.save(round);
-        return "OK";
+            gameRepo.save(game);
+            userRepo.save(user);
+            shipRepo.save(ship);
+            roundRepo.save(round);
+            return "OK";
+        }else{
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "NullException";
+        }
     }
 
 //    @RequestMapping(value = CONTEXT + "/{gameId}/{templeId}", method = RequestMethod.POST)
@@ -108,15 +113,18 @@ public class MoveResource extends GenericResource {
         AShip ship = shipRepo.findById(shipId);
         SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
         Round round = roundRepo.findById(roundId);
-        SailShipMove move = moveRepo.save(new SailShipMove(game,user,ship,round,siteBoard));
-        try {
-            validatorManager.validateSync(game,move);
+        if(game!=null&&user!=null&&ship!=null&&siteBoard!=null&&round!=null) {
+            SailShipMove move = moveRepo.save(new SailShipMove(game, user, ship, round, siteBoard));
+            try {
+                validatorManager.validateSync(game, move);
+            } catch (RuntimeException e) {
+                return e.getMessage();
+            }
+            moveService.sailShip(gameId, roundId, shipId, playerToken, siteBoardId);
+            return "OK";
+        }else{
+            throw new NullException();
         }
-        catch(RuntimeException e){
-            return e.getMessage();
-        }
-        moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardId);
-        return "OK";
     }
 
 

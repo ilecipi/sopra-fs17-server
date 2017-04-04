@@ -97,7 +97,7 @@ public class MoveService {
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
-        if(user == game.getCurrentPlayer() && round.getShips().contains(ship) && ship.isReady() && !ship.isDocked() && !siteBoard.isOccupied()){
+        if(user == game.getCurrentPlayer() && round.getShips().contains(ship) && ship.isReady() && !ship.isDocked() && !siteBoard.isOccupied()&&(round!=null)){
             AMove AMove = new SailShipMove(game,user,ship,round,siteBoard);
 
             AMove = moveRepo.save(AMove);
