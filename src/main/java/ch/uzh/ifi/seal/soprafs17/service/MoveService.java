@@ -56,22 +56,20 @@ public class MoveService {
         return moveRepo.findOne(moveId);
     }
 
-    public void addStoneToShip(Long gameId,Long roundId, Long shipId, String playerToken, int position){
-        Game game = gameRepo.findOne(gameId);
-        User user = userRepo.findByToken(playerToken);
-        AShip ship = shipRepo.findById(shipId);
-        Round round = roundRepo.findById(roundId);
-        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
+//    public void addStoneToShip(Long gameId,Long roundId, Long shipId, String playerToken, int position){
+        public void addStoneToShip(Game game, AMove move){
+//
+//    Game game = gameRepo.findOne(gameId);
+//        User user = userRepo.findByToken(playerToken);
+//        AShip ship = shipRepo.findById(shipId);
+//        Round round = roundRepo.findById(roundId);
+//        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
 //        try {
 //            validatorManager.validateSync(game,move);
 //        }
 //        catch(ValidationException validationException){
 //        }
         ruleBook.applyRule(game,move);
-        gameRepo.save(game);
-        userRepo.save(user);
-        shipRepo.save(ship);
-        roundRepo.save(round);
     }
     public void addStoneToTemple(Long templeId,String playerToken,Long gameId,Long shipId){
         StoneBoard temple = siteBoardRepo.findById(templeId);

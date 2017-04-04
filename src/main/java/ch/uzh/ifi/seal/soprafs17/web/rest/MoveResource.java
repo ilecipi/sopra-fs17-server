@@ -60,11 +60,12 @@ public class MoveResource extends GenericResource {
 
     static final String CONTEXT = "/games";
 
-    @RequestMapping(value = CONTEXT + "{gameId}/move")
+    @RequestMapping(value = CONTEXT + "/{gameId}/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
+        AMove m = moveRepo.findOne(moveId);
         logger.debug("getMove: " + moveId);
-        AMove m = moveService.getMove(moveId);
+        System.out.println(m.getId());
         return new MoveDTO(m.getId(),m.getUser().getId(),m.getRound().getId(),m.getGame().getId());
     }
 
@@ -84,7 +85,12 @@ public class MoveResource extends GenericResource {
                  return e.getMessage();
         }
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
+        moveService.addStoneToShip(game,move);
+
+        gameRepo.save(game);
+        userRepo.save(user);
+        shipRepo.save(ship);
+        roundRepo.save(round);
         return "OK";
     }
 
