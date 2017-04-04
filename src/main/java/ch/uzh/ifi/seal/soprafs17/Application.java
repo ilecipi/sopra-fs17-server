@@ -18,10 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableAutoConfiguration
 public class Application {
 
-    @Autowired
-    static RuleBook ruleBook;
-    @Autowired
-    static ValidatorManager validatorManager;
+    static RuleBook ruleBook = new RuleBook();
+    static ValidatorManager validatorManager = new ValidatorManager();
 
     public static void main(String[] args) {
 

@@ -16,6 +16,10 @@ import java.util.List;
 @Transactional
 @Controller
 public class RuleBook {
+    public List<IRule> getRules() {
+        return rules;
+    }
+
     List<IRule> rules = new ArrayList<>();
 
 
