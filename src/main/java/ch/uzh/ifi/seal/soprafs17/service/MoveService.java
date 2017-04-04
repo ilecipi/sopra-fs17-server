@@ -13,6 +13,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,11 +62,12 @@ public class MoveService {
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
         AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
-//        validatorManager.validateSync(game,(new AddStoneToShipMove((game,user,ship,position,round))));
-//        ruleBook.apply(gameRepo.findOne(gameId),moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round)));
-        if(validatorManager.validateSync(game,move)){
-            ruleBook.apply(game,move);
-        }
+//        try {
+//            validatorManager.validateSync(game,move);
+//        }
+//        catch(ValidationException validationException){
+//        }
+        ruleBook.apply(game,move);
         gameRepo.save(game);
         userRepo.save(user);
         shipRepo.save(ship);

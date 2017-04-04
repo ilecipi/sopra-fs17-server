@@ -190,6 +190,7 @@ public class GameService {
             return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size());
         } else {
             logger.error("Error adding player with token: " + userToken);
+
         }
         return null;
     }

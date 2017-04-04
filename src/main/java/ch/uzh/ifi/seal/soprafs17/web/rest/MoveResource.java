@@ -1,6 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
@@ -8,9 +13,15 @@ import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.ShipService;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.TempleService;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.http.HTTPException;
 
 /**
  * Created by erion on 29.03.17.
@@ -38,6 +49,8 @@ public class MoveResource extends GenericResource {
     MoveRepository moveRepo;
     @Autowired
     RuleBook ruleBook;
+    @Autowired
+    private ValidatorManager validatorManager;
 
 
     static final String CONTEXT = "/games";
@@ -50,11 +63,22 @@ public class MoveResource extends GenericResource {
         return new MoveDTO(m.getId(),m.getUser().getId(),m.getRound().getId(),m.getGame().getId());
     }
 
-    @ RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addStoneToShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public String addStoneToShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
+        Game game = gameRepo.findOne(gameId);
+        User user = userRepo.findByToken(playerToken);
+        AShip ship = shipRepo.findById(shipId);
+        Round round = roundRepo.findById(roundId);
+        AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game,user,ship,position,round));
+        try {
+            validatorManager.validateSync(game,move);
+        }
+        catch(RuntimeException e){
+             return e.getMessage();
+        }
         moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
-
+        return "OK";
     }
 
 //    @RequestMapping(value = CONTEXT + "/{gameId}/{templeId}", method = RequestMethod.POST)
