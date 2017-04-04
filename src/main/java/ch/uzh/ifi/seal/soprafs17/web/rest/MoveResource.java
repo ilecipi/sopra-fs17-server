@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.http.HTTPException;
 
 /**
@@ -64,8 +65,8 @@ public class MoveResource extends GenericResource {
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public String addStoneToShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
+
+    public String addStoneToShip(HttpServletResponse response, @PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
@@ -74,9 +75,11 @@ public class MoveResource extends GenericResource {
         try {
             validatorManager.validateSync(game,move);
         }
-        catch(RuntimeException e){
-             return e.getMessage();
+        catch(ValidationException e){
+                validationExceptionHandler(e, response);
+                 return e.getMessage();
         }
+        response.setStatus(HttpServletResponse.SC_ACCEPTED);
         moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
         return "OK";
     }

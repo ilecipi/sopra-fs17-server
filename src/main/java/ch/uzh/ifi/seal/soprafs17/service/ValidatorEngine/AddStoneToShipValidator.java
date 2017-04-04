@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +19,7 @@ public class AddStoneToShipValidator implements IValidator {
     }
 
     @Override
-    public void validate(Game game, AMove amove) {
+    public void validate(Game game, AMove amove) throws ValidationException {
         if(supports(amove)){
             AddStoneToShipMove castedMove = (AddStoneToShipMove)amove;
             /*

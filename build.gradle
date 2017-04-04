@@ -72,3 +72,19 @@ defaultTasks 'bootRepackage', 'build'
 task runAll {
     runAll.dependsOn(bootRun)
 }
+
+// test coverage
+apply plugin: "jacoco"
+
+jacoco {
+    toolVersion = "0.7.4+"
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/reports/coverage"
+    }
+}

@@ -67,7 +67,7 @@ public class MoveService {
 //        }
 //        catch(ValidationException validationException){
 //        }
-        ruleBook.apply(game,move);
+        ruleBook.applyRule(game,move);
         gameRepo.save(game);
         userRepo.save(user);
         shipRepo.save(ship);
