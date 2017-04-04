@@ -106,8 +106,7 @@ public class MoveResource extends GenericResource {
 //    }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public String sailShip(@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
+    public String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
@@ -117,10 +116,12 @@ public class MoveResource extends GenericResource {
             SailShipMove move = moveRepo.save(new SailShipMove(game, user, ship, round, siteBoard));
             try {
                 validatorManager.validateSync(game, move);
-            } catch (RuntimeException e) {
+            } catch (ValidationException e) {
+                validationExceptionHandler(e,response);
                 return e.getMessage();
             }
             moveService.sailShip(gameId, roundId, shipId, playerToken, siteBoardId);
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else{
             throw new NullException();

@@ -31,9 +31,9 @@ public abstract class GenericResource {
 
 	@ExceptionHandler(ValidationException.class)
 	public void validationExceptionHandler(ValidationException exception, HttpServletResponse response) {
-		if(exception instanceof NotCurrentPlayerException){
+//		if(exception instanceof NotCurrentPlayerException){
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		}
+//		}
 		logger.error("", exception);
 	}
 }
