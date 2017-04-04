@@ -34,8 +34,24 @@ public class SailShipMove extends AMove {
     @OneToOne
     private AShip ship;
 
+    public AShip getShip() {
+        return ship;
+    }
+
+    public void setShip(AShip ship) {
+        this.ship = ship;
+    }
+
     @OneToOne
     private SiteBoard siteBoard;
+
+    public SiteBoard getSiteBoard() {
+        return siteBoard;
+    }
+
+    public void setSiteBoard(SiteBoard siteBoard) {
+        this.siteBoard = siteBoard;
+    }
 
     public SailShipMove(){}
     public SailShipMove(Game game, User user, AShip ship, Round round, SiteBoard siteBoard){
