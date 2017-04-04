@@ -55,7 +55,7 @@ public class MoveResource extends GenericResource {
 
     static final String CONTEXT = "/games";
 
-    @RequestMapping(value = CONTEXT + "{gameId}/move")
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
         logger.debug("getMove: " + moveId);
@@ -80,12 +80,6 @@ public class MoveResource extends GenericResource {
         moveService.addStoneToShip(gameId,roundId,shipId,playerToken,position);
         return "OK";
     }
-
-//    @RequestMapping(value = CONTEXT + "/{gameId}/{templeId}", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void addStoneToTemple(@PathVariable Long gameId,@PathVariable Long templeId,@RequestParam("playerToken") String playerToken) {
-//        moveService.addStoneToTemple(templeId,playerToken,gameId);
-//    }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

@@ -21,7 +21,7 @@ public class Application {
     static RuleBook ruleBook;
 
     @Autowired
-   static ValidatorManager validatorManager;
+    static ValidatorManager validatorManager;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

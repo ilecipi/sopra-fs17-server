@@ -11,16 +11,14 @@ public class TempleDTO extends StoneBoardDTO{
 
     public Long id;
     public Stone[] stones;
-    public int addedStones=0;
     public Long game;
     public boolean isOccupied;
 
 
 
-    public TempleDTO(Long id, Stone[] stones, int addedStones, Long gameId,boolean isOccupied){
+    public TempleDTO(Long id, Stone[] stones, Long gameId,boolean isOccupied){
         this.id=id;
         this.stones=stones;
-        this.addedStones=addedStones;
         this.game=gameId;
         this.isOccupied=isOccupied;
     }
