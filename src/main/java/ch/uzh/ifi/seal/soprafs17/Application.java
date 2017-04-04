@@ -1,5 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17;
 
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.AddStoneToShipRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.AddStoneToShipValidator;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -12,10 +17,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableAutoConfiguration
 public class Application {
 
+    @Autowired
+    static RuleBook ruleBook;
+
+    @Autowired
+   static ValidatorManager validatorManager;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        ruleBook.addRule(new AddStoneToShipRule());
+        validatorManager.addValidator(new AddStoneToShipValidator());
     }
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -26,6 +39,7 @@ public class Application {
                         .allowedMethods("GET", "PUT", "POST", "OPTIONS", "DELETE"); //Allows specific methods to be used.
                 // otherwise add more as need arises
             }
+
         };
     }
 }
