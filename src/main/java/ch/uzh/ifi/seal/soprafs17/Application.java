@@ -1,8 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17;
 
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.AddStoneToShipRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.SailShipRule;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.AddStoneToShipValidator;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.SailShipValidator;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +29,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
         ruleBook.addRule(new AddStoneToShipRule());
         validatorManager.addValidator(new AddStoneToShipValidator());
+        ruleBook.addRule(new SailShipRule());
+        validatorManager.addValidator(new SailShipValidator());
     }
 
 

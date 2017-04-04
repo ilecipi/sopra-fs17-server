@@ -4,7 +4,9 @@ import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
@@ -43,6 +45,8 @@ public class MoveResource extends GenericResource {
     UserRepository userRepo;
     @Autowired
     ShipRepository shipRepo;
+    @Autowired
+    SiteBoardRepository siteBoardRepo;
     @Autowired
     RoundRepository roundRepo;
     @Autowired
@@ -89,10 +93,30 @@ public class MoveResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void sailShip(@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
+    public String sailShip(@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
+        Game game = gameRepo.findOne(gameId);
+        User user = userRepo.findByToken(playerToken);
+        AShip ship = shipRepo.findById(shipId);
+        SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
+        Round round = roundRepo.findById(roundId);
+        SailShipMove move = moveRepo.save(new SailShipMove(game,user,ship,round,siteBoard));
+        try {
+            validatorManager.validateSync(game,move);
+        }
+        catch(RuntimeException e){
+            return e.getMessage();
+        }
         moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardId);
-        moveService.addStoneToTemple(siteBoardId,playerToken,gameId,shipId);
+        return "OK";
     }
+
+
+//    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void sailShip(@PathVariable Long gameId, @PathVariable Long roundId,@PathVariable Long siteBoardId,@PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
+//        moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardId);
+//        moveService.addStoneToTemple(siteBoardId,playerToken,gameId,shipId);
+//    }
 
 
 
