@@ -4,7 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,9 +28,20 @@ public class SailShipValidator implements IValidator {
                 throw new NotCurrentPlayerException();
             }
             if(!BasicValidation.checkCurrentRound(game,amove.getRound())){
+                throw new NotCurrentRoundException();
             }
-            if(!castedMove.getShip().isDocked() && castedMove.getShip().isReady() && !castedMove.getSiteBoard().isOccupied()) {
+            if(castedMove.getShip().isDocked()){
+                throw new DockedShipException();
             }
+            if(!castedMove.getShip().isReady()) {
+                throw new NotReadyShipException();
+            }
+            if(castedMove.getSiteBoard().isOccupied()){
+                throw new SiteBoardIsOccupiedException();
+            }
+
         }
+
+
     }
 }
