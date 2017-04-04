@@ -23,15 +23,12 @@ public class ValidatorManager {
             this.validateSync(game,amove);
         }
 
-        public synchronized boolean validateSync(Game game, AMove amove){
+        public synchronized void validateSync(Game game, AMove amove){
             for(IValidator validator : validators){
                 if(validator.supports(amove)){
-                    if(validator.validate(game,amove)){
-                        return true;
-                    }
+                    validator.validate(game,amove);
                 }
             }
-            return false;
         }
 }
 

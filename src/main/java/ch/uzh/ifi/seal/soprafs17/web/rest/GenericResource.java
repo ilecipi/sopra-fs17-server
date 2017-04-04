@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public abstract class GenericResource {
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public void handleException(Exception exception, HttpServletRequest request) {
+	public void handleException(RuntimeException exception, HttpServletRequest request) {
 		logger.error("", exception);
 	}
 }
