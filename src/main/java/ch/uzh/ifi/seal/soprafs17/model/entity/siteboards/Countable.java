@@ -8,7 +8,7 @@ import java.util.Map;
 public interface Countable {
 
     Map<String, Integer> countAfterMove();
-    Map<Long,Integer> countEndOfRound();
+    Map<String,Integer> countEndOfRound();
     Map<Long,Integer> countEndOfGame();
 
 

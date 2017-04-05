@@ -105,7 +105,7 @@ public class Pyramid extends StoneBoard {
     }
 
     @Override
-    public Map<Long, Integer> countEndOfRound() {
+    public Map<String, Integer> countEndOfRound() {
         return null;
     }
 

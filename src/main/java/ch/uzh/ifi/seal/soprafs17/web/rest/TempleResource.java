@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.TempleDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by erion on 20.03.17.
@@ -44,5 +46,20 @@ public class TempleResource extends GenericResource {
             return templeDTO;
         }
         return null;
+    }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/temple/points")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String,Integer> getTemplePoints(@PathVariable Long gameId) {
+        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
+        Temple temple = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("temple")) {
+                    temple = (Temple) s;
+                }
+            }
+        }
+        return siteBoardsService.getTemplePoints(temple.getId());
     }
 }

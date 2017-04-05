@@ -76,6 +76,15 @@ public class SiteBoardsService {
         }
     }
 
+    public Map<String,Integer> getTemplePoints(long templeId){
+        SiteBoard temple =siteBoardRepo.findById(templeId);
+        if(temple instanceof Temple){
+            return ((Temple) temple).countEndOfRound();
+        }else{
+            throw new NullException();
+        }
+    }
+
 
 
 }
