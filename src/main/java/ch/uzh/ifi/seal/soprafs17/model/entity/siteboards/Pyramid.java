@@ -61,56 +61,6 @@ public class Pyramid extends StoneBoard {
     }
 
     private final String type = "immediately";
-//    List<Stone> addedStones=new ArrayList<>();
-//    private Map<Long,Integer> score = new HashMap<Long,Integer>();
-
-//    @ElementCollection
-//    private Map<Stone,Integer> pyramid = new Hashtable<Stone,Integer>(){{
-//        put(new Stone(),2);
-//        put(new Stone(),1);
-//        put(new Stone(),3);
-//        put(new Stone(),2);
-//        put(new Stone(),4);
-//        put(new Stone(),3);
-//        put(new Stone(),2);
-//        put(new Stone(),1);
-//        put(new Stone(),3);
-//        put(new Stone(),2);
-//        put(new Stone(),3);
-//        put(new Stone(),1);
-//        put(new Stone(),3);
-//        put(new Stone(),4);
-//
-//    }};
-
-
-
-//    private Map<Stone,Integer> secondColumn = new HashMap<Stone,Integer>(){{
-//        put(null,2);
-//        put(null,4);
-//        put(null,3);
-//    }};
-//
-//    private Map<Stone,Integer> thirdColumn = new HashMap<Stone,Integer>(){{
-//        put(null,2);
-//        put(null,1);
-//        put(null,3);
-//    }};
-//
-//    private Map<Stone,Integer> secondLevelFirstColumn = new HashMap<Stone,Integer>(){{
-//        put(null,2);
-//        put(null,3);
-//    }};
-//
-//    private Map<Stone,Integer> secondLevelSecondColumn = new HashMap<Stone,Integer>(){{
-//        put(null,1);
-//        put(null,3);
-//    }};
-//
-//    private Map<Stone,Integer> thirdLevel = new HashMap<Stone,Integer>(){{
-//        put(null,4);
-//    }};
-
 
     @Override
     public void addStone(Stone stone) {
@@ -124,26 +74,31 @@ public class Pyramid extends StoneBoard {
     @Override
     public Map<String,Integer> countAfterMove() {
         Map<String, Integer> point = fillPoints();
-        for(int i=0;i<counter;i++){
-            String s = addedStones.get(i).getColor();
-            int currentPoint = point.get(s);
-            if(addedStones.get(i)!=null&&points.length>i) {
-
-                int tmpPoint = points[i] + currentPoint;
-                point.put(s,tmpPoint);
-            }else{
-                int tmpPoint = 1 + currentPoint;
-                point.put(s,tmpPoint);
+            for (int i = 0; i < this.counter; i++) {
+                if (this.addedStones.get(i) != null && this.addedStones.get(i).getColor() != null) {
+                    String s = this.addedStones.get(i).getColor();
+                    if (point.get(s) != null) {
+                        int currentPoint = point.get(s);
+                        if (this.addedStones.get(i) != null && this.points.length > i) {
+                            //sum the old point with the current points for the player
+                            int tmpPoint = this.points[i] + currentPoint;
+                            point.put(s, tmpPoint);
+                        } else if (this.addedStones.get(i) != null) {
+                            //If the pyramid is full, give 1 point to each stone added
+                            int tmpPoint = 1 + currentPoint;
+                            point.put(s, tmpPoint);
+                        }
+                    }
+                }
             }
+                return point;
 
-        }
-        return point;
     }
 
     private HashMap<String, Integer> fillPoints() {
         return new HashMap<String,Integer>(){{
             put("black",0);
-            put("gray",0);
+            put("grey",0);
             put("white",0);
             put("brown",0);
         }};

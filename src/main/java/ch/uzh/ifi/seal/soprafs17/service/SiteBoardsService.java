@@ -10,9 +10,12 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * Created by erion on 21.03.17.
@@ -62,6 +65,15 @@ public class SiteBoardsService {
 
     public StoneBoard getPyramid(Long pyramidId){
         return siteBoardRepo.findById(pyramidId);
+    }
+
+    public Map<String,Integer> getPyramidPoints(long pyramidId){
+        SiteBoard pyramid =siteBoardRepo.findById(pyramidId);
+        if(pyramid instanceof Pyramid){
+            return ((Pyramid) pyramid).countAfterMove();
+        }else{
+            throw new NullException();
+        }
     }
 
 

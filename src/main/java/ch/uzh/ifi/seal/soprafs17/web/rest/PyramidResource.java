@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ilecipi on 05.04.17.
@@ -48,4 +49,20 @@ public class PyramidResource {
         }
         return pyramid;
     }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/pyramid/points")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String,Integer> getPyramidPoints(@PathVariable Long gameId) {
+        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
+        Pyramid pyramid = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("pyramid")) {
+                    pyramid = (Pyramid) s;
+                }
+            }
+        }
+        return siteBoardsService.getPyramidPoints(pyramid.getId());
+    }
+
 }
