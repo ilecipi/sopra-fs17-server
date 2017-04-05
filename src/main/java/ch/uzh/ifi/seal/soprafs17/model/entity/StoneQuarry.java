@@ -24,6 +24,10 @@ public class StoneQuarry implements Serializable{
 
     private Stone stone;
 
+    public void StoneQuarry(){
+        reset();
+    }
+
     public void reset(){
         availableStones.put("black", 30);
         availableStones.put("white", 30);
@@ -32,7 +36,7 @@ public class StoneQuarry implements Serializable{
     }
 
     public Stone getStone(String color){
-        if(color == "black" || color == "white" || color == "brown" || color == "grey"){
+        if((color == "black" || color == "white" || color == "brown" || color == "grey") && availableStones.get(color)>=0){
             stone.setColor(color);
             availableStones.put(color, availableStones.get(color)-1);
         } else{
