@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
@@ -49,22 +50,20 @@ public class SiteBoardsService {
         return temple;
     }
 
-//    public void addStoneToTemple(Long templeId,Long playerId,Long gameId){
-//        Temple temple = templeRepo.findOne(templeId);
-//        Game game = gameRepo.findOne(gameId);
-//        User player = userRepo.findById(playerId);
-//        if(player == game.getCurrentPlayer()){
-//            Stone stone = new Stone(player.getColor());
-//            temple.addStone(stone);
-//            userRepo.save(player);
-//            game.findNextPlayer();
-//            int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
-//            game.setNextPlayer(game.getPlayers().get(index));
-//            gameRepo.save(game);
-//            gameRepo.save(game);
-//            templeRepo.save(temple);
-//        }
-//    }
+    public String addPyramid(Long gameId){
+        Game game = gameRepo.findOne(gameId);
+        StoneBoard pyramid = new Pyramid();
+        game.getSiteBoards().add(pyramid);
+        pyramid.setGame(game);
+        pyramid = siteBoardRepo.save(pyramid);
+        game = gameRepo.save(game);
+        return "/game/+gameId" + "/" + pyramid.getId();
+    }
+
+    public StoneBoard getPyramid(Long pyramidId){
+        return siteBoardRepo.findById(pyramidId);
+    }
+
 
 
 }

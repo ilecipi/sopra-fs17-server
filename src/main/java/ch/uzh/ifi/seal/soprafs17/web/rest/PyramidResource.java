@@ -1,23 +1,28 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.TempleDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
- * Created by erion on 20.03.17.
+ * Created by ilecipi on 05.04.17.
  */
 @RestController
-public class TempleResource extends GenericResource {
-
+public class PyramidResource {
     @Autowired
     SiteBoardsService siteBoardsService;
 
@@ -29,20 +34,18 @@ public class TempleResource extends GenericResource {
 
     static final String CONTEXT = "/games";
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/temple")
+    @RequestMapping(value = CONTEXT + "/{gameId}/pyramid")
     @ResponseStatus(HttpStatus.OK)
-    public TempleDTO getTemple(@PathVariable Long gameId) {
+    public StoneBoard getPyramid(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Temple temple = null;
+        Pyramid pyramid = null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("temple")){
-                   temple = (Temple)s;
+                if (s.getDiscriminatorValue().equals("pyramid")) {
+                    pyramid = (Pyramid) s;
                 }
             }
-            TempleDTO templeDTO = new TempleDTO(temple.getId(),temple.getStones(),gameId,temple.isOccupied());
-            return templeDTO;
         }
-        return null;
+        return pyramid;
     }
 }

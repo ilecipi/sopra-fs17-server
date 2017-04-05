@@ -13,19 +13,13 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.ShipService;
-import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
-import ch.uzh.ifi.seal.soprafs17.service.TempleService;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.http.HTTPException;
 
 /**
  * Created by erion on 29.03.17.
@@ -35,8 +29,6 @@ public class MoveResource extends GenericResource {
 
     @Autowired
     ShipService shipService;
-    @Autowired
-    TempleService templeService;
     @Autowired
     SiteBoardRepository siteBoardsService;
     @Autowired
@@ -116,7 +108,7 @@ public class MoveResource extends GenericResource {
             }
 
             moveService.sailShip(game, move);
-            moveService.addStoneToTemple(siteBoardId, playerToken, gameId, shipId);
+            moveService.addStoneToSiteBoard(siteBoardId, playerToken, gameId, shipId);
             siteBoardRepo.save(siteBoard);
             gameRepo.save(game);
             userRepo.save(user);

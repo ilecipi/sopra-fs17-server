@@ -35,10 +35,6 @@ public class Temple extends StoneBoard implements Serializable {
     @Column
     int addedStones=0;
 
-    @JsonIgnore
-    @OneToOne
-    private Game game;
-
 
     public Game getGame() {
         return game;
@@ -78,7 +74,7 @@ public class Temple extends StoneBoard implements Serializable {
 
 
     @Override
-    public Map<Long, Integer> countAfterMove() {
+    public Map<String, Integer> countAfterMove() {
         return null;
     }
 
