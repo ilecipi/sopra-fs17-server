@@ -72,7 +72,7 @@ public class Obelisk extends StoneBoard {
                 obelisks.put(stone.getColor(), 20);
             }else{
                 int tmpPoints = obelisks.get(stone.getColor());
-                obelisks.put(stone.getColor(), ++tmpPoints);
+                obelisks.put(stone.getColor(), 10+tmpPoints);
             }
         }
     }
@@ -91,7 +91,6 @@ public class Obelisk extends StoneBoard {
     public Map<String, Integer> countEndOfGame() {
         LinkedHashMap<String, Integer> sortedMap = sortHashMap();
         sortedMap = removeNotPresentPlayers(sortedMap);
-
         if(numberOfPlayers==2){
 
         }
@@ -104,12 +103,7 @@ public class Obelisk extends StoneBoard {
     }
 
     private LinkedHashMap<String, Integer> removeNotPresentPlayers(LinkedHashMap<String, Integer> sortedMap) {
-//        for(String s : sortedMap.keySet()){
-//            if(s!=null) {
-//                if (sortedMap.get(s) == 0) {
-//                    sortedMap.remove(s);
-//                }
-//            }
+
         for(Iterator<Map.Entry<String,Integer>>it=sortedMap.entrySet().iterator();it.hasNext();){
             Map.Entry<String, Integer> entry = it.next();
             if(entry!=null) {
@@ -122,10 +116,10 @@ public class Obelisk extends StoneBoard {
     }
 
     private LinkedHashMap<String, Integer> sortHashMap() {
-        LinkedHashMap<String,Integer> sortedMap = new LinkedHashMap<String,Integer>();
+        LinkedHashMap<String,Integer> sortedMap = new LinkedHashMap<>();
         this.obelisks.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue())
-                .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEach(x -> sortedMap.put(x.getKey(), x.getValue()));
         return sortedMap;
     }
 }
