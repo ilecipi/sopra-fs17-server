@@ -35,14 +35,14 @@ public class StoneQuarry implements Serializable{
         availableStones.put("grey", 30);
     }
 
-    public Stone getStone(String color){
+    public boolean canGetStone(String color){
         if((color == "black" || color == "white" || color == "brown" || color == "grey") && availableStones.get(color)>=0){
             stone.setColor(color);
             availableStones.put(color, availableStones.get(color)-1);
-        } else{
-            // TODO: return Exception
+            return true;
+        } else {
+            return false;
         }
-        return stone;
     }
 
 }
