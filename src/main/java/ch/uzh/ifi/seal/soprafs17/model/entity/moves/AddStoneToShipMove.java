@@ -31,6 +31,9 @@ public class AddStoneToShipMove extends AMove {
     @OneToOne
     private AShip ship;
 
+    @Column
+    private int position;
+
     public AShip getShip() {
         return ship;
     }
@@ -47,9 +50,6 @@ public class AddStoneToShipMove extends AMove {
     public void setPosition(int position) {
         this.position = position;
     }
-
-    @Column
-    private int position;
 
     public AddStoneToShipMove(){}
     public AddStoneToShipMove(Game game, User user, AShip ship, int position, Round round){

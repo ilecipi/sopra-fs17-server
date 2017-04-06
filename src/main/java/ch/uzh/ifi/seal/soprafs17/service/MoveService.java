@@ -10,6 +10,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
@@ -59,13 +60,11 @@ public class MoveService {
     public void addStoneToShip(Game game, AMove move){
         ruleBook.applyRule(game,move);
     }
-    public void addStoneToTemple(Long templeId,String playerToken,Long gameId,Long shipId){
-        StoneBoard temple = siteBoardRepo.findById(templeId);
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(playerToken);
-        AShip dockedShip = shipRepo.findById(shipId);
+    public void addStoneToTemple(Game game,SailShipMove move){
+        StoneBoard temple = (Temple)move.getSiteBoard();
+        User player = move.getUser();
+        AShip dockedShip = move.getShip();
         if(player == game.getCurrentPlayer() && temple.getDiscriminatorValue().equals("temple")){
-
             for(Stone s :dockedShip.getStones()){
                 temple.addStone(s);
             }
@@ -81,4 +80,7 @@ public class MoveService {
     public void sailShip(Game game,AMove move){
         ruleBook.applyRule(game,move);
         }
+    public void getStone(Game game,AMove move){
+        ruleBook.applyRule(game,move);
+    }
 }

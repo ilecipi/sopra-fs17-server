@@ -41,7 +41,6 @@ public class Game implements Serializable {
 	@OneToOne
 	private User nextPlayer;
 
-
 	public List<Round> getRounds() {
 		return rounds;
 	}
@@ -62,20 +61,12 @@ public class Game implements Serializable {
 		put("grey", false);
 	}};
 
-
-//    @OneToMany
-//    private List<AMove> moves;
-
 	@ManyToMany(mappedBy = "games")
 	private List<User> players;
 
 	@OneToMany
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private List<SiteBoard> siteBoards;
-
-//	@OneToMany
-//	private List<AShip> ships;
-
 
 	public Map<Integer, Integer[]> getShipsCards() {
 		return shipsCards;
@@ -92,15 +83,6 @@ public class Game implements Serializable {
 	public void setSiteBoards(List<SiteBoard> siteBoards) {
 		this.siteBoards = siteBoards;
 	}
-
-//	public List<AShip> getShips() {
-//		return ships;
-//	}
-//
-//	public void setShips(List<AShip> ships) {
-//		this.ships = ships;
-//	}
-
 
 	public Long getId() {
 		return id;
@@ -125,14 +107,6 @@ public class Game implements Serializable {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-
-//	public List<AMove> getAMoves() {
-//		return moves;
-//	}
-//
-//	public void setAMoves(List<AMove> moves) {
-//		this.moves = moves;
-//	}
 
 	public List<User> getPlayers() {
 		return players;

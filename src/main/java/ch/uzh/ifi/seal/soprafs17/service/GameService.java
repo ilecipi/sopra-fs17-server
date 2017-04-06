@@ -8,6 +8,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,10 @@ public class GameService {
 
     @Autowired
     private RoundService roundService;
+    @Autowired
+    private RuleBook ruleBook;
+    @Autowired
+    private ValidatorManager validatorManager;
 
     private static int counter = 1;
 
@@ -113,8 +119,10 @@ public class GameService {
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
+                int initStones=2;
                 for (User u : game.getPlayers()) {
                     u.setStatus(UserStatus.IS_PLAYING);
+                    u.setSupplySled(initStones++);
                     userRepo.save(u);
                 }
 

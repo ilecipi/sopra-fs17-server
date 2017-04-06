@@ -3,33 +3,32 @@ package ch.uzh.ifi.seal.soprafs17.service.RuleEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
-import ch.uzh.ifi.seal.soprafs17.model.repository.*;
-import ch.uzh.ifi.seal.soprafs17.service.MoveService;
-import org.springframework.beans.factory.annotation.Autowired;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
+import org.hibernate.annotations.SourceType;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.transaction.Transactional;
 
 /**
- * Created by erion on 03.04.17.
+ * Created by erion on 05.04.17.
  */
 @Service
-public class AddStoneToShipRule extends RuleBook implements IRule {
+public class GetStoneRule extends RuleBook implements IRule{
 
-    public boolean supports(AMove move){
-        return move instanceof AddStoneToShipMove;
+
+    public boolean supports(AMove move) {
+        return move instanceof GetStoneMove;
     }
 
     @Override
     public void apply(Game game, AMove move) {
         if(supports(move)){
             Round round = move.getRound();
-            AddStoneToShipMove castedMove = (AddStoneToShipMove)move;
+            GetStoneMove castedMove = (GetStoneMove) move;
             castedMove.makeMove(game);
             round.getAMoves().add(move);
         }
     }
-
 }

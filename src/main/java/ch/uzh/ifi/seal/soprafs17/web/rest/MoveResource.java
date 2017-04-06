@@ -4,10 +4,12 @@ import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.GetStoneRule;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
@@ -56,7 +58,7 @@ public class MoveResource extends GenericResource {
     @Autowired
     RuleBook ruleBook;
     @Autowired
-    private ValidatorManager validatorManager;
+    ValidatorManager validatorManager;
 
 
     static final String CONTEXT = "/games";
@@ -71,7 +73,6 @@ public class MoveResource extends GenericResource {
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
-
     public String addStoneToShip(HttpServletResponse response, @PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
@@ -114,9 +115,8 @@ public class MoveResource extends GenericResource {
                 validationExceptionHandler(e,response);
                 return e.getMessage();
             }
-
             moveService.sailShip(game, move);
-            moveService.addStoneToTemple(siteBoardId, playerToken, gameId, shipId);
+            moveService.addStoneToTemple(game,move);
             siteBoardRepo.save(siteBoard);
             gameRepo.save(game);
             userRepo.save(user);
@@ -130,4 +130,28 @@ public class MoveResource extends GenericResource {
         }
     }
 
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/users", method = RequestMethod.POST)
+    public String getStones(HttpServletResponse response,@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken){
+        Game game = gameRepo.findOne(gameId);
+        User user = userRepo.findByToken(playerToken);
+        Round round = roundRepo.findById(roundId);
+        if(game != null && user != null && round != null){
+            GetStoneMove move = moveRepo.save(new GetStoneMove(user,round,game));
+            try{
+                validatorManager.validateSync(game,move);
+            } catch (ValidationException e){
+                validationExceptionHandler(e,response);
+                return e.getMessage();
+            }
+            moveService.getStone(game,move);
+            gameRepo.save(game);
+            roundRepo.save(round);
+            userRepo.save(user);
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return "OK";
+        }else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "NullException";
+        }
+    }
 }

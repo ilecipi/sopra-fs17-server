@@ -36,6 +36,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
+    @Column
+    private int SupplySled;
 
     @ManyToMany
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
@@ -110,5 +112,13 @@ public class User implements Serializable {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public int getSupplySled() {
+        return SupplySled;
+    }
+
+    public void setSupplySled(int supplySled) {
+        SupplySled = supplySled;
     }
 }

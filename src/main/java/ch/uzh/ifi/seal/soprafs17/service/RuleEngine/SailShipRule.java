@@ -7,6 +7,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-@Transactional
 public class SailShipRule extends RuleBook implements IRule {
 
     public boolean supports(AMove move){

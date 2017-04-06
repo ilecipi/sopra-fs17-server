@@ -10,7 +10,7 @@ import java.util.List;
 public class UserDTO {
     UserDTO(){}
 
-    public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color) {
+    public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color,int supplySled) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -19,6 +19,7 @@ public class UserDTO {
         this.games = games;
         this.moves = moves;
         this.color = color;
+        this.supplySled=supplySled;
     }
 
     public Long id;
@@ -29,4 +30,5 @@ public class UserDTO {
     public List<Long> games;
     public List<Long> moves;
     public String color;
+    public int supplySled;
 }
