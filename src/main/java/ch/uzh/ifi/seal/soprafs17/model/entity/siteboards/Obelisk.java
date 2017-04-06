@@ -27,21 +27,13 @@ public class Obelisk extends StoneBoard {
             this.maxPoints=10;
         }
     }
-    private int numberOfPlayers;
+
     @Transient
     public String getDiscriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private int numberOfPlayers;
 
     @Id
     @GeneratedValue
@@ -60,14 +52,6 @@ public class Obelisk extends StoneBoard {
 
     private final String Type = "endOfGame";
 
-    public Map<String, Integer> getObelisks() {
-        return obelisks;
-    }
-
-    public void setObelisks(Map<String, Integer> obelisks) {
-        this.obelisks = obelisks;
-    }
-
     @ElementCollection
     private Map<String,Integer> obelisks = new HashMap<String,Integer>(){{
         put("black",0);
@@ -75,6 +59,7 @@ public class Obelisk extends StoneBoard {
         put("brown",0);
         put("grey",0);
     }};
+
 
     public void addStone(Stone stone) {
         if(stone!=null){
@@ -279,6 +264,7 @@ public class Obelisk extends StoneBoard {
         return sortedMap;
     }
 
+
     private int getPoints(int stone) {
         int tmp = maxPoints;
         if(this.numberOfPlayers==4) {
@@ -310,16 +296,34 @@ public class Obelisk extends StoneBoard {
 
 
 
-    private boolean differentPoints(Map<String,Integer> checkMap){
-        for(Map.Entry<String,Integer> s : checkMap.entrySet()){
-            for(Map.Entry<String,Integer> c : checkMap.entrySet()){
-                if(!c.getKey().equals(s.getKey())){
+    private boolean differentPoints(Map<String,Integer> checkMap) {
+        for (Map.Entry<String, Integer> s : checkMap.entrySet()) {
+            for (Map.Entry<String, Integer> c : checkMap.entrySet()) {
+                if (!c.getKey().equals(s.getKey())) {
                     if (c.getValue().equals(s.getValue())) {
                         return false;
-                }
+                    }
                 }
             }
         }
         return true;
+    }
+    public Map<String, Integer> getObelisks() {
+        return obelisks;
+    }
+
+    public void setObelisks(Map<String, Integer> obelisks) {
+        this.obelisks = obelisks;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+
     }
 }

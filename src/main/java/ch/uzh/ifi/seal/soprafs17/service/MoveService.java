@@ -66,8 +66,10 @@ public class MoveService {
         User player = userRepo.findByToken(playerToken);
         AShip dockedShip = shipRepo.findById(shipId);
         if(player == game.getCurrentPlayer() /*&& temple.getDiscriminatorValue().equals("temple")*/){
-            for(Stone s :dockedShip.getStones()){
-                stoneBoard.addStone(s);
+            for(int i = dockedShip.getStones().length-1; i>=0;i--){
+                if(dockedShip.getStones()[i] != null){
+                    stoneBoard.addStone(dockedShip.getStones()[i]);
+                }
             }
             siteBoardRepo.save(stoneBoard);
             userRepo.save(player);
