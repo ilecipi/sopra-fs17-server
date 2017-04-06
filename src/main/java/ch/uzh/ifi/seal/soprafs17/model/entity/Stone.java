@@ -8,12 +8,12 @@ import java.io.Serializable;
 /**
  * Created by ilecipi on 10.03.17.
  */
-@Entity
+//@Entity
 public class Stone implements Serializable{
-
-    @Id
-    @GeneratedValue
-    private Long id;
+//
+//    @Id
+//    @GeneratedValue
+//    private Long id;
 
     private String color;
 
@@ -29,4 +29,5 @@ public class Stone implements Serializable{
         this.color = color;
     }
 
+    public Stone(){}
 }

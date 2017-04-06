@@ -3,15 +3,16 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.*;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * Created by erion on 21.03.17.
@@ -49,22 +50,61 @@ public class SiteBoardsService {
         return temple;
     }
 
-//    public void addStoneToTemple(Long templeId,Long playerId,Long gameId){
-//        Temple temple = templeRepo.findOne(templeId);
-//        Game game = gameRepo.findOne(gameId);
-//        User player = userRepo.findById(playerId);
-//        if(player == game.getCurrentPlayer()){
-//            Stone stone = new Stone(player.getColor());
-//            temple.addStone(stone);
-//            userRepo.save(player);
-//            game.findNextPlayer();
-//            int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
-//            game.setNextPlayer(game.getPlayers().get(index));
-//            gameRepo.save(game);
-//            gameRepo.save(game);
-//            templeRepo.save(temple);
-//        }
-//    }
+    public String addPyramid(Long gameId){
+        Game game = gameRepo.findOne(gameId);
+        StoneBoard pyramid = new Pyramid();
+        game.getSiteBoards().add(pyramid);
+        pyramid.setGame(game);
+        pyramid = siteBoardRepo.save(pyramid);
+        game = gameRepo.save(game);
+        return "/game/+gameId" + "/" + pyramid.getId();
+    }
+
+    public String addObelisk(Long gameId){
+        Game game = gameRepo.findOne(gameId);
+        StoneBoard obelisk = new Obelisk(game.getPlayers().size());
+        game.getSiteBoards().add(obelisk);
+        obelisk.setGame(game);
+        obelisk = siteBoardRepo.save(obelisk);
+        game = gameRepo.save(game);
+        return "/game/+gameId" + "/" + obelisk.getId();
+    }
+
+    public StoneBoard getObelisk(Long obeliskId){
+        return siteBoardRepo.findById(obeliskId);
+    }
+
+    public StoneBoard getPyramid(Long pyramidId){
+        return siteBoardRepo.findById(pyramidId);
+    }
+
+    public Map<String,Integer> getPyramidPoints(long pyramidId){
+        SiteBoard pyramid =siteBoardRepo.findById(pyramidId);
+        if(pyramid instanceof Pyramid){
+            return ((Pyramid) pyramid).countAfterMove();
+        }else{
+            throw new NullException();
+        }
+    }
+
+    public Map<String,Integer> getObeliskPoints(long obeliskId){
+        SiteBoard obelisk =siteBoardRepo.findById(obeliskId);
+        if(obelisk instanceof Obelisk){
+            return ((Obelisk) obelisk).countEndOfGame();
+        }else{
+            throw new NullException();
+        }
+    }
+
+    public Map<String,Integer> getTemplePoints(long templeId){
+        SiteBoard temple =siteBoardRepo.findById(templeId);
+        if(temple instanceof Temple){
+            return ((Temple) temple).countEndOfRound();
+        }else{
+            throw new NullException();
+        }
+    }
+
 
 
 }

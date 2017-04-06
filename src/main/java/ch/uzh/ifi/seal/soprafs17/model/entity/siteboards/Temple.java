@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,9 +36,7 @@ public class Temple extends StoneBoard implements Serializable {
     @Column
     int addedStones=0;
 
-    @JsonIgnore
-    @OneToOne
-    private Game game;
+    private final String type = "endOfRound";
 
 
     public Game getGame() {
@@ -78,17 +77,24 @@ public class Temple extends StoneBoard implements Serializable {
 
 
     @Override
-    public Map<Long, Integer> countAfterMove() {
+    public Map<String, Integer> countAfterMove() {
+
         return null;
     }
 
     @Override
-    public Map<Long, Integer> countEndOfRound() {
-        return null;
+    public Map<String, Integer> countEndOfRound() {
+        Map<String, Integer> points = fillPoints();
+        for(Stone s : stones){
+            if(s!=null){
+                points.put(s.getColor(),1);
+            }
+        }
+        return points;
     }
 
     @Override
-    public Map<Long, Integer> countEndOfGame() {
+    public Map<String, Integer> countEndOfGame() {
         return null;
     }
 
@@ -101,5 +107,14 @@ public class Temple extends StoneBoard implements Serializable {
         }else {
             stones[addedStones++] = stone;
         }
+    }
+
+    private HashMap<String, Integer> fillPoints() {
+        return new HashMap<String,Integer>(){{
+            put("black",0);
+            put("grey",0);
+            put("white",0);
+            put("brown",0);
+        }};
     }
 }

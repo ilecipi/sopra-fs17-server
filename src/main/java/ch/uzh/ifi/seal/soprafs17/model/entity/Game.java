@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.ships.FourSeatedShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
+import ch.uzh.ifi.seal.soprafs17.model.entity.StoneQuarry;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -67,6 +68,16 @@ public class Game implements Serializable {
 	@OneToMany
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private List<SiteBoard> siteBoards;
+
+	private StoneQuarry stoneQuarry;
+
+	public void setStoneQuarry(StoneQuarry stoneQuarry){
+		this.stoneQuarry = stoneQuarry;
+	}
+
+	public StoneQuarry getStoneQuarry(){
+		return stoneQuarry;
+	}
 
 	public Map<Integer, Integer[]> getShipsCards() {
 		return shipsCards;
