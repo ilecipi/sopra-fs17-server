@@ -9,7 +9,7 @@ public interface Countable {
 
     Map<String, Integer> countAfterMove();
     Map<String,Integer> countEndOfRound();
-    Map<Long,Integer> countEndOfGame();
+    Map<String,Integer> countEndOfGame();
 
 
 

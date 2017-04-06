@@ -98,9 +98,9 @@ public class Pyramid extends StoneBoard {
     private HashMap<String, Integer> fillPoints() {
         return new HashMap<String,Integer>(){{
             put("black",0);
-            put("grey",0);
             put("white",0);
             put("brown",0);
+            put("grey",0);
         }};
     }
 
@@ -110,7 +110,7 @@ public class Pyramid extends StoneBoard {
     }
 
     @Override
-    public Map<Long, Integer> countEndOfGame() {
+    public Map<String, Integer> countEndOfGame() {
         return null;
     }
 

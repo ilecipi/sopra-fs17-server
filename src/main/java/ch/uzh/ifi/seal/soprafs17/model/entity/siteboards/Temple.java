@@ -94,7 +94,7 @@ public class Temple extends StoneBoard implements Serializable {
     }
 
     @Override
-    public Map<Long, Integer> countEndOfGame() {
+    public Map<String, Integer> countEndOfGame() {
         return null;
     }
 

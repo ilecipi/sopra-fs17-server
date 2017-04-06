@@ -3,10 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.*;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
@@ -63,6 +60,20 @@ public class SiteBoardsService {
         return "/game/+gameId" + "/" + pyramid.getId();
     }
 
+    public String addObelisk(Long gameId){
+        Game game = gameRepo.findOne(gameId);
+        StoneBoard obelisk = new Obelisk(game.getPlayers().size());
+        game.getSiteBoards().add(obelisk);
+        obelisk.setGame(game);
+        obelisk = siteBoardRepo.save(obelisk);
+        game = gameRepo.save(game);
+        return "/game/+gameId" + "/" + obelisk.getId();
+    }
+
+    public StoneBoard getObelisk(Long obeliskId){
+        return siteBoardRepo.findById(obeliskId);
+    }
+
     public StoneBoard getPyramid(Long pyramidId){
         return siteBoardRepo.findById(pyramidId);
     }
@@ -71,6 +82,15 @@ public class SiteBoardsService {
         SiteBoard pyramid =siteBoardRepo.findById(pyramidId);
         if(pyramid instanceof Pyramid){
             return ((Pyramid) pyramid).countAfterMove();
+        }else{
+            throw new NullException();
+        }
+    }
+
+    public Map<String,Integer> getObeliskPoints(long obeliskId){
+        SiteBoard obelisk =siteBoardRepo.findById(obeliskId);
+        if(obelisk instanceof Obelisk){
+            return ((Obelisk) obelisk).countEndOfGame();
         }else{
             throw new NullException();
         }
