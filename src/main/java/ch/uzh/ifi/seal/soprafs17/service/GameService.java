@@ -114,6 +114,7 @@ public class GameService {
                 siteBoardsService.addTemple(game.getId());
                 siteBoardsService.addPyramid(game.getId());
                 siteBoardsService.addObelisk(game.getId());
+                siteBoardsService.AddBurialChamber(game.getId());
                 game.initShipsCards();
                 game=gameRepo.save(game);
                 roundService.addRounds(game.getId());

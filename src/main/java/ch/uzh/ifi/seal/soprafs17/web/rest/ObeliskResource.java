@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.ObeliskDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Obelisk;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
@@ -35,7 +36,7 @@ public class ObeliskResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/obelisk")
     @ResponseStatus(HttpStatus.OK)
-    public StoneBoard getObelisk(@PathVariable Long gameId) {
+    public ObeliskDTO getObelisk(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
         Obelisk obelisk = null;
         if (!siteBoards.isEmpty()) {
@@ -45,7 +46,8 @@ public class ObeliskResource {
                 }
             }
         }
-        return obelisk;
+        ObeliskDTO obeliskDTO = new ObeliskDTO(obelisk.getId(),obelisk.getObelisks(),obelisk.isOccupied());
+        return obeliskDTO;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/obelisk/points")

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,9 +22,6 @@ import java.util.Map;
 @Service
 @Transactional
 public class SiteBoardsService {
-
-//    @Autowired
-//    private TempleRepository templeRepo;
 
     @Autowired
     private SiteBoardRepository siteBoardRepo;
@@ -68,6 +67,19 @@ public class SiteBoardsService {
         obelisk = siteBoardRepo.save(obelisk);
         game = gameRepo.save(game);
         return "/game/+gameId" + "/" + obelisk.getId();
+    }
+
+    public String AddBurialChamber(Long gameId){
+        Game game = gameRepo.findOne(gameId);
+        List<Stone> firstRow = new ArrayList<>();
+        List<Stone> secondRow = new ArrayList<>();
+        List<Stone> thirdRow = new ArrayList<>();
+        StoneBoard burialChamber = new BurialChamber();
+        game.getSiteBoards().add(burialChamber);
+        burialChamber.setGame(game);
+        burialChamber = siteBoardRepo.save(burialChamber);
+        game=gameRepo.save(game);
+        return "/game/+gameId" + "/" + burialChamber.getId();
     }
 
     public StoneBoard getObelisk(Long obeliskId){

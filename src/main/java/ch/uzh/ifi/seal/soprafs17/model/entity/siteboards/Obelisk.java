@@ -14,45 +14,18 @@ import java.util.*;
 @DiscriminatorValue("obelisk")
 public class Obelisk extends StoneBoard {
 
-    public Obelisk(){
-    }
-
-    public Obelisk(int numberOfPlayers){
-        this.numberOfPlayers = numberOfPlayers;
-    }
-    int numberOfPlayers;
     @Transient
     public String getDiscriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+    int numberOfPlayers;
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @JsonIgnore
-    @OneToOne
-    private Game game;
-
     private final String Type = "endOfGame";
-
-    public Map<String, Integer> getObelisks() {
-        return obelisks;
-    }
-
-    public void setObelisks(Map<String, Integer> obelisks) {
-        this.obelisks = obelisks;
-    }
 
     @ElementCollection
     private Map<String,Integer> obelisks = new HashMap<String,Integer>(){{
@@ -61,6 +34,13 @@ public class Obelisk extends StoneBoard {
         put("brown",0);
         put("grey",0);
     }};
+
+    public Obelisk(){
+    }
+
+    public Obelisk(int numberOfPlayers){
+        this.numberOfPlayers = numberOfPlayers;
+    }
 
     public void addStone(Stone stone) {
         if(stone!=null){
@@ -121,5 +101,22 @@ public class Obelisk extends StoneBoard {
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEach(x -> sortedMap.put(x.getKey(), x.getValue()));
         return sortedMap;
+    }
+    public Map<String, Integer> getObelisks() {
+        return obelisks;
+    }
+
+    public void setObelisks(Map<String, Integer> obelisks) {
+        this.obelisks = obelisks;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }
