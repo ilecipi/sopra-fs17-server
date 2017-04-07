@@ -17,6 +17,8 @@ public class Stone implements Serializable{
 
     private String color;
 
+    private boolean counted;
+
     public Stone(String color) {
         this.color = color;
     }
@@ -30,4 +32,13 @@ public class Stone implements Serializable{
     }
 
     public Stone(){}
+
+    public boolean isCounted() {
+        return counted;
+    }
+
+    public void setCounted() {
+        this.counted = true;
+    }
+
 }
