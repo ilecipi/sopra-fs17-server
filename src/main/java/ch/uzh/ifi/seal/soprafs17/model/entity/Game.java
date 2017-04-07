@@ -157,6 +157,8 @@ public class Game implements Serializable {
 		int indexOfNextPlayer = (indexOfCurrentPlayer + 1) % getPlayers().size();
 		setCurrentPlayer(getPlayers().get(indexOfNextPlayer));
 		setNextPlayer(getPlayers().get(indexOfNextPlayer % getPlayers().size()));
+		int index = (this.getPlayers().lastIndexOf(this.getCurrentPlayer()) + 1) % this.getPlayers().size();
+		this.setNextPlayer(this.getPlayers().get(index));
 
 		return currentPlayer;
 	}

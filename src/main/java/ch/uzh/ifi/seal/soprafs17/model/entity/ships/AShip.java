@@ -88,7 +88,7 @@ public abstract class AShip implements IShip, Serializable {
 
     @Override
     public boolean isReady() {
-        if(this.addedStones==this.getMinStones()){
+        if(this.addedStones==this.getMinStones()||this.addedStones==this.getMaxStones()){
             return true;
         }else{
             return false;

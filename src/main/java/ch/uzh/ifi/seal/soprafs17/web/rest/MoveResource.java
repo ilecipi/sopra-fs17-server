@@ -95,7 +95,7 @@ public class MoveResource extends GenericResource {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
-        SiteBoard siteBoard = moveService.findSiteboardsByType(siteBoardsType,gameId);
+        SiteBoard siteBoard = moveService.findSiteboardsByType(siteBoardsType.toLowerCase(),gameId);
         Round round = roundRepo.findById(roundId);
         if (game != null && user != null && ship != null && siteBoard != null && round != null) {
             SailShipMove move =new SailShipMove(game, user, ship, round, siteBoard);
