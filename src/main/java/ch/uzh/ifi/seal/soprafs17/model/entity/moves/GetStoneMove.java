@@ -35,22 +35,24 @@ public class GetStoneMove extends AMove{
 
     public Game getStones(Game game){
         int toAddStone;
-        if(super.getUser().getSupplySled() == 5 || game.getStoneQuarry().canGetStone(super.getUser().getColor())){
+        if(super.getUser().getSupplySled() == 5){
             //TODO:Return throw an exception(Player cannot get stones
+
+        }else {
+         if (super.getUser().getSupplySled() == 0) {
+                toAddStone = 3;
+                super.getUser().setSupplySled(toAddStone);
+            } else if (super.getUser().getSupplySled() == 1) {
+                toAddStone = 4;
+                super.getUser().setSupplySled(toAddStone);
+            } else {
+                toAddStone = 5;
+                super.getUser().setSupplySled(toAddStone);
+            }
+            game.findNextPlayer();
+            int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
+            game.setNextPlayer(game.getPlayers().get(index));
         }
-        else if(super.getUser().getSupplySled() == 0) {
-            toAddStone = 3;
-            super.getUser().setSupplySled(toAddStone);
-        }else if(super.getUser().getSupplySled() == 1){
-            toAddStone = 4;
-            super.getUser().setSupplySled(toAddStone);
-        }else{
-            toAddStone = 5;
-            super.getUser().setSupplySled(toAddStone);
-        }
-        game.findNextPlayer();
-        int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
-        game.setNextPlayer(game.getPlayers().get(index));
         return game;
     }
     @Override

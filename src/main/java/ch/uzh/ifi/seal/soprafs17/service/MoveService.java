@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by erion on 29.03.17.
  */
@@ -84,5 +86,17 @@ public class MoveService {
         }
     public void getStone(Game game,AMove move){
         ruleBook.applyRule(game,move);
+    }
+    public SiteBoard findSiteboardsByType(String siteBoardType,Long gameId){
+        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
+        SiteBoard siteBoard= null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals(siteBoardType)) {
+                    siteBoard=s;
+                }
+            }
+        }
+        return siteBoard;
     }
 }

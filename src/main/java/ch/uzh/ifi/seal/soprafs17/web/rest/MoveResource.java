@@ -9,7 +9,6 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.GetStoneRule;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
@@ -29,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class MoveResource extends GenericResource {
 
+    static final String CONTEXT = "/games";
     @Autowired
     ShipService shipService;
     @Autowired
@@ -52,9 +52,6 @@ public class MoveResource extends GenericResource {
     @Autowired
     ValidatorManager validatorManager;
 
-
-    static final String CONTEXT = "/games";
-
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
@@ -71,20 +68,20 @@ public class MoveResource extends GenericResource {
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
         if (game != null && user != null && ship != null && round != null) {
-            AddStoneToShipMove move = moveRepo.save(new AddStoneToShipMove(game, user, ship, position, round));
+            AddStoneToShipMove move =new AddStoneToShipMove(game, user, ship, position, round);
             try {
                 validatorManager.validateSync(game, move);
+                moveRepo.save(move);
             } catch (ValidationException e) {
-                validationExceptionHandler(e, response);
+                validationExceptionHandler(e,response);
                 return e.getMessage();
             }
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
             moveService.addStoneToShip(game, move);
-
             gameRepo.save(game);
             userRepo.save(user);
             shipRepo.save(ship);
             roundRepo.save(round);
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -92,23 +89,25 @@ public class MoveResource extends GenericResource {
         }
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}/siteboards/{siteBoardId}", method = RequestMethod.POST)
-    public String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long siteBoardId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken) {
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.PUT)
+    public String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken,
+                           @RequestParam("siteBoardsType") String siteBoardsType) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
-        SiteBoard siteBoard = siteBoardRepo.findById(siteBoardId);
+        SiteBoard siteBoard = moveService.findSiteboardsByType(siteBoardsType,gameId);
         Round round = roundRepo.findById(roundId);
         if (game != null && user != null && ship != null && siteBoard != null && round != null) {
-            SailShipMove move = moveRepo.save(new SailShipMove(game, user, ship, round, siteBoard));
+            SailShipMove move =new SailShipMove(game, user, ship, round, siteBoard);
             try {
                 validatorManager.validateSync(game, move);
+                moveRepo.save(move);
             } catch (ValidationException e) {
                 validationExceptionHandler(e,response);
                 return e.getMessage();
             }
             moveService.sailShip(game, move);
-            moveService.addStoneToSiteBoard(siteBoardId, playerToken, gameId, shipId);
+            moveService.addStoneToSiteBoard(siteBoard.getId(),playerToken,gameId,shipId);
             siteBoardRepo.save(siteBoard);
             gameRepo.save(game);
             userRepo.save(user);
@@ -128,9 +127,10 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         Round round = roundRepo.findById(roundId);
         if(game != null && user != null && round != null){
-            GetStoneMove move = moveRepo.save(new GetStoneMove(user,round,game));
+            GetStoneMove move =new GetStoneMove(user,round,game);
             try{
                 validatorManager.validateSync(game,move);
+                moveRepo.save(move);
             } catch (ValidationException e){
                 validationExceptionHandler(e,response);
                 return e.getMessage();

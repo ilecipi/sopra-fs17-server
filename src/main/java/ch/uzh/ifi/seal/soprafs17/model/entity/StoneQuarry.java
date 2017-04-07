@@ -36,7 +36,7 @@ public class StoneQuarry implements Serializable{
     }
 
     public boolean canGetStone(String color){
-        if((color == "black" || color == "white" || color == "brown" || color == "grey") && availableStones.get(color)>=0){
+        if(color.equals("black") || color.equals("white") || color.equals("brown") || color.equals("grey") && availableStones.get(color)>=0){
             stone.setColor(color);
             availableStones.put(color, availableStones.get(color)-1);
             return true;

@@ -37,7 +37,6 @@ public class RuleBook {
     }
 
     public void apply(Game game, AMove move) {
-        System.out.println(rules.size());
         for(IRule rule:rules){
             if(rule.supports(move)){
                 if(move instanceof GetStoneMove){
