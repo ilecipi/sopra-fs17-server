@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.BurialChamberDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.BurialChamber;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Obelisk;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by erion on 06.04.17.
@@ -35,7 +37,7 @@ public class BurialChamberResource {
         BurialChamber burialChamber=null;
         if(!siteBoards.isEmpty()){
             for(SiteBoard s: siteBoards){
-                if(s.getDiscriminatorValue().equals("burialChamber")){
+                if(s.getDiscriminatorValue().equals("burialchamber")){
                     burialChamber=(BurialChamber)s;
                 }
             }
@@ -45,5 +47,19 @@ public class BurialChamberResource {
         return burialChamberDTO;
     }
 
+    @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber/points")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String,Integer> getObeliskPoints(@PathVariable Long gameId) {
+        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
+        BurialChamber burialChamber = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("burialchamber")) {
+                    burialChamber = (BurialChamber) s;
+                }
+            }
+        }
+        return siteBoardsService.getBurialChamberPoints(burialChamber.getId());
+    }
 
 }

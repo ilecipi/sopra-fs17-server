@@ -69,11 +69,11 @@ public class SiteBoardsService {
         return "/game/+gameId" + "/" + obelisk.getId();
     }
 
-    public String AddBurialChamber(Long gameId){
+    public String addBurialChamber(Long gameId){
         Game game = gameRepo.findOne(gameId);
-        List<Stone> firstRow = new ArrayList<>();
-        List<Stone> secondRow = new ArrayList<>();
-        List<Stone> thirdRow = new ArrayList<>();
+//        List<Stone> firstRow = new ArrayList<>();
+//        List<Stone> secondRow = new ArrayList<>();
+//        List<Stone> thirdRow = new ArrayList<>();
         StoneBoard burialChamber = new BurialChamber();
         game.getSiteBoards().add(burialChamber);
         burialChamber.setGame(game);
@@ -112,6 +112,15 @@ public class SiteBoardsService {
         SiteBoard temple =siteBoardRepo.findById(templeId);
         if(temple instanceof Temple){
             return ((Temple) temple).countEndOfRound();
+        }else{
+            throw new NullException();
+        }
+    }
+
+    public Map<String,Integer> getBurialChamberPoints(long burialChamberId){
+        SiteBoard burialChamber =siteBoardRepo.findById(burialChamberId);
+        if(burialChamber instanceof BurialChamber){
+            return ((BurialChamber) burialChamber).countEndOfGame();
         }else{
             throw new NullException();
         }

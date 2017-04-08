@@ -62,6 +62,17 @@ public class Game implements Serializable {
 		put("grey", false);
 	}};
 
+	public Map<String, Integer> getPoints() {
+		return points;
+	}
+
+	public void setPoints(Map<String, Integer> points) {
+		this.points = points;
+	}
+
+	@ElementCollection
+	private Map<String, Integer> points = new HashMap<String, Integer>();
+
 	@ManyToMany(mappedBy = "games")
 	private List<User> players;
 
