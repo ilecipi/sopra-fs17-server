@@ -47,7 +47,7 @@ public class BurialChamberResource {
         return burialChamberDTO;
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/burialC    hamber/points")
+    @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber/points")
     @ResponseStatus(HttpStatus.OK)
     public Map<String,Integer> getObeliskPoints(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();

@@ -116,6 +116,9 @@ public class GameService {
                 siteBoardsService.addObelisk(game.getId());
                 siteBoardsService.addBurialChamber(game.getId());
                 game.initShipsCards();
+                //TODO: DELETE TESTING BEFORE DEADLINE
+                //for testing
+                Random rn = new Random();
                 game=gameRepo.save(game);
                 roundService.addRounds(game.getId());
                 //add a round to the game
@@ -124,6 +127,7 @@ public class GameService {
                 game.setStatus(GameStatus.RUNNING);
                 int initStones=2;
                 for (User u : game.getPlayers()) {
+                    game.getPoints().put(u.getColor(),/*0*/rn.nextInt(100) );
                     u.setStatus(UserStatus.IS_PLAYING);
                     u.setSupplySled(initStones++);
                     userRepo.save(u);

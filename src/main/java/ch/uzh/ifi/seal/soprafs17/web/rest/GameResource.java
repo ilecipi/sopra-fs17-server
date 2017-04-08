@@ -97,11 +97,11 @@ public class GameResource extends GenericResource {
                 }
                 if(g.getNextPlayer()!=null) {
                     gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId));
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId,g.getPoints()));
                 }
                 else{
                     gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId));
+                            null, roundsId, playersDTO, siteBoardsId,g.getPoints()));
                 }
             }
             return gamesDTO;
@@ -133,36 +133,38 @@ public class GameResource extends GenericResource {
     public GameDTO getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
         Game g  = gameService.getGame(gameId);
-        List<Long> roundsId = new ArrayList<>();
-        List<Long> playersId = new ArrayList<>();
-        List<Long> siteBoardsId = new ArrayList<>();
-        List<UserDTO> playersDTO = new ArrayList<>();
-        for (Round r : g.getRounds()) {
-            roundsId.add(r.getId());
-        }
-        for (User u : g.getPlayers()) {
-            List<Long> playerGamesDTO = new ArrayList<>();
-            for(Game pg : u.getGames()){
-                playerGamesDTO.add(pg.getId());
+        if(g!=null) {
+            List<Long> roundsId = new ArrayList<>();
+            List<Long> playersId = new ArrayList<>();
+            List<Long> siteBoardsId = new ArrayList<>();
+            List<UserDTO> playersDTO = new ArrayList<>();
+            for (Round r : g.getRounds()) {
+                roundsId.add(r.getId());
             }
-            List<Long> playerMovesDTO = new ArrayList<>();
-            for(AMove pm : u.getAMoves()){
-                playerMovesDTO.add(pm.getId());
+            for (User u : g.getPlayers()) {
+                List<Long> playerGamesDTO = new ArrayList<>();
+                for (Game pg : u.getGames()) {
+                    playerGamesDTO.add(pg.getId());
+                }
+                List<Long> playerMovesDTO = new ArrayList<>();
+                for (AMove pm : u.getAMoves()) {
+                    playerMovesDTO.add(pm.getId());
+                }
+
+                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled()));
             }
-
-            playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor(),u.getSupplySled()));
+            for (SiteBoard s : g.getSiteBoards()) {
+                siteBoardsId.add(s.getId());
+            }
+            if (g.getNextPlayer() != null) {
+                return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                        g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints());
+            } else {
+                return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                        null, roundsId, playersDTO, siteBoardsId, g.getPoints());
+            }
         }
-        for (SiteBoard s : g.getSiteBoards()) {
-            siteBoardsId.add(s.getId());
-        }
-        if(g.getNextPlayer()!=null) {
-            return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                    g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId);
-        }else{
-            return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                    null, roundsId, playersDTO, siteBoardsId);
-        }
-
+        return null;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
