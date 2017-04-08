@@ -110,7 +110,6 @@ public class BurialChamber extends StoneBoard implements Serializable{
         Stone[][] burialChamber = new Stone[3][8];
         burialChamber = initializeBurialChamberArray(burialChamber);
         for (String c : colors) {
-            System.out.println(c);
             int connectedStones = 0;
             int oneStoneField=0;
             for (int j = 0; j < 8; j++) {
