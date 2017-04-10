@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.RoundDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -40,13 +41,17 @@ public class RoundResource {
             for(Round r : rounds){
                 List<Long> movesId = new ArrayList<>();
                 List<Long> shipsId = new ArrayList<>();
+                List<Long> marketCardsId = new ArrayList<>();
                 for(AMove m : r.getAMoves()){
                     movesId.add(m.getId());
                 }
                 for(AShip s : r.getShips()){
                     shipsId.add(s.getId());
                 }
-                roundsDTO.add(new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId));
+                for(AMarketCard m : r.getMarketCards()){
+                    marketCardsId.add(m.getId());
+                }
+                roundsDTO.add(new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId));
             }
             return roundsDTO;
         }
@@ -58,13 +63,17 @@ public class RoundResource {
              Round r = RoundService.getSpecificRound(roundId);
              List<Long> movesId = new ArrayList<>();
              List<Long> shipsId = new ArrayList<>();
+             List<Long> marketCardsId = new ArrayList<>();
              for(AMove m : r.getAMoves()){
                  movesId.add(m.getId());
              }
              for(AShip s : r.getShips()){
                  shipsId.add(s.getId());
              }
-             return new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId);
+             for(AMarketCard m : r.getMarketCards()){
+                 marketCardsId.add(m.getId());
+             }
+             return new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId);
 
          }
 

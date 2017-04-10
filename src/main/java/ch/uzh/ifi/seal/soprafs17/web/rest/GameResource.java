@@ -97,11 +97,11 @@ public class GameResource extends GenericResource {
                 }
                 if(g.getNextPlayer()!=null) {
                     gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId,g.getPoints()));
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId,g.getPoints(), g.getMarketCards()));
                 }
                 else{
                     gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId,g.getPoints()));
+                            null, roundsId, playersDTO, siteBoardsId,g.getPoints(),g.getMarketCards()));
                 }
             }
             return gamesDTO;
@@ -158,10 +158,10 @@ public class GameResource extends GenericResource {
             }
             if (g.getNextPlayer() != null) {
                 return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                        g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints());
+                        g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),g.getMarketCards());
             } else {
                 return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                        null, roundsId, playersDTO, siteBoardsId, g.getPoints());
+                        null, roundsId, playersDTO, siteBoardsId, g.getPoints(),g.getMarketCards());
             }
         }
         return null;

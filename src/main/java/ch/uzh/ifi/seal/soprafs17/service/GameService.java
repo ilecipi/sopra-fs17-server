@@ -116,6 +116,8 @@ public class GameService {
                 siteBoardsService.addObelisk(game.getId());
                 siteBoardsService.addBurialChamber(game.getId());
                 game.initShipsCards();
+                game.initMarketCards();
+
                 //TODO: DELETE TESTING BEFORE DEADLINE
                 //for testing
                 Random rn = new Random();

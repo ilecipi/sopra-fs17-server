@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -58,6 +59,18 @@ public class Round implements Serializable{
     @OneToMany
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AShip> ships;
+
+    public List<AMarketCard> getMarketCards() {
+        return marketCards;
+    }
+
+    public void setMarketCards(List<AMarketCard> marketCards) {
+        this.marketCards = marketCards;
+    }
+
+    @OneToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<AMarketCard> marketCards;
 
 
     public Long getId() {

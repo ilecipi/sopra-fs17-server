@@ -2,8 +2,10 @@ package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.*;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class RoundService {
 
     @Autowired
     private RoundRepository roundRepository;
+
+    @Autowired
+    private MarketCardRepository marketCardRepository;
 
     @Autowired
     public RoundService(RoundRepository roundRepository) {
@@ -106,6 +111,44 @@ public class RoundService {
 
             }
         }
+        round.setMarketCards(new ArrayList<AMarketCard>());
+        Map<Integer,String> marketCards = game.getMarketCards();
+        int selectMarketCard;
+
+        for(int i=0;i<4;i++){
+           int toTake = marketCards.size()-1;
+           String card = marketCards.remove(toTake);
+           if(card.equals("PAVED_PATH")){
+               round.getMarketCards().add(marketCardRepository.save(new PavedPath()));
+           }else if(card.equals("SARCOPHAGUS")) {
+               round.getMarketCards().add(marketCardRepository.save(new Sarcophagus()));
+           }else if(card.equals("ENTRANCE")) {
+               round.getMarketCards().add(marketCardRepository.save(new Entrance()));
+           }else if(card.equals("PYRAMID_DECORATION")) {
+               round.getMarketCards().add(marketCardRepository.save(new PyramidDecoration()));
+           }else if(card.equals("TEMPLE_DECORATION")) {
+               round.getMarketCards().add(marketCardRepository.save(new TempleDecoration()));
+           }else if(card.equals("BURIAL_CHAMBER_DECORATION")) {
+               round.getMarketCards().add(marketCardRepository.save(new BurialChamberDecoration()));
+           }else if(card.equals("OBELISK_DECORATION")) {
+               round.getMarketCards().add(marketCardRepository.save(new ObeliskDecoration()));
+           }else if(card.equals("STATUE")) {
+               round.getMarketCards().add(marketCardRepository.save(new Statue()));
+           }else if(card.equals("SAIL")) {
+               round.getMarketCards().add(marketCardRepository.save(new Sail()));
+           }else if(card.equals("CHISEL")) {
+               round.getMarketCards().add(marketCardRepository.save(new Chisel()));
+           }else if(card.equals("HAMMER")) {
+               round.getMarketCards().add(marketCardRepository.save(new Hammer()));
+           }else if(card.equals("SAIL")) {
+               round.getMarketCards().add(marketCardRepository.save(new Sail()));
+           }else{
+               throw new NullException();
+           }
+            round = roundRepository.save(round);
+            game=gameRepository.save(game);
+        }
+
 
         game.getRounds().add(round);
         gameRepository.save(game);

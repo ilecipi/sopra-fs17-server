@@ -13,7 +13,7 @@ import java.util.*;
 @Entity
 @DiscriminatorValue("pyramid")
 public class Pyramid extends StoneBoard {
-
+    public Pyramid(){}
     @Override
     public Long getId() {
         return id;

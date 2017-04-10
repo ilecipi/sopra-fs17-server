@@ -1,12 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.FourSeatedShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
-import ch.uzh.ifi.seal.soprafs17.model.entity.StoneQuarry;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -97,6 +92,18 @@ public class Game implements Serializable {
 	@JsonIgnore
 	@ElementCollection
 	private Map<Integer, Integer[]> shipsCards;
+
+	public Map<Integer, String> getMarketCards() {
+		return marketCards;
+	}
+
+	public void setMarketCards(Map<Integer, String> marketCards) {
+		this.marketCards = marketCards;
+	}
+
+	@ElementCollection
+	private Map<Integer, String> marketCards;
+
 
 	public List<SiteBoard> getSiteBoards() {
 		return siteBoards;
@@ -231,9 +238,46 @@ public class Game implements Serializable {
 			this.shipsCards.remove(cardToDelete);
 		}
 	}
-//
-//	public SiteBoard getTemple(){
-//		return siteBoards.get(0);
-//	}
+
+	public void initMarketCards(){
+		Map<Integer,String> ordered = new HashMap<Integer,String>(){{
+			put(0,"PAVED_PATH");
+			put(1,"PAVED_PATH");
+			put(2,"SARCOPHAGUS");
+			put(3,"SARCOPHAGUS");
+			put(4,"ENTRANCE");
+			put(5,"ENTRANCE");
+			put(6,"PYRAMID_DECORATION");
+			put(7,"PYRAMID_DECORATION");
+			put(8,"TEMPLE_DECORATION");
+			put(9,"TEMPLE_DECORATION");
+			put(10,"BURIAL_CAHMBER_DECORATION");
+			put(11,"BURIAL_CAHMBER_DECORATION");
+			put(12,"OBELISK_DECORATION");
+			put(13,"OBELISK_DECORATION");
+			for(int i=0;i<10;i++) {
+				put(i+14,"STATUE");
+			}
+			put(24,"SAIL");
+			put(25,"CHISEL");
+			put(26,"CHISEL");
+			put(27,"CHISEL");
+			put(28,"LEVER");
+			put(29,"LEVER");
+			put(30,"HAMMER");
+			put(31,"HAMMER");
+			put(32,"SAIL");
+			put(33,"SAIL");}};
+
+			List<Integer> keys = new ArrayList(ordered.keySet());
+			Collections.shuffle(keys);
+			int counter = 0;
+			for (Integer o : keys) {
+				// Access keys/values in a random order
+
+				marketCards.put(counter++,ordered.get(o));
+			}
+	}
+
 
 }

@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
  * Created by tonio99tv on 10/04/17.
  */
 @Entity
-@DiscriminatorValue("chinsel")
+@DiscriminatorValue("chisel")
 public class Chisel extends AMarketCard implements MCAction {
     @Id
     @GeneratedValue
