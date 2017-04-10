@@ -8,14 +8,18 @@ import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -29,8 +33,8 @@ import static org.junit.Assert.assertNotNull;
 public class UserServiceTest {
 
 
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -39,10 +43,10 @@ public class UserServiceTest {
 
     @Test
     public void createUser() {
-//        Assert.assertNull(userRepository.findByToken("t123"));
+        Assert.assertNull(userRepository.findByToken("t123"));
         User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
-//        assertNotNull(userRepository.findByToken("t123"));
-//        Assert.assertEquals(userRepository.findByToken("t123"), user);
+        assertNotNull(userRepository.findByToken("t123"));
+        Assert.assertEquals(userRepository.findByToken("t123").getToken(), user.getToken());
     }
 
 //    @Test

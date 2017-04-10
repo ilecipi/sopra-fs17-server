@@ -16,8 +16,7 @@ import java.util.List;
 /**
  * Service class for managing users.
  */
-@Service
-@Transactional
+@Service("userService")
 public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
