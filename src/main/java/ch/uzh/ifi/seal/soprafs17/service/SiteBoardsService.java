@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by erion on 21.03.17.
  */
-@Service
+@Service("siteBoardsService")
 @Transactional
 public class SiteBoardsService {
 

@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by tonio99tv on 04/04/17.
  */
 
-@Service
+@Service("scoreTrackingBoardsService")
 @Transactional
 public class ScoreTrackingBoardService {
 

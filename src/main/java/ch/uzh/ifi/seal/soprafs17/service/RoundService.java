@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Created by ilecipi on 27.03.17.
  */
-@Service
+@Service("roundService")
 @Transactional
 public class RoundService {
 

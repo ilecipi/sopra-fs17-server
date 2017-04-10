@@ -23,7 +23,7 @@ import java.util.Random;
  * Created by ilecipi on 22.03.17.
  */
 
-@Service
+@Service("shipService")
 @Transactional
 public class ShipService {
 

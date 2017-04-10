@@ -23,7 +23,7 @@ import java.util.Random;
 /**
  * Created by erion on 13.03.17.
  */
-@Service
+@Service("gameService")
 @Transactional
 public class GameService {
 

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Service class for managing users.
  */
-@Service
+@Service("userService")
 @Transactional
 public class UserService {
 

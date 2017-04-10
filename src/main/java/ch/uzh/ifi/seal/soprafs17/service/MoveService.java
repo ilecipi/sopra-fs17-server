@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by erion on 29.03.17.
  */
-@Service
+@Service("moveService")
 @Transactional
 public class MoveService {
 
