@@ -26,32 +26,31 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@Transactional
 public class UserServiceTest {
 
 
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
-//
+
     private List<Game> games;
-//
-//    @Test
-//    public void createUser() {
-//        Assert.assertNull(userRepository.findByToken("t123"));
-//        User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
-//        assertNotNull(userRepository.findByToken("t123"));
-//        Assert.assertEquals(userRepository.findByToken("t123"), user);
-//    }
-//
+
     @Test
-    public void deleteUser() {
+    public void createUser() {
+        Assert.assertNull(userRepository.findByToken("t123"));
         User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
-        userService.deleteUser(user.getId());
-        Assert.assertNull(userService.getUser(user.getId()));
+        assertNotNull(userRepository.findByToken("t123"));
+        Assert.assertEquals(userRepository.findByToken("t123"), user);
     }
+
+//    @Test
+//    public void deleteUser() {
+//        User user = userService.createUser("testName", "testUsername", "t123", UserStatus.ONLINE, games);
+//        userService.deleteUser(user.getId());
+//        Assert.assertNull(userService.getUser(user.getId()));
+//    }
 
 
 }
