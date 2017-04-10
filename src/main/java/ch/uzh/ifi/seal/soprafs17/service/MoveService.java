@@ -54,6 +54,11 @@ public class MoveService {
     @Autowired
     private ValidatorManager validatorManager;
 
+    @Autowired
+    public MoveService(MoveRepository moveRepository) {
+        this.moveRepo = moveRepository;
+    }
+
 
     public AMove getMove(Long moveId){
         return moveRepo.findOne(moveId);
