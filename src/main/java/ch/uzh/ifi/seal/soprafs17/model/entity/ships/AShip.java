@@ -15,7 +15,6 @@ import java.io.Serializable;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name="ship_type")
-@Controller("iShip")
 public abstract class AShip implements IShip, Serializable {
 
     @Id
