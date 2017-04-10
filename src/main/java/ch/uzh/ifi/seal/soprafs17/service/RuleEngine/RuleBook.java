@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +25,18 @@ public class RuleBook {
 
     public RuleBook(){
     }
-    public void addRule(IRule rule){
-        boolean hasToBeAdded=true;
-        for(IRule r:rules){
-            if(r.getClass().equals(rule.getClass())){
-                hasToBeAdded=false;
-            }
-        }
-        if(hasToBeAdded){
-            rules.add(rule);
-        }
+
+    @PostConstruct
+    public void addRule(){
+        this.rules.add(new AddStoneToShipRule());
+        this.rules.add(new SailShipRule());
+        this.rules.add(new GetStoneRule());
     }
 
-    public void apply(Game game, AMove move) {
+    public void addRule(IRule rule)  {}
+
+
+    public synchronized void apply(Game game, AMove move) {
         for(IRule rule:rules){
             if(rule.supports(move)){
                 if(move instanceof GetStoneMove){
@@ -47,6 +47,8 @@ public class RuleBook {
                 }
             }
         }
+
+
     }
 
     public synchronized void applyRule(Game game, AMove move){
