@@ -28,30 +28,30 @@ import java.util.Random;
 public class ShipService {
 
         @Autowired
-        private ShipRepository shipRepo;
+        private ShipRepository shipRepository;
 
         @Autowired
-        private GameRepository gameRepo;
+        private GameRepository gameRepository;
 
         @Autowired
-        private UserRepository userRepo;
+        private UserRepository userRepository;
 
         @Autowired
-        private RoundRepository roundRepo;
+        private RoundRepository roundRepository;
 
         @Autowired
         public ShipService(ShipRepository shipRepository) {
-                this.shipRepo = shipRepository;
+                this.shipRepository = shipRepository;
         }
 
         public List<AShip> getShips(Long roundId){
-               List<AShip> shipsInRound = roundRepo.findById(roundId).getShips();
+               List<AShip> shipsInRound = roundRepository.findById(roundId).getShips();
                return shipsInRound;
         }
 
         public AShip getShip(Long roundId,Long shipId){
-                if(roundRepo.findById(roundId).getShips().contains(shipRepo.findById(shipId))){
-                        return shipRepo.findById(shipId);
+                if(roundRepository.findById(roundId).getShips().contains(shipRepository.findById(shipId))){
+                        return shipRepository.findById(shipId);
                 }
                         return null;
         }

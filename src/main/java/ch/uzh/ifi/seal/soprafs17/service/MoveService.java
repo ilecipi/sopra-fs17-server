@@ -31,22 +31,22 @@ public class MoveService {
 
 
     @Autowired
-    private ShipRepository shipRepo;
+    private ShipRepository shipRepository;
 
     @Autowired
-    private GameRepository gameRepo;
+    private GameRepository gameRepository;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Autowired
-    private RoundRepository roundRepo;
+    private RoundRepository roundRepository;
 
     @Autowired
-    private MoveRepository moveRepo;
+    private MoveRepository moveRepository;
 
     @Autowired
-    private SiteBoardRepository siteBoardRepo;
+    private SiteBoardRepository siteBoardRepository;
 
     @Autowired
     private RuleBook ruleBook;
@@ -56,34 +56,34 @@ public class MoveService {
 
     @Autowired
     public MoveService(MoveRepository moveRepository) {
-        this.moveRepo = moveRepository;
+        this.moveRepository = moveRepository;
     }
 
 
     public AMove getMove(Long moveId){
-        return moveRepo.findOne(moveId);
+        return moveRepository.findOne(moveId);
     }
 
     public void addStoneToShip(Game game, AMove move){
         ruleBook.applyRule(game,move);
     }
     public void addStoneToSiteBoard(Long siteBoardId,String playerToken,Long gameId,Long shipId){
-        StoneBoard stoneBoard = siteBoardRepo.findById(siteBoardId);
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(playerToken);
-        AShip dockedShip = shipRepo.findById(shipId);
+        StoneBoard stoneBoard = siteBoardRepository.findById(siteBoardId);
+        Game game = gameRepository.findOne(gameId);
+        User player = userRepository.findByToken(playerToken);
+        AShip dockedShip = shipRepository.findById(shipId);
         if(player == game.getCurrentPlayer() /*&& temple.getDiscriminatorValue().equals("temple")*/){
             for(int i = dockedShip.getStones().length-1; i>=0;i--){
                 if(dockedShip.getStones()[i] != null){
                     stoneBoard.addStone(dockedShip.getStones()[i]);
                 }
             }
-            siteBoardRepo.save(stoneBoard);
-            userRepo.save(player);
+            siteBoardRepository.save(stoneBoard);
+            userRepository.save(player);
             game.findNextPlayer();
             int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
             game.setNextPlayer(game.getPlayers().get(index));
-            gameRepo.save(game);
+            gameRepository.save(game);
         }
     }
     public void sailShip(Game game,AMove move){
@@ -93,7 +93,7 @@ public class MoveService {
         ruleBook.applyRule(game,move);
     }
     public SiteBoard findSiteboardsByType(String siteBoardType,Long gameId){
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
+        List<SiteBoard> siteBoards = gameRepository.findOne(gameId).getSiteBoards();
         SiteBoard siteBoard= null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {

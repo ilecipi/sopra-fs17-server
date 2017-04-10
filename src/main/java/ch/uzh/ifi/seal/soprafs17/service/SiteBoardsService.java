@@ -25,79 +25,79 @@ import java.util.Map;
 public class SiteBoardsService {
 
     @Autowired
-    private SiteBoardRepository siteBoardRepo;
+    private SiteBoardRepository siteBoardRepository;
     @Autowired
-    private GameRepository gameRepo;
+    private GameRepository gameRepository;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Autowired
     public SiteBoardsService(SiteBoardRepository siteBoardRepo) {
-        this.siteBoardRepo = siteBoardRepo;
+        this.siteBoardRepository = siteBoardRepo;
     }
 
 
 
     public String addTemple(Long gameId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
         StoneBoard temple = new Temple(game.getPlayers().size());
         game.getSiteBoards().add(temple);
         temple.setGame(game);
-        temple=siteBoardRepo.save(temple);
+        temple=siteBoardRepository.save(temple);
 
-        gameRepo.save(game);
+        gameRepository.save(game);
         return "/game/"+gameId + "/" + temple.getId();
     }
 
     public StoneBoard getTemple(Long templeId){
-        StoneBoard temple = siteBoardRepo.findById(templeId);
+        StoneBoard temple = siteBoardRepository.findById(templeId);
         return temple;
     }
 
     public String addPyramid(Long gameId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
         StoneBoard pyramid = new Pyramid();
         game.getSiteBoards().add(pyramid);
         pyramid.setGame(game);
-        pyramid = siteBoardRepo.save(pyramid);
-        game = gameRepo.save(game);
+        pyramid = siteBoardRepository.save(pyramid);
+        game = gameRepository.save(game);
         return "/game/+gameId" + "/" + pyramid.getId();
     }
 
     public String addObelisk(Long gameId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
         StoneBoard obelisk = new Obelisk(game.getPlayers().size());
         game.getSiteBoards().add(obelisk);
         obelisk.setGame(game);
-        obelisk = siteBoardRepo.save(obelisk);
-        game = gameRepo.save(game);
+        obelisk = siteBoardRepository.save(obelisk);
+        game = gameRepository.save(game);
         return "/game/+gameId" + "/" + obelisk.getId();
     }
 
     public String addBurialChamber(Long gameId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
 //        List<Stone> firstRow = new ArrayList<>();
 //        List<Stone> secondRow = new ArrayList<>();
 //        List<Stone> thirdRow = new ArrayList<>();
         StoneBoard burialChamber = new BurialChamber();
         game.getSiteBoards().add(burialChamber);
         burialChamber.setGame(game);
-        burialChamber = siteBoardRepo.save(burialChamber);
-        game=gameRepo.save(game);
+        burialChamber = siteBoardRepository.save(burialChamber);
+        game=gameRepository.save(game);
         return "/game/+gameId" + "/" + burialChamber.getId();
     }
 
     public StoneBoard getObelisk(Long obeliskId){
-        return siteBoardRepo.findById(obeliskId);
+        return siteBoardRepository.findById(obeliskId);
     }
 
     public StoneBoard getPyramid(Long pyramidId){
-        return siteBoardRepo.findById(pyramidId);
+        return siteBoardRepository.findById(pyramidId);
     }
 
     public Map<String,Integer> getPyramidPoints(long pyramidId){
-        SiteBoard pyramid =siteBoardRepo.findById(pyramidId);
+        SiteBoard pyramid =siteBoardRepository.findById(pyramidId);
         if(pyramid instanceof Pyramid){
             return ((Pyramid) pyramid).countAfterMove();
         }else{
@@ -106,7 +106,7 @@ public class SiteBoardsService {
     }
 
     public Map<String,Integer> getObeliskPoints(long obeliskId){
-        SiteBoard obelisk =siteBoardRepo.findById(obeliskId);
+        SiteBoard obelisk =siteBoardRepository.findById(obeliskId);
         if(obelisk instanceof Obelisk){
             return ((Obelisk) obelisk).countEndOfGame();
         }else{
@@ -115,7 +115,7 @@ public class SiteBoardsService {
     }
 
     public Map<String,Integer> getTemplePoints(long templeId){
-        SiteBoard temple =siteBoardRepo.findById(templeId);
+        SiteBoard temple =siteBoardRepository.findById(templeId);
         if(temple instanceof Temple){
             return ((Temple) temple).countEndOfRound();
         }else{
@@ -124,7 +124,7 @@ public class SiteBoardsService {
     }
 
     public Map<String,Integer> getBurialChamberPoints(long burialChamberId){
-        SiteBoard burialChamber =siteBoardRepo.findById(burialChamberId);
+        SiteBoard burialChamber =siteBoardRepository.findById(burialChamberId);
         if(burialChamber instanceof BurialChamber){
             return ((BurialChamber) burialChamber).countEndOfGame();
         }else{

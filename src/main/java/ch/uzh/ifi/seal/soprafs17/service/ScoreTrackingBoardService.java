@@ -22,7 +22,7 @@ import java.util.Map;
 public class ScoreTrackingBoardService {
 
     @Autowired
-    private GameRepository gameRepo;
+    private GameRepository gameRepository;
 
     @Autowired
     private ScoreTrackingBoardRepository scoreTrackingBoardRepo;
