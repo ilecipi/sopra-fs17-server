@@ -1,7 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.MarketCard;
-
 import java.util.List;
 
 /**
@@ -10,7 +8,7 @@ import java.util.List;
 public class MarketDTO {
 
     public Long id;
-    public List<MarketCard> marketCards;
+    //public List<MarketCard> marketCards;
     public boolean isOccupied;
 
     public MarketDTO(Long id, boolean isOccupied){

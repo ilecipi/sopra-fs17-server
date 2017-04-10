@@ -5,11 +5,8 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
  */
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.MarketCard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @DiscriminatorValue("market")
