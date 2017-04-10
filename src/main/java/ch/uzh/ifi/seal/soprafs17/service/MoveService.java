@@ -40,9 +40,6 @@ public class MoveService {
     private UserRepository userRepo;
 
     @Autowired
-    private RoundRepository roundRepo;
-
-    @Autowired
     private MoveRepository moveRepo;
 
     @Autowired
@@ -50,9 +47,6 @@ public class MoveService {
 
     @Autowired
     private RuleBook ruleBook;
-
-    @Autowired
-    private ValidatorManager validatorManager;
 
     @Autowired
     public MoveService(MoveRepository moveRepository) {

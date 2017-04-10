@@ -39,6 +39,11 @@ public class ShipService {
         @Autowired
         private RoundRepository roundRepo;
 
+        @Autowired
+        public ShipService(ShipRepository shipRepository) {
+                this.shipRepo = shipRepository;
+        }
+
         public List<AShip> getShips(Long roundId){
                List<AShip> shipsInRound = roundRepo.findById(roundId).getShips();
                return shipsInRound;

@@ -46,6 +46,11 @@ public class RoundService {
     @Autowired
     private RoundRepository roundRepo;
 
+    @Autowired
+    public RoundService(RoundRepository roundRepo) {
+        this.roundRepo = roundRepo;
+    }
+
     private final int MAX_ROUNDS_POSSIBLE=6;
 
     public boolean isAllShipsSailed() {

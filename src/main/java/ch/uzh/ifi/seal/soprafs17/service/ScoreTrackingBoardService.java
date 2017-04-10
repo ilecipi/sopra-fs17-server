@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ScoreTrackingBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.MoveRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.ScoreTrackingBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ public class ScoreTrackingBoardService {
 
     @Autowired
     private ScoreTrackingBoardRepository scoreTrackingBoardRepo;
+
+    @Autowired
+    public ScoreTrackingBoardService(ScoreTrackingBoardRepository scoreTrackingBoardRepo) {
+        this.scoreTrackingBoardRepo=scoreTrackingBoardRepo;
+    }
 
     public Map<Long,Integer> getPoints(Long scoreTrackingBoardId){
         ScoreTrackingBoard scoreTrackingBoard = scoreTrackingBoardRepo.findById(scoreTrackingBoardId);

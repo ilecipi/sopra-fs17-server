@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.*;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.MoveRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
@@ -30,6 +31,11 @@ public class SiteBoardsService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    public SiteBoardsService(SiteBoardRepository siteBoardRepo) {
+        this.siteBoardRepo = siteBoardRepo;
+    }
 
 
 
