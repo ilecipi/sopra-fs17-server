@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Created by ilecipi on 27.03.17.
  */
-@Service
+@Service("roundService")
 @Transactional
 public class RoundService {
 
@@ -26,10 +26,10 @@ public class RoundService {
 
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Autowired
-    private GameRepository gameRepo;
+    private GameRepository gameRepository;
 
     @Autowired
     private SiteBoardsService siteBoardsService;
@@ -41,10 +41,15 @@ public class RoundService {
     private GameService gameService;
 
     @Autowired
-    private ShipRepository shipRepo;
+    private ShipRepository shipRepository;
 
     @Autowired
-    private RoundRepository roundRepo;
+    private RoundRepository roundRepository;
+
+    @Autowired
+    public RoundService(RoundRepository roundRepository) {
+        this.roundRepository = roundRepository;
+    }
 
     private final int MAX_ROUNDS_POSSIBLE=6;
 
@@ -60,20 +65,20 @@ public class RoundService {
 
     public List<Round> listRounds(){
         List<Round> result = new ArrayList<>();
-        roundRepo.findAll().forEach(result::add);
+        roundRepository.findAll().forEach(result::add);
         return result;
     }
 
     public Round getSpecificRound(Long roundId){
-        return roundRepo.findById(roundId);
+        return roundRepository.findById(roundId);
     }
 
     public void addRound(Long gameId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
 
         Round round = new Round();
         round.setShips(new ArrayList<AShip>());
-        roundRepo.save(round);
+        roundRepository.save(round);
         boolean notChosen = true;
         Map<Integer, Integer[]> shipsCards = game.getShipsCards();
         Random rn = new Random();
@@ -84,28 +89,28 @@ public class RoundService {
             if(shipsCards.containsKey(selectShip)){
                 for(Integer i : shipsCards.get(selectShip)){
                     if(i==1){
-                        round.getShips().add(shipRepo.save(new OneSeatedShip()));
+                        round.getShips().add(shipRepository.save(new OneSeatedShip()));
                     }else if(i==2){
-                        round.getShips().add(shipRepo.save(new TwoSeatedShip()));
+                        round.getShips().add(shipRepository.save(new TwoSeatedShip()));
                     }else if(i==3){
-                        round.getShips().add(shipRepo.save(new ThreeSeatedShip()));
+                        round.getShips().add(shipRepository.save(new ThreeSeatedShip()));
                     }else{
-                        round.getShips().add(shipRepo.save(new FourSeatedShip()));
+                        round.getShips().add(shipRepository.save(new FourSeatedShip()));
                     }
 
                 }
                 notChosen=false;
                 shipsCards.remove(selectShip);
-                round = roundRepo.save(round);
-                game=gameRepo.save(game);
+                round = roundRepository.save(round);
+                game=gameRepository.save(game);
 
             }
         }
 
         game.getRounds().add(round);
-        gameRepo.save(game);
+        gameRepository.save(game);
         round.setGame(game);
-        roundRepo.save(round);
+        roundRepository.save(round);
 
 
     }

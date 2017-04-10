@@ -23,7 +23,7 @@ import java.util.Random;
 /**
  * Created by erion on 13.03.17.
  */
-@Service
+@Service("gameService")
 @Transactional
 public class GameService {
 
@@ -31,10 +31,10 @@ public class GameService {
     private final String CONTEXT = "/games";
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Autowired
-    private GameRepository gameRepo;
+    private GameRepository gameRepository;
 
     @Autowired
     private SiteBoardsService siteBoardsService;
@@ -52,11 +52,11 @@ public class GameService {
     private static int counter = 1;
 
     public UserRepository getUserRepo() {
-        return userRepo;
+        return userRepository;
     }
 
     public GameRepository getGameRepo() {
-        return gameRepo;
+        return gameRepository;
     }
 
     public ShipService getShipService() {
@@ -65,22 +65,22 @@ public class GameService {
 
     public List<Game> listGames(){
         List<Game> result = new ArrayList<>();
-        gameRepo.findAll().forEach(result::add);
+        gameRepository.findAll().forEach(result::add);
         return result;
     }
 
     public Game addGame(Game game, String userToken){
-        User owner = userRepo.findByToken(userToken);
+        User owner = userRepository.findByToken(userToken);
         if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
             game.setName("Game " + counter++);
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);
-            game = gameRepo.save(game);
+            game = gameRepository.save(game);
             owner.getGames().add(game);
             owner.setStatus(UserStatus.IN_A_LOBBY);
-            userRepo.save(owner);
-//            gameRepo.save(game);
+            userRepository.save(owner);
+//            gameRepository.save(game);
 
 //            return "/" + game.getId();
             return game;
@@ -90,13 +90,13 @@ public class GameService {
     }
 
     public Game getGame(Long gameId){
-        return gameRepo.findOne(gameId);
+        return gameRepository.findOne(gameId);
     }
 
     public void startGame(Long gameId, String userToken){
 
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
+        Game game = gameRepository.findOne(gameId);
+        User owner = userRepository.findByToken(userToken);
 
         //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
@@ -119,7 +119,7 @@ public class GameService {
                 //TODO: DELETE TESTING BEFORE DEADLINE
                 //for testing
                 Random rn = new Random();
-                game=gameRepo.save(game);
+                game=gameRepository.save(game);
                 roundService.addRounds(game.getId());
                 //add a round to the game
                 game.setCurrentPlayer(owner);
@@ -130,32 +130,32 @@ public class GameService {
                     game.getPoints().put(u.getColor(),/*0*/rn.nextInt(100) );
                     u.setStatus(UserStatus.IS_PLAYING);
                     u.setSupplySled(initStones++);
-                    userRepo.save(u);
+                    userRepository.save(u);
                 }
 
-                gameRepo.save(game);
+                gameRepository.save(game);
             }
         }
     }
 
     public void stopGame(Long gameId, String userToken){
-        Game game = gameRepo.findOne(gameId);
-        User owner = userRepo.findByToken(userToken);
+        Game game = gameRepository.findOne(gameId);
+        User owner = userRepository.findByToken(userToken);
 
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
             for(User u :game.getPlayers()){
                 u.setStatus(UserStatus.OFFLINE);
                 u.getGames().remove(game);
                 u.setColor(null);
-                userRepo.save(u);
+                userRepository.save(u);
             }
-            gameRepo.delete(game);
+            gameRepository.delete(game);
         }
     }
 
     public List<AMove> listMoves(Long gameId){
 
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
         if (game != null) {
 //            return game.getAMoves();
         }
@@ -170,7 +170,7 @@ public class GameService {
 
 
     public AMove getMove(Long gameId, Integer moveId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
         if (game != null) {
 //            return game.getAMoves().get(moveId);
         }
@@ -179,7 +179,7 @@ public class GameService {
     }
 
     public List<User> listPlayers(Long gameId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
         if (game != null) {
             return game.getPlayers();
         }
@@ -188,8 +188,8 @@ public class GameService {
     }
 
     public String addUser(Long gameId,String userToken){
-        Game game = gameRepo.findOne(gameId);
-        User player = userRepo.findByToken(userToken);
+        Game game = gameRepository.findOne(gameId);
+        User player = userRepository.findByToken(userToken);
 
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS
                 &&player.getStatus()==UserStatus.ONLINE) {
@@ -199,8 +199,8 @@ public class GameService {
                 game.setNextPlayer(player);
             }
             game.getPlayers().add(player);
-            userRepo.save(player);
-            gameRepo.save(game);
+            userRepository.save(player);
+            gameRepository.save(game);
             logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
             return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size());
         } else {
@@ -211,15 +211,15 @@ public class GameService {
     }
 
     public User getPlayer(Long gameId,Integer playerId){
-        Game game = gameRepo.findOne(gameId);
+        Game game = gameRepository.findOne(gameId);
 
         return game.getPlayers().get(playerId);
     }
 
     public void createPlayer(Long gameId, String userToken){
 
-        User user = userRepo.findByToken(userToken);
-        Game game = gameRepo.findOne(gameId);
+        User user = userRepository.findByToken(userToken);
+        Game game = gameRepository.findOne(gameId);
         //assign color to user
         if (game.getPlayers().contains(user)) {
             boolean colorNotChosen = true;
@@ -246,8 +246,8 @@ public class GameService {
             }
 
         }
-        gameRepo.save(game);
-        userRepo.save(user);
+        gameRepository.save(game);
+        userRepository.save(user);
     }
 
     public Game setNextPlayer(Game game){
@@ -255,7 +255,7 @@ public class GameService {
         int indexOfNextPlayer=(indexOfCurrentPlayer+1)%game.getPlayers().size();
         game.setCurrentPlayer(game.getPlayers().get(indexOfNextPlayer));
         game.setNextPlayer(game.getPlayers().get(indexOfNextPlayer%game.getPlayers().size()));
-        gameRepo.save(game);
+        gameRepository.save(game);
 
         return game;
     }
