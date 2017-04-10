@@ -4,6 +4,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.stereotype.Controller;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,6 +15,7 @@ import java.io.Serializable;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name="ship_type")
+@Controller("iShip")
 public abstract class AShip implements IShip, Serializable {
 
     @Id
