@@ -28,10 +28,10 @@ import static org.junit.Assert.assertNotNull;
  *
  * @see UserService
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-public class UserServiceTest {
-
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@SpringApplicationConfiguration(classes = Application.class)
+//public class UserServiceTest {
+//
 
 //    @Autowired
 //    private UserRepository userRepository;
@@ -57,4 +57,4 @@ public class UserServiceTest {
 //    }
 
 
-}
+//}
