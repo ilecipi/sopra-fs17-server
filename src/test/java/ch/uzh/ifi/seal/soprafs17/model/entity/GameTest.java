@@ -15,24 +15,24 @@ import static org.junit.Assert.*;
  */
 public class GameTest {
 
-//    @Test
-//    public void getRounds() throws Exception {
-//        Game game=new Game();
-//        Round firstRound=new Round();
-//        List<Round> rounds=new ArrayList<>();
-//        rounds.add(firstRound);
-//        game.setRounds(rounds);
-//        assertNotNull(game.getRounds());
-//    }
-//
-//    @Test
-//    public void setRounds() throws Exception {
-//        Game game = new Game();
-//        Round round = new Round();
-//        List<Round> rounds = new ArrayList<>();
-//        game.setRounds(rounds);
-//        assertEquals(rounds,game.getRounds());
-//    }
+    @Test
+    public void getRounds() throws Exception {
+        Game game=new Game();
+        Round firstRound=new Round();
+        List<Round> rounds=new ArrayList<>();
+        rounds.add(firstRound);
+        game.setRounds(rounds);
+        assertNotNull(game.getRounds());
+    }
+
+    @Test
+    public void setRounds() throws Exception {
+        Game game = new Game();
+        Round round = new Round();
+        List<Round> rounds = new ArrayList<>();
+        game.setRounds(rounds);
+        assertEquals(rounds,game.getRounds());
+    }
 
 
     @Test
