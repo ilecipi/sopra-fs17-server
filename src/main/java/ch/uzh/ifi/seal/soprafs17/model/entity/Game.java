@@ -69,7 +69,7 @@ public class Game implements Serializable {
 	private Map<String, Integer> points = new HashMap<String, Integer>();
 
 	@ManyToMany(mappedBy = "games")
-	private List<User> players;
+	private List<User> players = new ArrayList<>();
 
 	@OneToMany
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
@@ -102,7 +102,7 @@ public class Game implements Serializable {
 	}
 
 	@ElementCollection
-	private Map<Integer, String> marketCards;
+	private Map<Integer, String> marketCards = new HashMap<>();
 
 
 	public List<SiteBoard> getSiteBoards() {
@@ -275,7 +275,7 @@ public class Game implements Serializable {
 			for (Integer o : keys) {
 				// Access keys/values in a random order
 
-				marketCards.put(counter++,ordered.get(o));
+				this.marketCards.put(counter++,ordered.get(o));
 			}
 	}
 

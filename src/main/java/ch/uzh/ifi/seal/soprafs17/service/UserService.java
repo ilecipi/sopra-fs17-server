@@ -71,14 +71,13 @@ public class UserService {
         return null;
     }
 
-    public void logout(long userId, String userToken){
+    public User logout(long userId, String userToken){
         User user = userRepository.findOne(userId);
         if (user != null && user.getToken().equals(userToken)) {
             user.setStatus(UserStatus.OFFLINE);
-            userRepository.save(user);
+            user = userRepository.save(user);
+            return user;
         }
+        return null;
     }
-
-
-
 }
