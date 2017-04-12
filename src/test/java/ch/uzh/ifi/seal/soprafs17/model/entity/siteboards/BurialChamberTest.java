@@ -105,7 +105,7 @@ public class BurialChamberTest {
         assertEquals(new Integer(2), points.get("brown"));
         assertEquals(new Integer(1), points.get("black"));
         assertEquals(new Integer(1), points.get("white"));
-        assertEquals(new Integer(2), points.get("white"));
+        assertEquals(new Integer(2), points.get("grey"));
     }
 
 }
