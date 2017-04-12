@@ -33,6 +33,10 @@ public class Obelisk extends StoneBoard {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
     private int numberOfPlayers;
 
     @Id
@@ -210,7 +214,7 @@ public class Obelisk extends StoneBoard {
                             points.put(fourthPlayer[0], tmpPoints);
                         }
                         //case 6: first and second different, third and fourth the same
-                        if (firstPlayer[1].equals(secondPlayer[1]) && !secondPlayer[1].equals(thirdPlayer[1]) && thirdPlayer[1].equals(fourthPlayer[1])
+                        if (!firstPlayer[1].equals(secondPlayer[1]) && !secondPlayer[1].equals(thirdPlayer[1]) && thirdPlayer[1].equals(fourthPlayer[1])
                                 && !secondPlayer[1].equals(fourthPlayer[1])) {
                             int tmpPoints = ((5 + 1) / 2);
                             points.put(firstPlayer[0], 15);
