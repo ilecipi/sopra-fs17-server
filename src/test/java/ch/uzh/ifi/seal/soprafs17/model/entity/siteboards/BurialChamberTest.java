@@ -12,6 +12,17 @@ import static org.junit.Assert.*;
  * Created by ilecipi on 12.04.17.
  */
 public class BurialChamberTest {
+    @Test
+    public void countAfterMove() throws Exception {
+        BurialChamber burialChamber = new BurialChamber();
+        assertNull(burialChamber.countAfterMove());
+    }
+
+    @Test
+    public void countEndOfRound() throws Exception {
+        BurialChamber burialChamber = new BurialChamber();
+        assertNull(burialChamber.countEndOfRound());
+    }
 
     @Test
     public void addStone() throws Exception {
@@ -106,6 +117,72 @@ public class BurialChamberTest {
         assertEquals(new Integer(1), points.get("black"));
         assertEquals(new Integer(1), points.get("white"));
         assertEquals(new Integer(2), points.get("grey"));
+
+        //2 stones connected
+        burialChamber = new BurialChamber();
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        points = burialChamber.countEndOfGame();
+        assertEquals(new Integer(3), points.get("black"));
+
+        //three stones connected
+        burialChamber = new BurialChamber();
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        points = burialChamber.countEndOfGame();
+        assertEquals(new Integer(6), points.get("black"));
+
+        //four stones connected
+        burialChamber = new BurialChamber();
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        points = burialChamber.countEndOfGame();
+        assertEquals(new Integer(10), points.get("black"));
+
+        //right border single stone
+        burialChamber = new BurialChamber();
+        //1
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        //2
+        burialChamber.addStone(new Stone("white"));
+        burialChamber.addStone(new Stone("grey"));
+        burialChamber.addStone(new Stone("brown"));
+        //3
+        burialChamber.addStone(new Stone("grey"));
+        burialChamber.addStone(new Stone("brown"));
+        burialChamber.addStone(new Stone("black"));
+        //4
+        burialChamber.addStone(new Stone("brown"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("white"));
+        //5
+        burialChamber.addStone(new Stone("white"));
+        burialChamber.addStone(new Stone("brown"));
+        burialChamber.addStone(new Stone("black"));
+        //6
+        burialChamber.addStone(new Stone("grey"));
+        burialChamber.addStone(new Stone("white"));
+        burialChamber.addStone(new Stone("brown"));
+        //7
+        burialChamber.addStone(new Stone("brown"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("grey"));
+        //8
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("grey"));
+        burialChamber.addStone(new Stone("white"));
+        points = burialChamber.countEndOfGame();
+        assertEquals(new Integer(11), points.get("black"));
+        assertEquals(new Integer(5), points.get("white"));
+        assertEquals(new Integer(5), points.get("grey"));
+        assertEquals(new Integer(6), points.get("brown"));
+
+
     }
 
 }
