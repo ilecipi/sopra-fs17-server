@@ -53,6 +53,7 @@ public class Pyramid extends StoneBoard {
 
     final int[] points = {2,1,3,2,4,3,2,1,3,2,3,1,3,4};
 
+
     @ElementCollection
     public List<Stone> addedStones = new ArrayList<>();
 
@@ -118,4 +119,9 @@ public class Pyramid extends StoneBoard {
     public String getDiscriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
+
+    public List<Stone> getAddedStones() {
+        return addedStones;
+    }
+
 }

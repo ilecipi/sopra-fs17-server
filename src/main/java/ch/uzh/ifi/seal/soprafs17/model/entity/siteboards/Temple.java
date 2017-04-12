@@ -78,7 +78,6 @@ public class Temple extends StoneBoard implements Serializable {
 
     @Override
     public Map<String, Integer> countAfterMove() {
-
         return null;
     }
 
@@ -87,7 +86,8 @@ public class Temple extends StoneBoard implements Serializable {
         Map<String, Integer> points = fillPoints();
         for(Stone s : stones){
             if(s!=null){
-                points.put(s.getColor(),1);
+                int previousPoints = points.get(s.getColor());
+                points.put(s.getColor(),previousPoints+1);
             }
         }
         return points;
@@ -100,7 +100,6 @@ public class Temple extends StoneBoard implements Serializable {
 
     @Override
     public void addStone(Stone stone) {
-        System.out.println(addedStones);
         if(addedStones == stones.length-1){
             stones[addedStones++]=stone;
             addedStones= addedStones%stones.length;

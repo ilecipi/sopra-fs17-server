@@ -142,6 +142,16 @@ public class BurialChamberTest {
         points = burialChamber.countEndOfGame();
         assertEquals(new Integer(10), points.get("black"));
 
+        //five stones connected
+        burialChamber = new BurialChamber();
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        burialChamber.addStone(new Stone("black"));
+        points = burialChamber.countEndOfGame();
+        assertEquals(new Integer(15), points.get("black"));
+
         //right border single stone
         burialChamber = new BurialChamber();
         //1
