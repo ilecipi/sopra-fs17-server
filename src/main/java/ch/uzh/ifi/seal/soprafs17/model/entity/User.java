@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import com.fasterxml.jackson.annotation.*;
 
@@ -46,6 +47,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AMove> AMoves;
+
+    @OneToMany(mappedBy = "user")
+    private List<AMarketCard> marketCards;
 
     @Column(nullable = true)
     private String color;

@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
@@ -68,6 +69,7 @@ public class MoveService {
         ruleBook.applyRule(game,move);
     }
     public void addStoneToSiteBoard(Long siteBoardId,String playerToken,Long gameId,Long shipId){
+        //TODO: no REPOSITORY IN HERE
         StoneBoard stoneBoard = siteBoardRepository.findById(siteBoardId);
         Game game = gameRepository.findOne(gameId);
         User player = userRepository.findByToken(playerToken);
@@ -103,5 +105,22 @@ public class MoveService {
             }
         }
         return siteBoard;
+    }
+
+    public void addUserToMarket(Game game, AShip ship){
+        List<SiteBoard> siteBoards = game.getSiteBoards();
+        Market market = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("market")) {
+                    market= (Market) s;
+                }
+            }
+        }
+        for(int i = ship.getStones().length-1; i>=0;i--){
+            if(ship.getStones()[i] != null){
+                market.addUser(ship.getStones()[i].getColor());
+            }
+        }
     }
 }

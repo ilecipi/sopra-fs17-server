@@ -8,13 +8,15 @@ import java.util.List;
 public class MarketDTO {
 
     public Long id;
-    //public List<MarketCard> marketCards;
     public boolean isOccupied;
+    public List<String> currentCards;
+    public List<String> userColors;
 
-    public MarketDTO(Long id, boolean isOccupied){
-        //public MarketDTO(Long id, List<MarketCard> marketCards ,boolean isOccupied)
+    public MarketDTO(Long id, boolean isOccupied, List<String> currentCards, List<String> userColors ){
         this.id = id;
-        //this.marketCards = marketCards;
         this.isOccupied = isOccupied;
+        this.currentCards=currentCards;
+        this.userColors = userColors;
+
     }
 }

@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
@@ -107,7 +108,12 @@ public class MoveResource extends GenericResource {
                 return e.getMessage();
             }
             moveService.sailShip(game, move);
-            moveService.addStoneToSiteBoard(siteBoard.getId(),playerToken,gameId,shipId);
+            if(move.getSiteBoard() instanceof StoneBoard) {
+                moveService.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
+            }
+            else{
+                moveService.addUserToMarket(game,ship);
+            }
             siteBoardRepo.save(siteBoard);
             gameRepo.save(game);
             userRepo.save(user);

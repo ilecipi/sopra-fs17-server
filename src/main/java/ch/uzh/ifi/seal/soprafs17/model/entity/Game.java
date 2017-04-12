@@ -251,8 +251,8 @@ public class Game implements Serializable {
 			put(7,"PYRAMID_DECORATION");
 			put(8,"TEMPLE_DECORATION");
 			put(9,"TEMPLE_DECORATION");
-			put(10,"BURIAL_CAHMBER_DECORATION");
-			put(11,"BURIAL_CAHMBER_DECORATION");
+			put(10,"BURIAL_CHaMBER_DECORATION");
+			put(11,"BURIAL_CHAMBER_DECORATION");
 			put(12,"OBELISK_DECORATION");
 			put(13,"OBELISK_DECORATION");
 			for(int i=0;i<10;i++) {

@@ -24,4 +24,11 @@ public class Hammer extends AMarketCard implements MCAction{
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "HAMMER";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

@@ -25,4 +25,11 @@ public class Chisel extends AMarketCard implements MCAction {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "CHISEL";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

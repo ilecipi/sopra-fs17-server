@@ -4,6 +4,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.*;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import org.slf4j.Logger;
@@ -32,6 +34,10 @@ public class RoundService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private SiteBoardRepository siteBoardsRepository;
+
 
     @Autowired
     private SiteBoardsService siteBoardsService;
@@ -172,7 +178,23 @@ public class RoundService {
         else{
             addRound(gameId);
         }
+        List<SiteBoard> siteBoards = game.getSiteBoards();
+        Market market = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("market")) {
+                    market = (Market) s;
+                }
+            }
+        }
+        int currentRound = game.getRounds().size()-1;
+        Round round = game.getRounds().get(currentRound);
+        market.setMarketCards(round.getMarketCards());
+        roundRepository.save(round);
+        siteBoardsRepository.save(market);
     }
+
+
 
 
 
