@@ -222,6 +222,15 @@ public class Obelisk extends StoneBoard {
                             points.put(thirdPlayer[0], tmpPoints);
                             points.put(fourthPlayer[0], tmpPoints);
                         }
+                        //case 7: first  different,second and third same,fourth different
+                        if (!firstPlayer[1].equals(secondPlayer[1]) && secondPlayer[1].equals(thirdPlayer[1]) && !thirdPlayer[1].equals(fourthPlayer[1])
+                                && !secondPlayer[1].equals(fourthPlayer[1])) {
+                            int tmpPoints = ((10 + 5) / 2);
+                            points.put(firstPlayer[0], 15);
+                            points.put(secondPlayer[0], tmpPoints);
+                            points.put(thirdPlayer[0], tmpPoints);
+                            points.put(fourthPlayer[0], 1);
+                        }
                     }
                     //Three players on the obelisk
                     if (firstPlayer != null && secondPlayer != null && thirdPlayer != null && fourthPlayer == null) {

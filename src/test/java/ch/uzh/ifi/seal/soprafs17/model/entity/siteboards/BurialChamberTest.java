@@ -89,6 +89,23 @@ public class BurialChamberTest {
         assertEquals(new Integer(23), points.get("black"));
         assertEquals(new Integer(4), points.get("brown"));
         assertEquals(new Integer(2), points.get("grey"));
+
+        //single stones
+        burialChamber = new BurialChamber();
+        //1
+        burialChamber.getFirstRow().add(new Stone("brown"));
+        burialChamber.getSecondRow().add(new Stone("grey"));
+        burialChamber.getThirdRow().add(new Stone("white"));
+        //2
+        burialChamber.getFirstRow().add(new Stone("grey"));
+        burialChamber.getSecondRow().add(new Stone("brown"));
+        burialChamber.getThirdRow().add(new Stone("black"));
+        points = burialChamber.countEndOfGame();
+        assertNotNull(points);
+        assertEquals(new Integer(2), points.get("brown"));
+        assertEquals(new Integer(1), points.get("black"));
+        assertEquals(new Integer(1), points.get("white"));
+        assertEquals(new Integer(2), points.get("white"));
     }
 
 }

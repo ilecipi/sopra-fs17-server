@@ -154,11 +154,34 @@ public class ObeliskTest {
         assertEquals(new Integer(1), pointsFourPlayers.get("grey"));
 
         //TODO: Add test for the other cases
-        //black wins, white&brown tie, grey loses
+
 
         //black wins, white second, brown&grey tie
+        obeliskFourPlayers.addStone(new Stone("black"));
+        obeliskFourPlayers.addStone(new Stone("black"));
+        obeliskFourPlayers.addStone(new Stone("white"));
+        obeliskFourPlayers.addStone(new Stone("grey"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(15), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(10), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(3), pointsFourPlayers.get("brown"));
+        assertEquals(new Integer(3), pointsFourPlayers.get("grey"));
 
         //black first, white second, brown third, grey last
+        obeliskFourPlayers.getObelisks().replace("grey",1);
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(15), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(10), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(5), pointsFourPlayers.get("brown"));
+        assertEquals(new Integer(1), pointsFourPlayers.get("grey"));
+
+        //black wins, white&brown tie, grey loses
+        obeliskFourPlayers.addStone(new Stone("brown"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(15), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(7), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(7), pointsFourPlayers.get("brown"));
+        assertEquals(new Integer(1), pointsFourPlayers.get("grey"));
     }
 
 }
