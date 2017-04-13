@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
@@ -24,12 +25,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -57,11 +58,12 @@ import static sun.audio.AudioPlayer.player;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GameResourceTest {
     @Autowired
-    private GameRepository gameRepository;
+    protected GameRepository gameRepository;
     @Autowired
-    private UserRepository userRepository;
+    protected UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -112,12 +114,52 @@ public class GameResourceTest {
     }
 
     @Test
+    public void getGames() throws Exception {
+        List<GameDTO> gamesAfter = template.getForObject(base + "games", List.class);
+        Assert.assertEquals(1, gamesAfter.size());
+    }
+    @Test
     public void getGame() throws Exception {
+        GameDTO game = template.getForObject(base + "games" + "/1", GameDTO.class);
+        Assert.assertNotNull(game);
+    }
 
+
+    @Test
+    public void createPlayer() throws Exception {
+        User userRequest2 = new User();
+        userRequest2.setName("Test2");
+        userRequest2.setUsername("testUser2");
+        userRequest2.setToken("2");
+        HttpEntity<User> httpUserEntity = new HttpEntity<User>(userRequest2);
+        //Add second user to the game
+        ResponseEntity<User> responseUser = template.exchange(base + "users", HttpMethod.POST, httpUserEntity, User.class);
+        //http://localhost:8080/games/1/player?token=2
+        ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity, String.class);
+
+        assertEquals(UserStatus.IN_A_LOBBY, userRepository.findByName("Test2").getStatus());
+        System.out.println("AAAAAAAA"+userRepository.findByName("Test").getName());
     }
 
     @Test
     public void startGame() throws Exception {
+//        System.out.println(gameRepository);
+//        System.out.println("BBBBBBB"+userRepository.findByName("Test"));
+//        Game game = gameRepository.findOne(1L);
+////        assertNotNull(game);
+//        User owner = userRepository.findByName(game.getOwner());
+//
+//
+//
+//        //http://localhost:8080/games/1/start
+//        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+//
+//        body.add("token", owner.getToken());
+//        HttpEntity<User> httpUserEntity = new HttpEntity<User>(owner,body);
+//        ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/start", HttpMethod.POST, httpUserEntity, String.class);
+//        game = gameRepository.findOne(1L);
+////        assertEquals(GameStatus.RUNNING, game.getStatus());
+//        System.out.println(game.getStatus());
 
     }
 
@@ -141,9 +183,6 @@ public class GameResourceTest {
 
     }
 
-    @Test
-    public void createPlayer() throws Exception {
 
-    }
 
 }
