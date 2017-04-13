@@ -4,14 +4,11 @@ import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.ShipService;
@@ -52,6 +49,9 @@ public class MoveResource extends GenericResource {
     RuleBook ruleBook;
     @Autowired
     ValidatorManager validatorManager;
+
+    @Autowired
+    MarketCardRepository marketCardRepository;
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
@@ -145,6 +145,37 @@ public class MoveResource extends GenericResource {
             gameRepo.save(game);
             roundRepo.save(round);
             userRepo.save(user);
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return "OK";
+        }else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "NullException";
+        }
+    }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/market", method = RequestMethod.POST)
+    public String giveCardToUser(HttpServletResponse response,@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken, @RequestParam("position") int position){
+        Game game = gameRepo.findOne(gameId);
+        User user = userRepo.findByToken(playerToken);
+        Round round = roundRepo.findById(roundId);
+        if(game != null && user != null && round != null){
+            GiveCardToUserMove move =moveRepo.save(new GiveCardToUserMove(user,round,game,position));
+            try{
+                validatorManager.validateSync(game,move);
+                moveRepo.save(move);
+            } catch (ValidationException e){
+                validationExceptionHandler(e,response);
+                return e.getMessage();
+            }
+            System.out.println("BEFORE CALLING MOVESERVICE: "+user.getColor() );
+            moveService.giveCardToUser(game,move);
+
+            user=userRepo.save(user);
+            gameRepo.save(game);
+            roundRepo.save(round);
+            int counterCard = user.getMarketCards().size()-1;
+            marketCardRepository.save(user.getMarketCards().get(counterCard));
+            System.out.println(user.getMarketCards().get(0).getCardType());
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else {

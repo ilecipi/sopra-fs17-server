@@ -45,10 +45,19 @@ public class User implements Serializable {
     private List<Game> games;
 
     @OneToMany(mappedBy = "user")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @JsonIgnore
     private List<AMove> AMoves;
 
+    public List<AMarketCard> getMarketCards() {
+        return marketCards;
+    }
+
+    public void setMarketCards(List<AMarketCard> marketCards) {
+        this.marketCards = marketCards;
+    }
+
     @OneToMany(mappedBy = "user")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AMarketCard> marketCards;
 
     @Column(nullable = true)
@@ -86,6 +95,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    @JsonIgnore
     public List<Game> getGames() {
         return games;
     }
@@ -94,6 +104,7 @@ public class User implements Serializable {
         this.games = games;
     }
 
+    @JsonIgnore
     public List<AMove> getAMoves() {
         return AMoves;
     }

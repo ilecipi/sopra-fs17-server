@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
@@ -89,6 +90,7 @@ public class MoveService {
         }
     }
     public void sailShip(Game game,AMove move){
+
         ruleBook.applyRule(game,move);
         }
     public void getStone(Game game,AMove move){
@@ -123,4 +125,9 @@ public class MoveService {
             }
         }
     }
+
+    public void giveCardToUser(Game game, AMove move){
+            ruleBook.applyRule(game,move);
+        System.out.println("AFTER APPLY ON RULEBOOK "+((Market)findSiteboardsByType("market", game.getId())).getMarketCards().size());
+        }
 }

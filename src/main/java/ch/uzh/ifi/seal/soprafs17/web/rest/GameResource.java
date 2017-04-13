@@ -6,6 +6,7 @@ import java.util.List;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -150,8 +151,11 @@ public class GameResource extends GenericResource {
                 for (AMove pm : u.getAMoves()) {
                     playerMovesDTO.add(pm.getId());
                 }
-
-                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled()));
+                List<String> playerCardsDTO = new ArrayList<>();
+                for(AMarketCard am: u.getMarketCards()){
+                    playerCardsDTO.add(am.getCardType());
+                }
+                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(),playerCardsDTO));
             }
             for (SiteBoard s : g.getSiteBoards()) {
                 siteBoardsId.add(s.getId());

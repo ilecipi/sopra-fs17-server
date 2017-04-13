@@ -31,6 +31,7 @@ public class RuleBook {
         this.rules.add(new AddStoneToShipRule());
         this.rules.add(new SailShipRule());
         this.rules.add(new GetStoneRule());
+        this.rules.add(new GiveCardToUserRule());
     }
 
     public void addRule(IRule rule)  {}

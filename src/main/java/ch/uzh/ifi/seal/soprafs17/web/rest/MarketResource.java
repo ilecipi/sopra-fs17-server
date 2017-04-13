@@ -45,10 +45,9 @@ public class MarketResource {
     public MarketDTO getMarket(@PathVariable Long gameId) {
         Game game = gameRepo.findOne(gameId);
         int currentRound = game.getRounds().size()-1;
-        Round round = game.getRounds().get(currentRound);
         Market market = siteBoardsService.getMarket(game);
         List<String> currentMarketCards = new ArrayList<>();
-        for (AMarketCard mc : round.getMarketCards()){
+        for (AMarketCard mc : market.getMarketCards()){
             currentMarketCards.add(mc.getCardType());
         }
         return new MarketDTO(market.getId(),market.isOccupied(),currentMarketCards, market.getUserColor());

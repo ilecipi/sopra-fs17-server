@@ -16,6 +16,14 @@ public abstract class AMarketCard {
     @GeneratedValue
     private Long id;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @OneToOne
     private User user;
 

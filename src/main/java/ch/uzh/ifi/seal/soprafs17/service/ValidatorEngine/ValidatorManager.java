@@ -3,9 +3,14 @@ package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.AddStoneToShipRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.GetStoneRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.GiveCardToUserRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.SailShipRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +24,13 @@ public class ValidatorManager {
     private List<IValidator> validators=new ArrayList<>();
     public ValidatorManager(){
     }
-
+    @PostConstruct
+    public void addValidator(){
+        this.validators.add(new AddStoneToShipValidator());
+        this.validators.add(new SailShipValidator());
+        this.validators.add(new GetStoneValidator());
+        this.validators.add(new GiveCardToUserValidator());
+    }
         public void addValidator(IValidator iValidator) {
             boolean hasToBeAdded=true;
             for(IValidator iV: validators){
