@@ -78,6 +78,7 @@ public class GameResourceTest {
         this.base = new URL("http://localhost:" + port + "/");
         this.template = new TestRestTemplate();
     }
+
     @Test
     public void addGame() throws Exception {
         // list games with size = 0
@@ -108,8 +109,6 @@ public class GameResourceTest {
         Long gameId = Long.parseLong(jsonResponse.get("id").toString());
         Game game = gameRepository.findOne(gameId);
         Assert.assertEquals(game.getId().intValue(), Integer.parseInt(jsonResponse.get("id").toString()));
-
-
     }
 
     @Test

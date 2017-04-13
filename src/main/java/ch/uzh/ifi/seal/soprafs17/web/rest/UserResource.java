@@ -60,20 +60,20 @@ public class UserResource extends GenericResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public User addUser(@RequestBody User user) {
+    public UserDTO addUser(@RequestBody User user) {
         logger.debug("addUser: " + user);
         String token =""+counter++;
         User u = userService.createUser(user.getName(),user.getUsername(), token, UserStatus.ONLINE, null);
-//        List<Long> gamesId = new ArrayList<>();
-//        List<Long> movesId = new ArrayList<>();
-//        for(Game g : u.getGames()){
-//            gamesId.add(g.getId());
-//        }
-//        for(AMove m : u.getAMoves()){
-//            movesId.add(m.getId());
-//        }
-//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor());
-        return u;
+        List<Long> gamesId = new ArrayList<>();
+        List<Long> movesId = new ArrayList<>();
+        for(Game g : u.getGames()){
+            gamesId.add(g.getId());
+        }
+        for(AMove m : u.getAMoves()){
+            movesId.add(m.getId());
+        }
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled());
+//        return u;
     }
 
 

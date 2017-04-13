@@ -42,7 +42,7 @@ public class TempleResource extends GenericResource {
                    temple = (Temple)s;
                 }
             }
-            TempleDTO templeDTO = new TempleDTO(temple.getId(),temple.getStones(),gameId,temple.isOccupied());
+            TempleDTO templeDTO = new TempleDTO(temple.getId(),temple.getStones(),gameId,temple.isOccupied(),temple.getInsertIndex(),temple.getCompletedRows());
             return templeDTO;
         }
         return null;

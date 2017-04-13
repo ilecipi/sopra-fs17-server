@@ -16,13 +16,17 @@ public class TempleDTO extends StoneBoardDTO{
     public Stone[] stones;
     public Long game;
     public boolean isOccupied;
+    public int insertIndex;
+    public int completedRows;
 
     public TempleDTO(){}
 
-    public TempleDTO(Long id, Stone[] stones, Long gameId, boolean isOccupied){
+    public TempleDTO(Long id, Stone[] stones, Long gameId, boolean isOccupied,int insertIndex,int completedRows){
         this.id=id;
         this.stones=stones;
         this.game=gameId;
         this.isOccupied=isOccupied;
+        this.insertIndex=insertIndex;
+        this.completedRows = completedRows;
     }
 }
