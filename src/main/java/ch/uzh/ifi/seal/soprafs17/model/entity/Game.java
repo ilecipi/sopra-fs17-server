@@ -46,7 +46,7 @@ public class Game implements Serializable {
 	}
 
 	@OneToMany
-	private List<Round> rounds;
+	private List<Round> rounds = new ArrayList<>();
 
 	//Colors that are not chosen yet
 	@ElementCollection
@@ -91,7 +91,7 @@ public class Game implements Serializable {
 
 	@JsonIgnore
 	@ElementCollection
-	private Map<Integer, Integer[]> shipsCards;
+	private Map<Integer, Integer[]> shipsCards=new HashMap<>();
 
 	public Map<Integer, String> getMarketCards() {
 		return marketCards;

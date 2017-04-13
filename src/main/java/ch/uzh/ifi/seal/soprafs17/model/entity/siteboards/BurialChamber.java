@@ -195,7 +195,6 @@ public class BurialChamber extends StoneBoard implements Serializable{
             if(connectedStones == 2){
                 pointsOfBurialChamber.put(c,3+oneStoneField);
             }else if(connectedStones == 3){
-                System.out.println(oneStoneField);
                 pointsOfBurialChamber.put(c,6+oneStoneField);
             }else if(connectedStones == 4){
                 pointsOfBurialChamber.put(c,10+oneStoneField);

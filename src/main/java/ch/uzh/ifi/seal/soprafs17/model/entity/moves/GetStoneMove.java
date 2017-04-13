@@ -50,8 +50,6 @@ public class GetStoneMove extends AMove{
                 super.getUser().setSupplySled(toAddStone);
             }
             game.findNextPlayer();
-//            int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
-//            game.setNextPlayer(game.getPlayers().get(index));
         }
         return game;
     }
