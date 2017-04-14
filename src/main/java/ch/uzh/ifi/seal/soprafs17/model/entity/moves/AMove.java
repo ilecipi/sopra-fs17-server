@@ -25,7 +25,6 @@ public abstract class AMove implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name="USER_ID")
-//	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private User user;
 
 	@OneToOne

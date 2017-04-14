@@ -24,28 +24,10 @@ import javax.persistence.PersistenceContext;
 @EnableAutoConfiguration
 public class Application {
 
-
-//    static RuleBook ruleBook;
-//
-//    static ValidatorManager validatorManager;
-
     public static void main(String[] args) {
-//        RuleBook ruleBook=new RuleBook();
-//        ValidatorManager validatorManager = new ValidatorManager();
-//        ApplicationContext ctx = new AnnotationConfigApplicationContext(PersistenceContext.class);
-//        RuleBook ruleBOOK =ctx.getBean(RuleBook.class);
-//        RuleBook ruleBook = new RuleBook();
-////        ValidatorManager validatorMANAGER = ctx.getBean(ValidatorManager.class);
-//        ValidatorManager validatorManager=new ValidatorManager();
-//        ruleBook.addRule(new AddStoneToShipRule());
-//        ruleBook.addRule(new SailShipRule());
-//        ruleBook.addRule(new GetStoneRule());
-//        validatorManager.addValidator(new AddStoneToShipValidator());
-//        validatorManager.addValidator(new SailShipValidator());
-//        validatorManager.addValidator(new GetStoneValidator());
+
         SpringApplication.run(Application.class, args);
 
-//        System.out.println("ruleBook"+ruleBook.getRules().get(1));
     }
 
 

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.Application;
+import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
@@ -61,9 +62,9 @@ public class UserResourceTest {
     @SuppressWarnings("unchecked")
     public void addUser() throws Exception {
 
-        User userRequest = new User();
+        User userRequest3 = new User();
 
-        HttpEntity<User> httpUserEntity = new HttpEntity<>(userRequest);
+        HttpEntity<User> httpUserEntity = new HttpEntity<>(userRequest3);
 
         // create user with no Name or Username
         ResponseEntity<String> responseMessage = template.exchange(base + "users", HttpMethod.POST,httpUserEntity,String.class);
@@ -71,20 +72,15 @@ public class UserResourceTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,responseMessage.getStatusCode());
 
         //add user with Name and Username
-        userRequest.setName("testName123");
-        userRequest.setUsername("testUsername123");
-        userRequest.setId(1234L);
+        userRequest3.setName("testName123");
+        userRequest3.setUsername("testUsername123");
 
-        responseMessage = template.exchange(base + "users", HttpMethod.POST,httpUserEntity,String.class);
+        HttpEntity<User> httpUserEntity2 = new HttpEntity<>(userRequest3);
+
+        responseMessage = template.exchange(base + "users", HttpMethod.POST,httpUserEntity2,String.class);
         assertEquals(HttpStatus.CREATED,responseMessage.getStatusCode());
         List<UserDTO> usersBefore = template.getForObject(base + "users", List.class);
         assertNotNull(usersBefore);
-
-////        ResponseEntity<String>  userAfter = template.getForEntity(base + "users" , String.class);
-//        JSONObject jsonObject = new JSONObject(responseMessage.getBody());
-//        Long userId = Long.parseLong(jsonResponse.get("id").toString());
-//        User user123 = userRepo.findOne(userId);
-//        Assert.assertEquals(user123.getId().intValue(), Integer.parseInt(jsonResponse.get("id").toString()));
     }
 
     @Test
@@ -96,17 +92,21 @@ public class UserResourceTest {
 
     @Test
     public void getUser() throws Exception {
-        ResponseEntity<UserDTO>  userAfter = template.getForEntity(base + "users/1" , UserDTO.class);
-        System.out.println(userAfter.getBody().name);
-    }
-
-    @Test
-    public void login() throws Exception {
+        ResponseEntity<UserDTO>  userAfter = template.getForEntity(base + "users/4" , UserDTO.class);
+        assertEquals("testName123",userAfter.getBody().name);
+        assertEquals("testUsername123",userAfter.getBody().username);
 
     }
 
     @Test
     public void logout() throws Exception {
+        ResponseEntity<UserDTO>  userAfter = template.getForEntity(base + "users/4" , UserDTO.class);
+        assertEquals(UserStatus.ONLINE,userAfter.getBody().status);
+
+
+        ResponseEntity<String> responseMessage = template.exchange(base + "users/4/logout?token="+userAfter.getBody().token,HttpMethod.PUT,userAfter,String.class);
+        userAfter = template.getForEntity(base + "users/4" , UserDTO.class);
+        assertEquals(UserStatus.OFFLINE,userAfter.getBody().status);
 
     }
 

@@ -23,8 +23,7 @@ public class RuleBook {
 
     private List<IRule> rules=new ArrayList<>();
 
-    public RuleBook(){
-    }
+    public RuleBook(){}
 
     @PostConstruct
     public void addRule(){
@@ -32,9 +31,6 @@ public class RuleBook {
         this.rules.add(new SailShipRule());
         this.rules.add(new GetStoneRule());
     }
-
-    public void addRule(IRule rule)  {}
-
 
     public synchronized void apply(Game game, AMove move) {
         for(IRule rule:rules){

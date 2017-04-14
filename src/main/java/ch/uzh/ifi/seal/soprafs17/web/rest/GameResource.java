@@ -111,12 +111,6 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
-                validatorBook.addValidator(new AddStoneToShipValidator());
-                ruleBook.addRule(new AddStoneToShipRule());
-                validatorBook.addValidator(new SailShipValidator());
-                ruleBook.addRule(new SailShipRule());
-                validatorBook.addValidator(new GetStoneValidator());
-                ruleBook.addRule(new GetStoneRule());
         Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
             return null;
