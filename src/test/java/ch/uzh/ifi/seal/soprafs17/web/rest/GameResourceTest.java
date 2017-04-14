@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
@@ -55,7 +56,7 @@ import static sun.audio.AudioPlayer.player;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -102,8 +103,8 @@ public class GameResourceTest {
         Assert.assertEquals(null, responseGame.getBody());
 
         //add User
-        ResponseEntity<User> responseUser = template.exchange(base + "users", HttpMethod.POST, httpUserEntity, User.class);
-        ownerToken = responseUser.getBody().getToken();
+        ResponseEntity<UserDTO> responseUser = template.exchange(base + "users", HttpMethod.POST, httpUserEntity, UserDTO.class);
+        ownerToken = responseUser.getBody().token;
 
         // add Game with userToken
         responseGame = template.exchange(base + "games?token=" + ownerToken, HttpMethod.POST, httpGameEntity, String.class);
@@ -138,13 +139,11 @@ public class GameResourceTest {
         ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity, String.class);
 
         assertEquals(UserStatus.IN_A_LOBBY, userRepository.findByName("Test2").getStatus());
-        System.out.println("AAAAAAAA"+userRepository.findByName("Test").getName());
     }
 
     @Test
     public void startGame() throws Exception {
 //        System.out.println(gameRepository);
-//        System.out.println("BBBBBBB"+userRepository.findByName("Test"));
 //        Game game = gameRepository.findOne(1L);
 ////        assertNotNull(game);
 //        User owner = userRepository.findByName(game.getOwner());

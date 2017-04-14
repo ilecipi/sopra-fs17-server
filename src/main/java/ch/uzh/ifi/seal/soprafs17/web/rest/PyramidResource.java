@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.PyramidDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.TempleDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
@@ -37,17 +38,16 @@ public class PyramidResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid")
     @ResponseStatus(HttpStatus.OK)
-    public StoneBoard getPyramid(@PathVariable Long gameId) {
+    public PyramidDTO getPyramid(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
         Pyramid pyramid = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("pyramid")) {
-                    pyramid = (Pyramid) s;
-                }
+        if (!siteBoards.isEmpty()) for (SiteBoard s : siteBoards) {
+            if (s.getDiscriminatorValue().equals("pyramid")) {
+                pyramid = (Pyramid) s;
             }
         }
-        return pyramid;
+
+        return new PyramidDTO(pyramid.getId(),pyramid.getAddedStones());
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid/points")

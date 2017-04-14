@@ -14,40 +14,14 @@ import java.util.*;
 @DiscriminatorValue("pyramid")
 public class Pyramid extends StoneBoard {
     public Pyramid(){}
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue
     private Long id;
 
-    public Game getGame() {
-        return game;
-    }
-
-    @Override
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     @JsonIgnore
     @OneToOne
     private Game game;
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
 
     int counter = 0;
 
@@ -123,5 +97,35 @@ public class Pyramid extends StoneBoard {
     public List<Stone> getAddedStones() {
         return addedStones;
     }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+
+
 
 }

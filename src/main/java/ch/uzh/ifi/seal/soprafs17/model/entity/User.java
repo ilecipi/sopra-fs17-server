@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -41,11 +42,11 @@ public class User implements Serializable {
 
     @ManyToMany
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<Game> games;
+    private List<Game> games = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<AMove> AMoves;
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<AMove> AMoves = new ArrayList<>();
 
     @Column(nullable = true)
     private String color;
