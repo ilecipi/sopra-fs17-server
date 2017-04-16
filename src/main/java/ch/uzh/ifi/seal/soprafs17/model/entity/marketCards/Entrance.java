@@ -24,4 +24,11 @@ public class Entrance extends AMarketCard implements MCImmediate {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "ENTRANCE";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

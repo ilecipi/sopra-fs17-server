@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs17.model.DTOs;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +12,9 @@ import java.util.List;
 public class UserDTO {
     UserDTO(){}
 
-    public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color,int supplySled, int stoneQuarry) {
+
+    public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color,int supplySled,
+                    List<AMarketCard> cards,int stoneQuarry) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -21,7 +25,13 @@ public class UserDTO {
         this.color = color;
         this.supplySled=supplySled;
         this.stoneQuarry = stoneQuarry;
-    }
+        List<String> playerCardsDTO = new ArrayList<>();
+        for(AMarketCard aMarketCard: cards){
+            playerCardsDTO.add(aMarketCard.getCardType());
+        }
+        this.cards=playerCardsDTO;
+
+        }
 
     public Long id;
     public String name;
@@ -33,4 +43,5 @@ public class UserDTO {
     public String color;
     public int supplySled;
     public int stoneQuarry;
+    public List<String> cards;
 }

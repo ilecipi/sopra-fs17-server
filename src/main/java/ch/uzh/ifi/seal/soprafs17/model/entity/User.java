@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import com.fasterxml.jackson.annotation.*;
 
@@ -48,8 +49,21 @@ public class User implements Serializable {
     private List<Game> games = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-//    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<AMove> AMoves = new ArrayList<>();
+
+    @JsonIgnore
+    private List<AMove> AMoves;
+
+    public List<AMarketCard> getMarketCards() {
+        return marketCards;
+    }
+
+    public void setMarketCards(List<AMarketCard> marketCards) {
+        this.marketCards = marketCards;
+    }
+
+    @OneToMany(mappedBy = "user")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<AMarketCard> marketCards;
 
     @Column(nullable = true)
     private String color;
@@ -86,6 +100,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    @JsonIgnore
     public List<Game> getGames() {
         return games;
     }
@@ -94,6 +109,7 @@ public class User implements Serializable {
         this.games = games;
     }
 
+    @JsonIgnore
     public List<AMove> getAMoves() {
         return AMoves;
     }

@@ -24,4 +24,11 @@ public class Sarcophagus  extends AMarketCard implements MCImmediate{
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "SARCOPHAGUS";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

@@ -3,12 +3,14 @@ package ch.uzh.ifi.seal.soprafs17.service;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.*;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.MoveRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
+import javafx.scene.AmbientLight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,6 +133,46 @@ public class SiteBoardsService {
             throw new NullException();
         }
     }
+
+    public String addMarket(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        SiteBoard market = new Market();
+        game.getSiteBoards().add(market);
+        market.setGame(game);
+        market = siteBoardRepository.save(market);
+        game=gameRepository.save(game);
+        return "/game/+gameId" + "/" + market.getId();
+    }
+
+    public List<AMarketCard> getMarketCards(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        List<SiteBoard> siteBoards = game.getSiteBoards();
+        Market market = new Market();
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("market")) {
+                    market= (Market) s;
+                }
+            }
+        }
+        return market.getMarketCards();
+    }
+
+    public Market getMarket(Game game){
+        List<SiteBoard> siteBoards = game.getSiteBoards();
+        Market market = null;
+        if (!siteBoards.isEmpty()) {
+            for (SiteBoard s : siteBoards) {
+                if (s.getDiscriminatorValue().equals("market")) {
+                    market= (Market) s;
+                }
+            }
+        }
+        return market;
+    }
+
+
+
 
 
 

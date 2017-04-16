@@ -30,6 +30,7 @@ public abstract class SiteBoard {
     @Column
     private boolean isOccupied;
 
+
     public AShip getDockedShip() {
         return dockedShip;
     }
@@ -39,7 +40,7 @@ public abstract class SiteBoard {
     }
 
     @OneToOne
-//    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private AShip dockedShip;
 
     public boolean isOccupied() {

@@ -25,4 +25,11 @@ public class TempleDecoration extends AMarketCard implements MCDecoration{
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "TEMPLE_DECORATION";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

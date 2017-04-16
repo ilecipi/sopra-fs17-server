@@ -25,4 +25,11 @@ public class Statue extends AMarketCard {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "STATUE";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

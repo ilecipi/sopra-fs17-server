@@ -24,4 +24,11 @@ public class Sail extends AMarketCard implements MCAction {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "SAIL";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

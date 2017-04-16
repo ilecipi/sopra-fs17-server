@@ -24,4 +24,11 @@ public class Lever extends AMarketCard implements MCAction {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "LEVER";
+
+    @Override
+    public String getCardType() {
+        return this.cardType;
+    }
 }

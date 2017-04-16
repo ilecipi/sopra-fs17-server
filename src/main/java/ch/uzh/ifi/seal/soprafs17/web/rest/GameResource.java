@@ -6,6 +6,7 @@ import java.util.List;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -88,7 +89,7 @@ public class GameResource extends GenericResource {
                             playerMovesDTO.add(pm.getId());
                         }
                     }
-                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor(),u.getSupplySled(),u.getStoneQuarry()));
+                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
                 }
                 if(g.getSiteBoards()!=null) {
                     for (SiteBoard s : g.getSiteBoards()) {
@@ -144,8 +145,11 @@ public class GameResource extends GenericResource {
                 for (AMove pm : u.getAMoves()) {
                     playerMovesDTO.add(pm.getId());
                 }
-
-                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(), u.getStoneQuarry()));
+//                List<String> playerCardsDTO = new ArrayList<>();
+//                for(AMarketCard am: u.getMarketCards()){
+//                    playerCardsDTO.add(am.getCardType());
+//                }
+                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
             }
             for (SiteBoard s : g.getSiteBoards()) {
                 siteBoardsId.add(s.getId());
@@ -218,7 +222,7 @@ public class GameResource extends GenericResource {
                 movesId.add(m.getId());
             }
             //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
-            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry()));
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
         }
         return usersDTO;
     }
@@ -244,7 +248,7 @@ public class GameResource extends GenericResource {
         for(AMove m : u.getAMoves()){
             movesId.add(m.getId());
         }
-        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry());
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
     }
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)

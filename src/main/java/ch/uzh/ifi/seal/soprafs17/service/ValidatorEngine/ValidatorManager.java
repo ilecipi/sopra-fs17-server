@@ -3,6 +3,10 @@ package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.AddStoneToShipRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.GetStoneRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.GiveCardToUserRule;
+import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.SailShipRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +29,13 @@ public class ValidatorManager {
         this.validators.add(new GetStoneValidator());
         this.validators.add(new SailShipValidator());
     }
-
     public ValidatorManager(){}
 
     public void validate(Game game, AMove amove){
             this.validateSync(game,amove);
-    }public synchronized void validateSync(Game game, AMove amove){
+    }
+
+    public synchronized void validateSync(Game game, AMove amove){
             for(IValidator validator : validators){
                 if(validator.supports(amove)&& amove instanceof GetStoneMove &&game.getCurrentPlayer().getSupplySled()>=0){
                     validator.validate(game,amove);
