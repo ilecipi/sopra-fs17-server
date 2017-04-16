@@ -35,17 +35,52 @@ public class GetStoneMove extends AMove{
 
     public Game getStones(Game game){
         int toAddStone;
-        if(super.getUser().getSupplySled() == 5){
+        if(super.getUser().getSupplySled() == 5 || super.getUser().getStoneQuarry() == 0){
             //TODO:Return throw an exception(Player cannot get stones
 
         }else {
-         if (super.getUser().getSupplySled() == 0) {
-                toAddStone = 3;
-                super.getUser().setSupplySled(toAddStone);
+            if (super.getUser().getSupplySled() == 0) {
+                if(super.getUser().getStoneQuarry() >=3) {
+                    toAddStone = 3;
+                    super.getUser().setSupplySled(toAddStone);
+                } else if (super.getUser().getStoneQuarry() == 2){
+                    toAddStone = 2;
+                    super.getUser().setSupplySled(toAddStone);
+                } else{
+                    toAddStone = 1;
+                    super.getUser().setSupplySled(toAddStone);
+                }
             } else if (super.getUser().getSupplySled() == 1) {
-                toAddStone = 4;
-                super.getUser().setSupplySled(toAddStone);
-            } else {
+                if(super.getUser().getStoneQuarry() >= 3) {
+                    toAddStone = 4;
+                    super.getUser().setSupplySled(toAddStone);
+                } else if(super.getUser().getStoneQuarry() == 2){
+                    toAddStone = 3;
+                    super.getUser().setSupplySled(toAddStone);
+                } else{
+                    toAddStone = 2;
+                    super.getUser().setSupplySled(toAddStone);
+                }
+            } else if(super.getUser().getSupplySled() == 2){
+                if(super.getUser().getStoneQuarry() >= 3) {
+                    toAddStone = 5;
+                    super.getUser().setSupplySled(toAddStone);
+                } else if(super.getUser().getStoneQuarry() == 2){
+                    toAddStone = 4;
+                    super.getUser().setSupplySled(toAddStone);
+                } else {
+                    toAddStone = 3;
+                    super.getUser().setSupplySled(toAddStone);
+                }
+            } else if(super.getUser().getSupplySled()== 3) {
+                if (super.getUser().getStoneQuarry() >= 2) {
+                 toAddStone = 5;
+                 super.getUser().setSupplySled(toAddStone);
+                } else {
+                 toAddStone = 4;
+                 super.getUser().setSupplySled(toAddStone);
+                }
+            } else{
                 toAddStone = 5;
                 super.getUser().setSupplySled(toAddStone);
             }

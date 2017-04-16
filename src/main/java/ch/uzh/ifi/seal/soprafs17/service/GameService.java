@@ -128,12 +128,12 @@ public class GameService {
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
                 int initStones=2;
-                int initStoneQuarry=30;
+                int initStoneQuarry=28;
                 for (User u : game.getPlayers()) {
                     game.getPoints().put(u.getColor(),/*0*/rn.nextInt(100) );
                     u.setStatus(UserStatus.IS_PLAYING);
                     u.setSupplySled(initStones++);
-                    u.setStoneQuarry(initStoneQuarry-initStones+1);
+                    u.setStoneQuarry(initStoneQuarry--);
                     userRepository.save(u);
                 }
 
