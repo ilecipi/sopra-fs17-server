@@ -88,7 +88,7 @@ public class GameResource extends GenericResource {
                             playerMovesDTO.add(pm.getId());
                         }
                     }
-                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor(),u.getSupplySled()));
+                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor(),u.getSupplySled(),u.getStoneQuarry()));
                 }
                 if(g.getSiteBoards()!=null) {
                     for (SiteBoard s : g.getSiteBoards()) {
@@ -145,7 +145,7 @@ public class GameResource extends GenericResource {
                     playerMovesDTO.add(pm.getId());
                 }
 
-                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled()));
+                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(), u.getStoneQuarry()));
             }
             for (SiteBoard s : g.getSiteBoards()) {
                 siteBoardsId.add(s.getId());
@@ -218,7 +218,7 @@ public class GameResource extends GenericResource {
                 movesId.add(m.getId());
             }
             //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
-            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled()));
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry()));
         }
         return usersDTO;
     }
@@ -244,7 +244,7 @@ public class GameResource extends GenericResource {
         for(AMove m : u.getAMoves()){
             movesId.add(m.getId());
         }
-        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled());
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry());
     }
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)

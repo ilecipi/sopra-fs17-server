@@ -62,7 +62,7 @@ public class UserResource extends GenericResource {
             for(AMove m : u.getAMoves()){
                 movesId.add(m.getId());
             }
-            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled()));
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry()));
         }
         return usersDTO;
     }
@@ -86,7 +86,7 @@ public class UserResource extends GenericResource {
                 movesId.add(m.getId());
             }
         }
-        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled());
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry());
     }
 
 //    @RequestMapping(method = RequestMethod.POST, value = "/{userId}/login")
@@ -102,7 +102,7 @@ public class UserResource extends GenericResource {
 //        for(AMove m : u.getAMoves()){
 //            movesId.add(m.getId());
 //        }
-//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled());
+//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry());
 //    }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}/logout")

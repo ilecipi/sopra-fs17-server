@@ -40,6 +40,9 @@ public class User implements Serializable {
     @Column
     private int SupplySled;
 
+    @Column
+    private int stoneQuarry;
+
     @ManyToMany
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Game> games = new ArrayList<>();
@@ -121,5 +124,13 @@ public class User implements Serializable {
 
     public void setSupplySled(int supplySled) {
         SupplySled = supplySled;
+    }
+
+    public int getStoneQuarry(){
+        return stoneQuarry;
+    }
+
+    public void setStoneQuarry(int stoneQuarry){
+        this.stoneQuarry = stoneQuarry;
     }
 }

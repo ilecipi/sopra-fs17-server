@@ -72,15 +72,15 @@ public class Game implements Serializable {
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private List<SiteBoard> siteBoards;
 
-	private StoneQuarry stoneQuarry;
-
-	public void setStoneQuarry(StoneQuarry stoneQuarry){
-		this.stoneQuarry = stoneQuarry;
-	}
-
-	public StoneQuarry getStoneQuarry(){
-		return stoneQuarry;
-	}
+//	private StoneQuarry stoneQuarry;
+//
+//	public void setStoneQuarry(StoneQuarry stoneQuarry){
+//		this.stoneQuarry = stoneQuarry;
+//	}
+//
+//	public StoneQuarry getStoneQuarry(){
+//		return stoneQuarry;
+//	}
 
 	public Map<Integer, Integer[]> getShipsCards() {
 		return shipsCards;
