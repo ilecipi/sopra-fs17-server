@@ -167,7 +167,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void startGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+    public void startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("startGame: " + gameId);
 
         gameService.startGame(gameId, userToken);
@@ -175,7 +175,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void stopGame(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+    public void stopGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("stopGame: " + gameId);
 
         gameService.stopGame(gameId, userToken);
