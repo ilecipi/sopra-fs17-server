@@ -73,15 +73,6 @@ public class Game implements Serializable {
 	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 	private List<SiteBoard> siteBoards;
 
-//	private StoneQuarry stoneQuarry;
-//
-//	public void setStoneQuarry(StoneQuarry stoneQuarry){
-//		this.stoneQuarry = stoneQuarry;
-//	}
-//
-//	public StoneQuarry getStoneQuarry(){
-//		return stoneQuarry;
-//	}
 
 	public Map<Integer, Integer[]> getShipsCards() {
 		return shipsCards;
@@ -178,15 +169,6 @@ public class Game implements Serializable {
 
 		return currentPlayer;
 	}
-
-	//returns the current round
-//	public Round getCurrentRound() {
-//		if (!this.getRounds().isEmpty()) {
-//			return this.getRounds().get(this.getRounds().size() - 1);
-//		}
-//		return null;
-//	}
-
 
 	public Map<String, Boolean> getColors() {
 		return colors;
