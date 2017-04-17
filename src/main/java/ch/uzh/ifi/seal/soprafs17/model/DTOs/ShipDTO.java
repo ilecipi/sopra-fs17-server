@@ -8,7 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 public class ShipDTO {
     ShipDTO(){}
 
-    public ShipDTO(Long id, Stone[] stones, boolean isReady, int addedStones, boolean docked, Long siteBoard) {
+    public ShipDTO(Long id, Stone[] stones, boolean isReady, int addedStones, boolean docked, String siteBoard) {
         this.id = id;
         this.stones = stones;
         this.isReady = isReady;
@@ -22,5 +22,5 @@ public class ShipDTO {
     public boolean isReady;
     public int addedStones = 0;
     public boolean docked;
-    public Long siteBoard;
+    public String siteBoard;
 }

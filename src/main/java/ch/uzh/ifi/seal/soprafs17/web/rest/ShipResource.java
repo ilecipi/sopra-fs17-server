@@ -42,7 +42,7 @@ public class ShipResource {
                 List<ShipDTO> shipsDTO = new ArrayList<>();
                 for(AShip s : ships){
                         if(s.getStones()!=null&& s.getSiteBoard()!=null) {
-                                shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getId()));
+                                shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getDiscriminatorValue()));
                         }else if(s.getStones()!=null&&s.getSiteBoard()==null) {
                                 shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), null));
                         }
@@ -59,7 +59,7 @@ public class ShipResource {
                 logger.debug("getShip: " + shipId);
                 AShip s = shipService.getShip(roundId,shipId);
                 if(s.getStones()!=null&&s.getSiteBoard()!=null) {
-                        return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getId());
+                        return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getDiscriminatorValue());
                 }else if(s.getStones()!=null&&s.getSiteBoard()==null){
                         return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), null);
                 }else{
