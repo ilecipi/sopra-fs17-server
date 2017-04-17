@@ -9,13 +9,16 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -35,8 +38,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,8 +71,12 @@ public class GameResourceTest {
     @Autowired
     protected UserRepository userRepository;
 
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GameResource gameResource;
 
     @Value("${local.server.port}")
     private int port;
@@ -83,6 +92,15 @@ public class GameResourceTest {
     }
 
     @Test
+    public void oneTestForAll() throws Exception {
+        this.addGame();
+        this.getGame();
+        this.getClass();
+        this.createPlayer();
+        this.startGame();
+    }
+
+
     public void addGame() throws Exception {
         // list games with size = 0
         List<GameDTO> gamesBefore = template.getForObject(base + "games", List.class);
@@ -114,19 +132,16 @@ public class GameResourceTest {
         Assert.assertEquals(game.getId().intValue(), Integer.parseInt(jsonResponse.get("id").toString()));
     }
 
-    @Test
     public void getGames() throws Exception {
         List<GameDTO> gamesAfter = template.getForObject(base + "games", List.class);
         Assert.assertEquals(1, gamesAfter.size());
     }
-    @Test
+
     public void getGame() throws Exception {
         GameDTO game = template.getForObject(base + "games" + "/1", GameDTO.class);
         Assert.assertNotNull(game);
     }
 
-
-    @Test
     public void createPlayer() throws Exception {
         User userRequest2 = new User();
         userRequest2.setName("Test2");
@@ -137,29 +152,46 @@ public class GameResourceTest {
         ResponseEntity<User> responseUser = template.exchange(base + "users", HttpMethod.POST, httpUserEntity, User.class);
         //http://localhost:8080/games/1/player?token=2
         ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity, String.class);
-
         assertEquals(UserStatus.IN_A_LOBBY, userRepository.findByName("Test2").getStatus());
+        String ownerUsername= gameRepository.findOne(1L).getOwner();
+        String ownerToken = userRepository.findByUsername(ownerUsername).getToken();
+        assertNotNull(ownerToken);
+        User owner = userRepository.findByToken(ownerToken);
+        HttpEntity<User> HttpOwnerEntity = new HttpEntity<>(owner);
+        responseGame = template.exchange(base + "games" +"/1" +"?token=" + ownerToken, HttpMethod.PUT, HttpOwnerEntity, String.class);
+        assertEquals(UserStatus.IS_READY,userRepository.findByToken(ownerToken).getStatus());
+
+        responseGame = template.exchange(base + "games" +"/1" +"?token=" + userRequest2.getToken(), HttpMethod.PUT, httpUserEntity, String.class);
+
+        assertEquals(UserStatus.IS_READY,userRepository.findByToken(userRequest2.getToken()).getStatus());
     }
 
-    @Test
     public void startGame() throws Exception {
-//        System.out.println(gameRepository);
-//        Game game = gameRepository.findOne(1L);
-////        assertNotNull(game);
-//        User owner = userRepository.findByName(game.getOwner());
-//
-//
-//
-//        //http://localhost:8080/games/1/start
-//        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-//
-//        body.add("token", owner.getToken());
-//        HttpEntity<User> httpUserEntity = new HttpEntity<User>(owner,body);
-//        ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/start", HttpMethod.POST, httpUserEntity, String.class);
-//        game = gameRepository.findOne(1L);
-////        assertEquals(GameStatus.RUNNING, game.getStatus());
-//        System.out.println(game.getStatus());
+        Game game = gameRepository.findOne(1L);
+        assertNotNull(game);
+        User owner = userRepository.findByUsername(game.getOwner());
 
+        URL obj = new URL(base + "games" + "/1" + "/start");
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("POST");
+        String urlParameters = "playerToken=" + owner.getToken();
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        System.out.println(gameRepository.findOne(1L).getStatus().toString());
+        assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
     }
 
     @Test

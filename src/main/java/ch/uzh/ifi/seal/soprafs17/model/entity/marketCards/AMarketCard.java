@@ -11,7 +11,9 @@ import javax.persistence.*;
 @Inheritance
 @DiscriminatorColumn(name ="market_card_type")
 public abstract class AMarketCard {
+    public AMarketCard(){
 
+    }
     @Id
     @GeneratedValue
     private Long id;

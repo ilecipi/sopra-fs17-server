@@ -84,9 +84,8 @@ public class RoundService {
         return roundRepository.findById(roundId);
     }
 
-    public void addRound(Long gameId){
+    public void addRound(Long gameId) {
         Game game = gameRepository.findOne(gameId);
-
         Round round = new Round();
         round.setShips(new ArrayList<AShip>());
         roundRepository.save(round);
@@ -119,8 +118,15 @@ public class RoundService {
         }
         round.setMarketCards(new ArrayList<AMarketCard>());
         Map<Integer,String> marketCards = game.getMarketCards();
-        int selectMarketCard;
-
+        while(round.getMarketCards()==null){
+            try {
+                this.threadSleep();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            log.debug("round marketCards were null");
+            System.out.println("round marketCards were null");
+        }
         for(int i=0;i<4;i++){
            int toTake = marketCards.size()-1;
            String card = marketCards.remove(toTake);
@@ -154,8 +160,6 @@ public class RoundService {
             round = roundRepository.save(round);
             game=gameRepository.save(game);
         }
-
-
         game.getRounds().add(round);
         gameRepository.save(game);
         round.setGame(game);
@@ -171,6 +175,7 @@ public class RoundService {
             Round round = game.getRounds().get(game.getRounds().size()-1);
             if(game.getRounds().size()<MAX_ROUNDS_POSSIBLE && round.getShips().isEmpty() ){
                 addRound(gameId);
+
             }
 
         }
@@ -194,7 +199,9 @@ public class RoundService {
         siteBoardsRepository.save(market);
     }
 
-
+    public void threadSleep() throws InterruptedException {
+        Thread.sleep(100);
+    }
 
 
 
