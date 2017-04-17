@@ -43,7 +43,8 @@ public class Game implements Serializable {
 	}
 
 	@OneToMany
-	private List<Round> rounds = new ArrayList<>();
+	@JsonIgnore
+	private List<Round> rounds = new ArrayList<Round>();
 
 	//Colors that are not chosen yet
 	@ElementCollection
@@ -65,7 +66,7 @@ public class Game implements Serializable {
 	@ElementCollection
 	private Map<String, Integer> points = new HashMap<String, Integer>();
 
-	@ManyToMany(mappedBy = "games")
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "games")
 	private List<User> players = new ArrayList<>();
 
 	@OneToMany
@@ -248,7 +249,7 @@ public class Game implements Serializable {
 			put(7,"PYRAMID_DECORATION");
 			put(8,"TEMPLE_DECORATION");
 			put(9,"TEMPLE_DECORATION");
-			put(10,"BURIAL_CHaMBER_DECORATION");
+			put(10,"BURIAL_CHAMBER_DECORATION");
 			put(11,"BURIAL_CHAMBER_DECORATION");
 			put(12,"OBELISK_DECORATION");
 			put(13,"OBELISK_DECORATION");

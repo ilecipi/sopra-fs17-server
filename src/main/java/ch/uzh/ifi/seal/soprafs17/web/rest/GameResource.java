@@ -169,7 +169,6 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("startGame: " + gameId);
-
         gameService.startGame(gameId, userToken);
     }
 

@@ -15,6 +15,7 @@ import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.Proxy;
 
 @Entity
 public class User implements Serializable {
@@ -49,7 +50,6 @@ public class User implements Serializable {
     private List<Game> games = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-
     @JsonIgnore
     private List<AMove> AMoves;
 
@@ -62,7 +62,7 @@ public class User implements Serializable {
     }
 
     @OneToMany(mappedBy = "user")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @JsonIgnore
     private List<AMarketCard> marketCards;
 
     @Column(nullable = true)
