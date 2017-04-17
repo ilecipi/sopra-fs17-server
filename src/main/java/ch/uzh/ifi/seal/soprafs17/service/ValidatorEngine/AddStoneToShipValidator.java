@@ -35,6 +35,8 @@ public class AddStoneToShipValidator implements IValidator {
             }
             if(castedMove.getShip().getMaxStones()-1<castedMove.getPosition()){
                 throw new OutOfRangeShipPosition();
+            }if(castedMove.getUser().getSupplySled() < 1){
+                throw new NotEnoughStoneException();
             }
         }
     }
