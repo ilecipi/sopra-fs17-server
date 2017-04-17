@@ -38,7 +38,7 @@ public class RuleBook {
             if(rule.supports(move)){
                 if(move instanceof GetStoneMove){
                     rule.apply(game, move);
-                }else{
+                }else {
                     game.getCurrentPlayer().setSupplySled(game.getCurrentPlayer().getSupplySled() - 1);
                     rule.apply(game, move);
                 }

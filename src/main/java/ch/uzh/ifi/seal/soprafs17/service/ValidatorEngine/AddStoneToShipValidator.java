@@ -27,6 +27,9 @@ public class AddStoneToShipValidator implements IValidator {
             if(!BasicValidation.checkCurrentRound(game,amove.getRound())){
                 throw new NotCurrentRoundException();
             }
+            if(castedMove.getUser().getSupplySled() < 1){
+                throw new NotEnoughStoneException();
+            }
             if(castedMove.getRound()==null){
                 throw new NotCurrentRoundException();
             }
@@ -35,8 +38,6 @@ public class AddStoneToShipValidator implements IValidator {
             }
             if(castedMove.getShip().getMaxStones()-1<castedMove.getPosition()){
                 throw new OutOfRangeShipPosition();
-            }if(castedMove.getUser().getSupplySled() < 1){
-                throw new NotEnoughStoneException();
             }
         }
     }
