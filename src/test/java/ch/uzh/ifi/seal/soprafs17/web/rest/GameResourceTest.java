@@ -95,9 +95,8 @@ public class GameResourceTest {
     @Test
     public void oneTestForAll() throws Exception {
         this.addGame();
-        this.listGames();
-        this.getGame();
-        this.getClass();
+//        this.listGames();
+//        this.getGame();
         this.createPlayer();
         this.startGame();
         this.getPlayer();
@@ -190,7 +189,7 @@ public class GameResourceTest {
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
-
+        int responseCode = con.getResponseCode();
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
     }
 
