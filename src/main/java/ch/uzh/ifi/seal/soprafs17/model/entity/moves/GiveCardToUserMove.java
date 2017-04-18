@@ -16,6 +16,7 @@ import java.util.List;
  */
 @Entity
 public class GiveCardToUserMove extends AMove {
+    public GiveCardToUserMove(){}
     @Override
     public Long getId() {
         return id;
@@ -38,12 +39,8 @@ public class GiveCardToUserMove extends AMove {
         this.position = position;
     }
 
-    String color;
-
-    User user;
     @Override
     public Game makeMove(Game game) {
-        System.out.println("BEFORE FINDING MARKET");
         List<SiteBoard> siteBoards = game.getSiteBoards();
         Market market = null;
         if (!siteBoards.isEmpty()) {
@@ -53,22 +50,12 @@ public class GiveCardToUserMove extends AMove {
                 }
             }
         }
-        System.out.println("PRINT MARKET ID: " +market.getId());
-        System.out.println("ARRAY COLORS" +market.getUserColor());
-        System.out.println("PLAYER COLOR: " + this.getUser().getColor());
-        System.out.println("USER NULL? ");
-        if(market.getUserColor().size()>0&&market.getUserColor().get(0).equals(this.getUser().getColor())){
+        if(market.getUserColor().size()>0&&market.getUserColor().get(0).equals(super.getUser().getColor())){
             market.getUserColor().remove(0);
-            System.out.println("MARKET CARD:   "+ market.getMarketCards());
-            System.out.println("USER CARD:     "+this.getUser().getMarketCards());
-            AMarketCard cardToTake = market.getMarketCards().remove(position);
-            System.out.println("Removed card"+cardToTake.getCardType());
-
-            System.out.println("SIZE MARKET ARRAY: "+market.getMarketCards().size());
-
-            this.getUser().getMarketCards().add(cardToTake);
-            cardToTake.setUser(this.user);
-            System.out.println("USER CARD AFTER:     "+this.getUser().getMarketCards());
+            AMarketCard cardToTake = market.getMarketCards().get(position);
+            cardToTake.setTaken(true);
+            super.getUser().getMarketCards().add(cardToTake);
+            cardToTake.setUser(super.getUser());
         }
         return game;
     }

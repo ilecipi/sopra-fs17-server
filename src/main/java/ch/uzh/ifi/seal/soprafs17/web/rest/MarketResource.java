@@ -48,7 +48,11 @@ public class MarketResource {
         Market market = siteBoardsService.getMarket(game);
         List<String> currentMarketCards = new ArrayList<>();
         for (AMarketCard mc : market.getMarketCards()){
-            currentMarketCards.add(mc.getCardType());
+            if(mc.isTaken()){
+                currentMarketCards.add(null);
+            }else {
+                currentMarketCards.add(mc.getCardType());
+            }
         }
         return new MarketDTO(market.getId(),market.isOccupied(),currentMarketCards, market.getUserColor());
     }
