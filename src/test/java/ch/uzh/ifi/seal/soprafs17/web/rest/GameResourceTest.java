@@ -66,6 +66,7 @@ import static sun.audio.AudioPlayer.player;
 @IntegrationTest({"server.port=0"})
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GameResourceTest {
+
     @Autowired
     protected GameRepository gameRepository;
     @Autowired
@@ -94,10 +95,14 @@ public class GameResourceTest {
     @Test
     public void oneTestForAll() throws Exception {
         this.addGame();
+        this.listGames();
         this.getGame();
         this.getClass();
         this.createPlayer();
         this.startGame();
+        this.getPlayer();
+        this.listGames();
+        this.getGame();
     }
 
 
@@ -132,7 +137,7 @@ public class GameResourceTest {
         Assert.assertEquals(game.getId().intValue(), Integer.parseInt(jsonResponse.get("id").toString()));
     }
 
-    public void getGames() throws Exception {
+    public void listGames() throws Exception {
         List<GameDTO> gamesAfter = template.getForObject(base + "games", List.class);
         Assert.assertEquals(1, gamesAfter.size());
     }
@@ -167,6 +172,8 @@ public class GameResourceTest {
     }
 
     public void startGame() throws Exception {
+
+
         Game game = gameRepository.findOne(1L);
         assertNotNull(game);
         User owner = userRepository.findByUsername(game.getOwner());
@@ -185,33 +192,16 @@ public class GameResourceTest {
         wr.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
-        System.out.println(gameRepository.findOne(1L).getStatus().toString());
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
     }
 
-    @Test
-    public void stopGame() throws Exception {
-
-    }
-
-    @Test
-    public void listPlayers() throws Exception {
-
-    }
-
-    @Test
-    public void addUser() throws Exception {
-
-    }
-
-    @Test
     public void getPlayer() throws Exception {
-
+        UserDTO player = template.getForObject(base + "games" + "/1" + "/players" + "/1",UserDTO.class);
+        assertNotNull(player);
     }
 
 

@@ -143,46 +143,6 @@ public class GameService {
         }
     }
 
-    public void stopGame(Long gameId, String userToken){
-        Game game = gameRepository.findOne(gameId);
-        User owner = userRepository.findByToken(userToken);
-
-        if (owner != null && game != null && game.getOwner().equals(owner.getUsername())) {
-            for(User u :game.getPlayers()){
-                u.setStatus(UserStatus.OFFLINE);
-                u.getGames().remove(game);
-                u.setColor(null);
-                userRepository.save(u);
-            }
-            gameRepository.delete(game);
-        }
-    }
-
-    public List<AMove> listMoves(Long gameId){
-
-        Game game = gameRepository.findOne(gameId);
-        if (game != null) {
-//            return game.getAMoves();
-        }
-
-        return null;
-    }
-
-    public void addMove(){ // TODO Mapping into AMove + execution of move
-
-
-    }
-
-
-    public AMove getMove(Long gameId, Integer moveId){
-        Game game = gameRepository.findOne(gameId);
-        if (game != null) {
-//            return game.getAMoves().get(moveId);
-        }
-
-        return null;
-    }
-
     public List<User> listPlayers(Long gameId){
         Game game = gameRepository.findOne(gameId);
         if (game != null) {

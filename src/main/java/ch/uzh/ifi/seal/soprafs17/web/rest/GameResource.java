@@ -54,15 +54,9 @@ public class GameResource extends GenericResource {
 
     private final String CONTEXT = "/games";
 
-    /*
-     * Context: /games
-     */
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)
     public List<GameDTO> listGames() {
-        //public GameDTO(Long id, String name, Long owner, String status, Long currentPlayer, Long nextPlayer,
-        //List<Long> rounds, List<Long> players, List<Long> siteBoards) {
-
         logger.debug("listGames");
         List<Game> games = gameService.listGames();
         List<GameDTO> gamesDTO = new ArrayList<>();
@@ -74,7 +68,6 @@ public class GameResource extends GenericResource {
                     roundsId.add(r.getId());
                 }
                 for (User u : g.getPlayers()) {
-                    //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
 
                     List<Long> playerGamesDTO = new ArrayList<>();
                     if(u.getGames()!=null) {
@@ -120,9 +113,6 @@ public class GameResource extends GenericResource {
         }
     }
 
-    /*
-     * Context: /game/{game-id}
-     */
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable Long gameId) {
@@ -145,10 +135,6 @@ public class GameResource extends GenericResource {
                 for (AMove pm : u.getAMoves()) {
                     playerMovesDTO.add(pm.getId());
                 }
-//                List<String> playerCardsDTO = new ArrayList<>();
-//                for(AMarketCard am: u.getMarketCards()){
-//                    playerCardsDTO.add(am.getCardType());
-//                }
                 playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
             }
             for (SiteBoard s : g.getSiteBoards()) {
@@ -170,39 +156,6 @@ public class GameResource extends GenericResource {
     public void startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("startGame: " + gameId);
         gameService.startGame(gameId, userToken);
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/stop", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void stopGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
-        logger.debug("stopGame: " + gameId);
-
-        gameService.stopGame(gameId, userToken);
-    }
-
-    /*
-     * Context: /game/{game-id}/move
-     */
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves")
-    @ResponseStatus(HttpStatus.OK)
-    public List<AMove> listMoves(@PathVariable Long gameId) {
-        logger.debug("listMoves");
-
-        return gameService.listMoves(gameId);
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void addMove(@RequestBody AMove AMove) {
-        logger.debug("addMove: " + AMove);
-        // TODO Mapping into AMove + execution of AMove
-    }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/moves/{moveId}")
-    @ResponseStatus(HttpStatus.OK)
-    public AMove getMove(@PathVariable Long gameId, @PathVariable Integer moveId) {
-        logger.debug("getMove: " + gameId);
-        return gameService.getMove(gameId, moveId);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players")

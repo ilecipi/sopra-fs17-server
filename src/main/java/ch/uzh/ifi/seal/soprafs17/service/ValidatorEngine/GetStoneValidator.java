@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
+import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.MaxNumberOfStonesReachedException;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentRoundException;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
@@ -28,6 +29,9 @@ public class GetStoneValidator implements IValidator {
             }
             if(castedMove.getRound()==null){
                 throw new NotCurrentRoundException();
+            }
+            if(castedMove.getUser().getSupplySled() == 5){
+                throw new MaxNumberOfStonesReachedException();
             }
         }
     }

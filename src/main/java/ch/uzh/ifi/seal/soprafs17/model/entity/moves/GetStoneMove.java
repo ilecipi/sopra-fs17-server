@@ -35,10 +35,6 @@ public class GetStoneMove extends AMove{
 
     public Game getStones(Game game){
         int toAddStone;
-        if(super.getUser().getSupplySled() == 5 || super.getUser().getStoneQuarry() == 0){
-            //TODO:Return throw an exception(Player cannot get stones
-
-        }else {
             if (super.getUser().getSupplySled() == 0) {
                 if(super.getUser().getStoneQuarry() >=3) {
                     toAddStone = 3;
@@ -85,8 +81,7 @@ public class GetStoneMove extends AMove{
                 super.getUser().setSupplySled(toAddStone);
             }
             game.findNextPlayer();
-        }
-        return game;
+            return game;
     }
     @Override
     public Game makeMove(Game game) {
