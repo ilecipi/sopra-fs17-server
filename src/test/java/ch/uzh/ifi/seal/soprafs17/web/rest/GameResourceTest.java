@@ -64,7 +64,7 @@ import static sun.audio.AudioPlayer.player;
 @SpringApplicationConfiguration(Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class GameResourceTest {
 
     @Autowired
