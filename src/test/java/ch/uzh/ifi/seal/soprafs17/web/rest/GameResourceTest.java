@@ -191,11 +191,6 @@ public class GameResourceTest {
         wr.flush();
         wr.close();
 
-        int responseCode = con.getResponseCode();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
     }
 
