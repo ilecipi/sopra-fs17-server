@@ -167,7 +167,6 @@ public class MoveResource extends GenericResource {
                 validationExceptionHandler(e,response);
                 return e.getMessage();
             }
-            System.out.println("BEFORE CALLING MOVESERVICE: "+user.getColor() );
             moveService.giveCardToUser(game,move);
 
             user=userRepo.save(user);
@@ -175,7 +174,6 @@ public class MoveResource extends GenericResource {
             roundRepo.save(round);
             int counterCard = user.getMarketCards().size()-1;
             marketCardRepository.save(user.getMarketCards().get(counterCard));
-            System.out.println(user.getMarketCards().get(0).getCardType());
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else {

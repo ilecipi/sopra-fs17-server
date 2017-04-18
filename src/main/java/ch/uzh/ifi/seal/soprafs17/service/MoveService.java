@@ -128,6 +128,5 @@ public class MoveService {
 
     public void giveCardToUser(Game game, AMove move){
             ruleBook.applyRule(game,move);
-        System.out.println("AFTER APPLY ON RULEBOOK "+((Market)findSiteboardsByType("market", game.getId())).getMarketCards().size());
         }
 }

@@ -4,12 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
@@ -45,6 +40,10 @@ public class User implements Serializable {
     @Column
     private int stoneQuarry;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<AMarketCard> marketCards;
+
     @ManyToMany
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Game> games = new ArrayList<>();
@@ -61,9 +60,7 @@ public class User implements Serializable {
         this.marketCards = marketCards;
     }
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<AMarketCard> marketCards;
+
 
     @Column(nullable = true)
     private String color;
