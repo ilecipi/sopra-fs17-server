@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.RuleEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class RuleBook {
     public synchronized void apply(Game game, AMove move) {
         for(IRule rule:rules){
             if(rule.supports(move)){
-                if(move instanceof GetStoneMove){
+                if(move instanceof GetStoneMove || move instanceof SailShipMove){
                     rule.apply(game, move);
                 }else {
                     game.getCurrentPlayer().setSupplySled(game.getCurrentPlayer().getSupplySled() - 1);

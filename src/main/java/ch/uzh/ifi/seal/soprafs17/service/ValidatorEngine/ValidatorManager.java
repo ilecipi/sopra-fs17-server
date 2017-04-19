@@ -37,9 +37,7 @@ public class ValidatorManager {
 
     public synchronized void validateSync(Game game, AMove amove){
             for(IValidator validator : validators){
-                if(validator.supports(amove)&& amove instanceof GetStoneMove){
-                    validator.validate(game,amove);
-                }else if(validator.supports(amove)){
+                if(validator.supports(amove)){
                     validator.validate(game,amove);
                 }
             }

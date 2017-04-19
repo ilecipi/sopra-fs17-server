@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
+import ch.uzh.ifi.seal.soprafs17.service.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
@@ -28,9 +29,7 @@ public class MoveResource extends GenericResource {
 
     static final String CONTEXT = "/games";
     @Autowired
-    ShipService shipService;
-    @Autowired
-    SiteBoardRepository siteBoardsService;
+    RoundService roundService;
     @Autowired
     MoveService moveService;
     @Autowired
@@ -119,6 +118,7 @@ public class MoveResource extends GenericResource {
             userRepo.save(user);
             shipRepo.save(ship);
             roundRepo.save(round);
+            roundService.addRound(game.getId());
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else{

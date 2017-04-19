@@ -86,104 +86,94 @@ public class RoundService {
 
     public void addRound(Long gameId) {
         Game game = gameRepository.findOne(gameId);
-        Round round = new Round();
-        round.setShips(new ArrayList<AShip>());
-        roundRepository.save(round);
-        boolean notChosen = true;
-        Map<Integer, Integer[]> shipsCards = game.getShipsCards();
-        Random rn = new Random();
-        int selectShip;
-        ShipFactory shipFactory = new ShipFactory();
-        while(notChosen){
-            selectShip = rn.nextInt()%6;
-            if(shipsCards.containsKey(selectShip)){
-                for(Integer i : shipsCards.get(selectShip)){
-                    if(i==1){
-                        round.getShips().add(shipRepository.save(new OneSeatedShip()));
-                    }else if(i==2){
-                        round.getShips().add(shipRepository.save(new TwoSeatedShip()));
-                    }else if(i==3){
-                        round.getShips().add(shipRepository.save(new ThreeSeatedShip()));
-                    }else{
-                        round.getShips().add(shipRepository.save(new FourSeatedShip()));
+        boolean allShipsAreDocked = true;
+
+        if(game.getRounds().size() != 0 ){
+            for(AShip ship: game.getRounds().get(game.getRounds().size()-1).getShips()){
+                if(!ship.isDocked()){
+                    allShipsAreDocked=false;
+                }
+            }
+        }
+        if(game.getRounds().size() < MAX_ROUNDS_POSSIBLE || allShipsAreDocked) {
+            Round round = new Round();
+            round.setShips(new ArrayList<AShip>());
+            roundRepository.save(round);
+            boolean notChosen = true;
+            Map<Integer, Integer[]> shipsCards = game.getShipsCards();
+            Random rn = new Random();
+            int selectShip;
+            ShipFactory shipFactory = new ShipFactory();
+            while (notChosen) {
+                selectShip = rn.nextInt() % 6;
+                if (shipsCards.containsKey(selectShip)) {
+                    for (Integer i : shipsCards.get(selectShip)) {
+                        if (i == 1) {
+                            round.getShips().add(shipRepository.save(new OneSeatedShip()));
+                        } else if (i == 2) {
+                            round.getShips().add(shipRepository.save(new TwoSeatedShip()));
+                        } else if (i == 3) {
+                            round.getShips().add(shipRepository.save(new ThreeSeatedShip()));
+                        } else {
+                            round.getShips().add(shipRepository.save(new FourSeatedShip()));
+                        }
+
                     }
+                    notChosen = false;
+                    shipsCards.remove(selectShip);
+                    round = roundRepository.save(round);
+                    game = gameRepository.save(game);
 
                 }
-                notChosen=false;
-                shipsCards.remove(selectShip);
+            }
+            round.setMarketCards(new ArrayList<AMarketCard>());
+            Map<Integer, String> marketCards = game.getMarketCards();
+            while (round.getMarketCards() == null) {
+                try {
+                    this.threadSleep();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log.debug("round marketCards were null");
+            }
+            for (int i = 0; i < 4; i++) {
+                int toTake = marketCards.size() - 1;
+                String card = marketCards.remove(toTake);
+                if (card.equals("PAVED_PATH")) {
+                    round.getMarketCards().add(marketCardRepository.save(new PavedPath()));
+                } else if (card.equals("SARCOPHAGUS")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Sarcophagus()));
+                } else if (card.equals("ENTRANCE")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Entrance()));
+                } else if (card.equals("PYRAMID_DECORATION")) {
+                    round.getMarketCards().add(marketCardRepository.save(new PyramidDecoration()));
+                } else if (card.equals("TEMPLE_DECORATION")) {
+                    round.getMarketCards().add(marketCardRepository.save(new TempleDecoration()));
+                } else if (card.equals("BURIAL_CHAMBER_DECORATION")) {
+                    round.getMarketCards().add(marketCardRepository.save(new BurialChamberDecoration()));
+                } else if (card.equals("OBELISK_DECORATION")) {
+                    round.getMarketCards().add(marketCardRepository.save(new ObeliskDecoration()));
+                } else if (card.equals("STATUE")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Statue()));
+                } else if (card.equals("SAIL")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Sail()));
+                } else if (card.equals("CHISEL")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Chisel()));
+                } else if (card.equals("HAMMER")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Hammer()));
+                } else if (card.equals("SAIL")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Sail()));
+                } else {
+                    throw new NullException();
+                }
                 round = roundRepository.save(round);
-                game=gameRepository.save(game);
-
+                game = gameRepository.save(game);
             }
-        }
-        round.setMarketCards(new ArrayList<AMarketCard>());
-        Map<Integer,String> marketCards = game.getMarketCards();
-        while(round.getMarketCards()==null){
-            try {
-                this.threadSleep();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            log.debug("round marketCards were null");
-            System.out.println("round marketCards were null");
-        }
-        for(int i=0;i<4;i++){
-           int toTake = marketCards.size()-1;
-           String card = marketCards.remove(toTake);
-           if(card.equals("PAVED_PATH")){
-               round.getMarketCards().add(marketCardRepository.save(new PavedPath()));
-           }else if(card.equals("SARCOPHAGUS")) {
-               round.getMarketCards().add(marketCardRepository.save(new Sarcophagus()));
-           }else if(card.equals("ENTRANCE")) {
-               round.getMarketCards().add(marketCardRepository.save(new Entrance()));
-           }else if(card.equals("PYRAMID_DECORATION")) {
-               round.getMarketCards().add(marketCardRepository.save(new PyramidDecoration()));
-           }else if(card.equals("TEMPLE_DECORATION")) {
-               round.getMarketCards().add(marketCardRepository.save(new TempleDecoration()));
-           }else if(card.equals("BURIAL_CHAMBER_DECORATION")) {
-               round.getMarketCards().add(marketCardRepository.save(new BurialChamberDecoration()));
-           }else if(card.equals("OBELISK_DECORATION")) {
-               round.getMarketCards().add(marketCardRepository.save(new ObeliskDecoration()));
-           }else if(card.equals("STATUE")) {
-               round.getMarketCards().add(marketCardRepository.save(new Statue()));
-           }else if(card.equals("SAIL")) {
-               round.getMarketCards().add(marketCardRepository.save(new Sail()));
-           }else if(card.equals("CHISEL")) {
-               round.getMarketCards().add(marketCardRepository.save(new Chisel()));
-           }else if(card.equals("HAMMER")) {
-               round.getMarketCards().add(marketCardRepository.save(new Hammer()));
-           }else if(card.equals("SAIL")) {
-               round.getMarketCards().add(marketCardRepository.save(new Sail()));
-           }else{
-               throw new NullException();
-           }
-            round = roundRepository.save(round);
-            game=gameRepository.save(game);
-        }
-        game.getRounds().add(round);
-        gameRepository.save(game);
-        round.setGame(game);
-        roundRepository.save(round);
-
-
-    }
-
-    public void addRounds(Long gameId){
-        Game game = gameService.getGame(gameId);
-        //check if it is not the first round
-        if(game.getRounds().size()>0){
-            Round round = game.getRounds().get(game.getRounds().size()-1);
-            if(game.getRounds().size()<MAX_ROUNDS_POSSIBLE && round.getShips().isEmpty() ){
-                addRound(gameId);
-
-            }
-
-        }
-        //in case it is the first round
-        else{
-            addRound(gameId);
-        }
-        List<SiteBoard> siteBoards = game.getSiteBoards();
+            game.getRounds().add(round);
+            gameRepository.save(game);
+            round.setGame(game);
+            roundRepository.save(round);
+            List<SiteBoard> siteBoards = game.getSiteBoards();
         Market market = null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {
@@ -193,10 +183,12 @@ public class RoundService {
             }
         }
         int currentRound = game.getRounds().size()-1;
-        Round round = game.getRounds().get(currentRound);
-        market.setMarketCards(round.getMarketCards());
-        roundRepository.save(round);
+        Round round1 = game.getRounds().get(currentRound);
+        market.setMarketCards(round1.getMarketCards());
+        roundRepository.save(round1);
         siteBoardsRepository.save(market);
+        }
+
     }
 
     public void threadSleep() throws InterruptedException {

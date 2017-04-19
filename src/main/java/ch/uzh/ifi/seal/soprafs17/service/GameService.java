@@ -80,9 +80,6 @@ public class GameService {
             owner.getGames().add(game);
             owner.setStatus(UserStatus.IN_A_LOBBY);
             userRepository.save(owner);
-//            gameRepository.save(game);
-
-//            return "/" + game.getId();
             return game;
         }
 
@@ -123,7 +120,7 @@ public class GameService {
                 //for testing
                 Random rn = new Random();
                 game=gameRepository.save(game);
-                roundService.addRounds(game.getId());
+                roundService.addRound(game.getId());
                 //add a round to the game
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService

@@ -90,7 +90,6 @@ public class MoveService {
         }
     }
     public void sailShip(Game game,AMove move){
-
         ruleBook.applyRule(game,move);
         }
     public void getStone(Game game,AMove move){
