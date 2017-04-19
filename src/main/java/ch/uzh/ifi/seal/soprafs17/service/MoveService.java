@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;

@@ -95,7 +95,14 @@ public class RoundService {
                 }
             }
         }
-        if(game.getRounds().size() < MAX_ROUNDS_POSSIBLE || allShipsAreDocked) {
+        if(game.getRounds().size() < MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
+            List<SiteBoard> siteBoards = game.getSiteBoards();
+            if (!siteBoards.isEmpty()) {
+                for (SiteBoard s : siteBoards) {
+                    s.setOccupied(false);
+                    s.setDockedShip(null);
+                }
+            }
             Round round = new Round();
             round.setShips(new ArrayList<AShip>());
             roundRepository.save(round);
@@ -173,7 +180,7 @@ public class RoundService {
             gameRepository.save(game);
             round.setGame(game);
             roundRepository.save(round);
-            List<SiteBoard> siteBoards = game.getSiteBoards();
+            siteBoards = game.getSiteBoards();
         Market market = null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {

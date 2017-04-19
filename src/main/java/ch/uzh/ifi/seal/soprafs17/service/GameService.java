@@ -128,7 +128,7 @@ public class GameService {
                 int initStones=2;
                 int initStoneQuarry=28;
                 for (User u : game.getPlayers()) {
-                    game.getPoints().put(u.getColor(),/*0*/rn.nextInt(100) );
+                    game.getPoints().put(u.getColor(),0 );
                     u.setStatus(UserStatus.IS_PLAYING);
                     u.setSupplySled(initStones++);
                     u.setStoneQuarry(initStoneQuarry--);

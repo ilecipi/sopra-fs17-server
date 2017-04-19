@@ -11,4 +11,14 @@ import javax.persistence.Entity;
 public abstract class StoneBoard extends SiteBoard implements Countable {
 
     public void addStone(Stone stone){}
+
+    public boolean isCounted() {
+        return counted;
+    }
+
+    public void setCounted(boolean counted) {
+        this.counted = counted;
+    }
+
+    private boolean counted = false;
 }

@@ -1,7 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -258,6 +261,118 @@ public class Game implements Serializable {
 				this.marketCards.put(counter++,ordered.get(o));
 			}
 	}
+	@ElementCollection
+	private Map<String,Integer> pyramidPoints;
+
+	@ElementCollection
+	private Map<String,Integer> templePoints;
+
+
+	public void collectPoints(){
+		List<SiteBoard> siteBoards = this.getSiteBoards();
+		int currentRound = this.getRounds().size()-1;
+		List<AShip> ships = this.getRounds().get(currentRound).getShips();
+		boolean allShipsDocked = true;
+		for(AShip ship:ships){
+			if(!ship.isDocked()){
+				allShipsDocked=false;
+			}
+		}
+        System.out.println(this.rounds.size());
+        if(this.rounds.size()==1) {
+			collectPointsFirstRound(allShipsDocked);
+		}else if(this.rounds.size()<=6&&this.rounds.size()>1) {
+			collectPointsNotFirstRound(allShipsDocked);
+			}
+			/*
+		if(allShipsDocked&&this.getRounds().size()==6) {
+			//TODO: Collect points for BurialChamber and Obelisk
+		}
+		*/
+		}
+
+    private void collectPointsNotFirstRound(boolean allShipsDocked ){
+        //TODO: Solve nullpointer exception
+//        Map<String, Integer> tmpPyramidPoints = new HashMap<>();
+//        Map<String, Integer> tmpTemplePoints = new HashMap<>();
+//        if (!allShipsDocked) {
+//            for (SiteBoard s : siteBoards) {
+//                if (s instanceof Pyramid && s.isOccupied() && !((Pyramid) s).isCounted()) {
+//                    Pyramid pyramid = (Pyramid) s;
+//                    pyramid.setCounted(true);
+//                    tmpPyramidPoints = pyramidPoints;
+//                    pyramidPoints = pyramid.countAfterMove();
+//                }
+//            }
+//        }
+//        if (allShipsDocked) {
+//            for (SiteBoard s : siteBoards) {
+//                if (s instanceof Temple && s.isOccupied() && !((Temple) s).isCounted()) {
+//                    Temple temple = (Temple) s;
+//                    temple.setCounted(true);
+//                    tmpTemplePoints = templePoints;
+//                    templePoints = temple.countEndOfRound();
+//                }
+//            }
+//        }
+//        for (SiteBoard s : siteBoards) {
+//            if(s instanceof Temple){
+//                Temple temple = (Temple)s;
+//                if(temple.isCounted()){
+//                    for(String color : colors.keySet()){
+//                        if(colors.get(color)){
+//                            int tmp = points.get(color);
+//                            this.points.put(color,tmp + templePoints.get(color) - tmpTemplePoints.get(color));
+//                        }
+//                    }
+//                }
+//            }
+//            if(s instanceof Pyramid) {
+//                Pyramid pyramid = (Pyramid) s;
+//                if (pyramid.isCounted()) {
+//                    for (String color : colors.keySet()) {
+//                        if (colors.get(color)) {
+//                            int tmp = points.get(color);
+//                            this.points.put(color, tmp + pyramidPoints.get(color) - tmpPyramidPoints.get(color));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+    }
+
+
+	private void collectPointsFirstRound(boolean allShipsDocked){
+        if (!allShipsDocked) {
+            for (SiteBoard s : siteBoards) {
+                if (s instanceof Pyramid && s.isOccupied() && !((Pyramid) s).isCounted()) {
+                    Pyramid pyramid = (Pyramid) s;
+                    pyramid.setCounted(true);
+                    pyramidPoints = pyramid.countAfterMove();
+                    for(String color : pyramidPoints.keySet()){
+                        if(this.colors.get(color)) {
+                            this.points.put(color, (pyramidPoints.get(color)));
+                        }
+                    }
+                }
+            }
+        }
+        if (allShipsDocked) {
+            for (SiteBoard s : siteBoards) {
+                if (s instanceof Temple && s.isOccupied() && !((Temple) s).isCounted()) {
+                    Temple temple = (Temple) s;
+                    temple.setCounted(true);
+                    templePoints = temple.countEndOfRound();
+                    for (String color : templePoints.keySet()) {
+                        if (this.colors.get(color)) {
+                            int tmp = this.points.get(color);
+                            this.points.put(color, tmp + templePoints.get(color));
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 }

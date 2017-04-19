@@ -4,7 +4,9 @@ import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.*;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
@@ -13,6 +15,7 @@ import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.ShipService;
+import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,9 @@ public class MoveResource extends GenericResource {
 
     @Autowired
     MarketCardRepository marketCardRepository;
+
+    @Autowired
+    SiteBoardsService siteBoardsService;
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
@@ -97,6 +103,11 @@ public class MoveResource extends GenericResource {
         AShip ship = shipRepo.findById(shipId);
         SiteBoard siteBoard = moveService.findSiteboardsByType(siteBoardsType.toLowerCase(),gameId);
         Round round = roundRepo.findById(roundId);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (game != null && user != null && ship != null && siteBoard != null && round != null) {
             SailShipMove move =new SailShipMove(game, user, ship, round, siteBoard);
             try {
@@ -109,6 +120,8 @@ public class MoveResource extends GenericResource {
             moveService.sailShip(game, move);
             if(move.getSiteBoard() instanceof StoneBoard) {
                 moveService.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
+                game.collectPoints();
+                roundService.addRound(game.getId());
             }
             else{
                 moveService.addUserToMarket(game,ship);
@@ -118,12 +131,11 @@ public class MoveResource extends GenericResource {
             userRepo.save(user);
             shipRepo.save(ship);
             roundRepo.save(round);
-            roundService.addRound(game.getId());
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else{
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return "NullException";
+            return "NullException" + " GAME: "+game+ " USER "+ user + " SHIP: "+ship + " SITEBOARD: "+siteBoard + " ROUND: "+round;
         }
     }
 
@@ -168,7 +180,10 @@ public class MoveResource extends GenericResource {
                 return e.getMessage();
             }
             moveService.giveCardToUser(game,move);
-
+            Market market = siteBoardsService.getMarket(game);
+            if(market.getUserColor().isEmpty()&&market.isOccupied()){
+                roundService.addRound(game.getId());
+            }
             user=userRepo.save(user);
             gameRepo.save(game);
             roundRepo.save(round);
