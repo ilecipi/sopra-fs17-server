@@ -4,10 +4,14 @@ import ch.uzh.ifi.seal.soprafs17.GameConstants;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
+import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import org.slf4j.Logger;
@@ -37,10 +41,25 @@ public class GameService {
     private GameRepository gameRepository;
 
     @Autowired
+    private SiteBoardRepository siteboardRepository;
+
+    @Autowired
+    private MoveRepository moveRepository;
+
+    @Autowired
+    private ShipRepository shipRepository;
+
+    @Autowired
     private SiteBoardsService siteBoardsService;
 
     @Autowired
+    private GameService gameService;
+
+    @Autowired
     private ShipService shipService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RoundService roundService;
@@ -48,6 +67,9 @@ public class GameService {
     private RuleBook ruleBook;
     @Autowired
     private ValidatorManager validatorManager;
+
+    @Autowired
+    private DemoResource demoResource;
 
     private static int counter = 1;
 
@@ -220,5 +242,80 @@ public class GameService {
         gameRepository.save(game);
 
         return game;
+    }
+
+    public void fastForward(Long gameId) {
+//        User u1 = userService.createUser("User1","Username1","1", UserStatus.OFFLINE,new ArrayList<>());
+//        userService.login(u1.getId());
+//
+//        User u2 = userService.createUser("User2","Username2","2", UserStatus.OFFLINE,new ArrayList<>());
+//
+//        userService.login(u2.getId());
+//        Game game1 = new Game();
+//        game1.setName("Game1");
+//        game1.setOwner("Username1");
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        this.addGame(game1,u1.getToken());
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        u1.setStatus(UserStatus.IS_READY);
+//        this.createPlayer(game1.getId(),u1.getToken());
+//        this.addUser(game1.getId(),u2.getToken());
+//        this.createPlayer(game1.getId(),u1.getToken());
+//        this.createPlayer(game1.getId(), u2.getToken());
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        this.startGame(game1.getId(),u1.getToken());
+        Game game = gameRepository.findOne(gameId);
+        //First Round
+        List<Round> rounds = game.getRounds();
+        List<User> users = game.getPlayers();
+        int currentRound = rounds.size()-1;
+        List<AShip> ships = rounds.get(currentRound).getShips();
+
+        for (AShip s : ships) {
+
+            int counter = 0;
+            for (User u : users) {
+
+                if(!s.isReady()){
+                    s.addStone(new Stone(u.getColor()),counter++);
+
+                }
+                if(s.getMaxStones()==4&&!s.isReady()){
+                    s.addStone(new Stone(u.getColor()),counter++);
+                }
+            }
+        }
+        List<SiteBoard> siteBoards = game.getSiteBoards();
+        int counterShips=0;
+        for(SiteBoard s : siteBoards){
+            if(!(s instanceof Market)){
+                AShip ship = rounds.get(currentRound).getShips().get(counterShips);
+                counterShips++;
+                s.setOccupied(true);
+                s.setDockedShip(ship);
+                ship.setSiteBoard(s);
+                ship.setDocked(true);
+                for(int i=0; i<ship.getMaxStones();i++){
+                    if(ship.getStones()[i]!=null){
+                        ((StoneBoard)s).addStone(ship.getStones()[i]);
+                    }
+                }
+            }
+        }
+        game.collectPoints();
+        roundService.addRound(game.getId());
+
     }
 }

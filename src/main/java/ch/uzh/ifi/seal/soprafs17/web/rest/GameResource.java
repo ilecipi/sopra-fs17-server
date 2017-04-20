@@ -208,4 +208,16 @@ public class GameResource extends GenericResource {
     public void createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         gameService.createPlayer(gameId, userToken);
     }
+
+    //fastforward game to 6th round
+    @RequestMapping(value = CONTEXT + "/{gameId}/fastforward", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void fastForward(@PathVariable Long gameId) {
+
+        gameService.fastForward(gameId);
+        gameService.fastForward(gameId);
+        gameService.fastForward(gameId);
+        gameService.fastForward(gameId);
+        gameService.fastForward(gameId);
+    }
 }
