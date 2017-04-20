@@ -1,11 +1,13 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
 import org.slf4j.Logger;
@@ -62,7 +64,7 @@ public class RoundService {
         this.roundRepository = roundRepository;
     }
 
-    private final int MAX_ROUNDS_POSSIBLE=6;
+    public static final int MAX_ROUNDS_POSSIBLE=6;
 
     public boolean isAllShipsSailed() {
         return allShipsSailed;
@@ -95,12 +97,21 @@ public class RoundService {
                 }
             }
         }
+        if(game.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsAreDocked){
+            game.setStatus(GameStatus.FINISHED);
+        }
         if(game.getRounds().size() < MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             List<SiteBoard> siteBoards = game.getSiteBoards();
             if (!siteBoards.isEmpty()) {
                 for (SiteBoard s : siteBoards) {
                     s.setOccupied(false);
                     s.setDockedShip(null);
+                    if(!s.getDiscriminatorValue().equals("market")){
+                        if(((StoneBoard)s).isCounted()) {
+                            s = (StoneBoard) s;
+                            ((StoneBoard) s).setCounted(false);
+                        }
+                    }
                 }
             }
             Round round = new Round();
@@ -170,6 +181,8 @@ public class RoundService {
                     round.getMarketCards().add(marketCardRepository.save(new Hammer()));
                 } else if (card.equals("SAIL")) {
                     round.getMarketCards().add(marketCardRepository.save(new Sail()));
+                } else if (card.equals("LEVER")) {
+                    round.getMarketCards().add(marketCardRepository.save(new Lever()));
                 } else {
                     throw new NullException();
                 }
