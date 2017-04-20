@@ -333,8 +333,8 @@ public class Game implements Serializable {
         }
 
         if (this.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsDocked) {
-            Map<String, Integer> tmpBurialChamberPoints = temple.countEndOfGame();
-            Map<String, Integer> tmpObeliskPoints = temple.countEndOfGame();
+            Map<String, Integer> tmpBurialChamberPoints = burialChamber.countEndOfGame();
+            Map<String, Integer> tmpObeliskPoints = obelisk.countEndOfGame();
             if (!burialChamber.isCounted() && tmpBurialChamberPoints != null) {
                 burialChamber.setCounted(true);
                 for (String color : tmpBurialChamberPoints.keySet()) {
