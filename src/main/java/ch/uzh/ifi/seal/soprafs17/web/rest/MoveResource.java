@@ -68,7 +68,7 @@ public class MoveResource extends GenericResource {
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
-    public String addStoneToShip(HttpServletResponse response, @PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
+    public synchronized String addStoneToShip(HttpServletResponse response, @PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
@@ -96,7 +96,7 @@ public class MoveResource extends GenericResource {
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.PUT)
-    public String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken,
+    public synchronized String sailShip(HttpServletResponse response,@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken,
                            @RequestParam("siteBoardsType") String siteBoardsType) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);

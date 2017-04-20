@@ -103,7 +103,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
+    public synchronized Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
         Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
@@ -153,7 +153,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
+    public synchronized void startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("startGame: " + gameId);
         gameService.startGame(gameId, userToken);
     }
@@ -181,7 +181,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+    public synchronized String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
 
         return gameService.addUser(gameId, userToken);

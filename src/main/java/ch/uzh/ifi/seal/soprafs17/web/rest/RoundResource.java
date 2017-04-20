@@ -79,7 +79,7 @@ public class RoundResource {
 
         @RequestMapping(value = CONTEXT + "/{gameId}/rounds",method = RequestMethod.PUT)
         @ResponseStatus(HttpStatus.ACCEPTED)
-        public void addRound(@PathVariable Long gameId){
+        public synchronized void addRound(@PathVariable Long gameId){
             if(gameService.getGame(gameId).getRounds().size()>0){
                 RoundService.addRound(gameId);
             }
