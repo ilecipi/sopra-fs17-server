@@ -68,9 +68,6 @@ public class GameService {
     @Autowired
     private ValidatorManager validatorManager;
 
-    @Autowired
-    private DemoResource demoResource;
-
     private static int counter = 1;
 
     public UserRepository getUserRepo() {
@@ -245,37 +242,6 @@ public class GameService {
     }
 
     public void fastForward(Long gameId) {
-//        User u1 = userService.createUser("User1","Username1","1", UserStatus.OFFLINE,new ArrayList<>());
-//        userService.login(u1.getId());
-//
-//        User u2 = userService.createUser("User2","Username2","2", UserStatus.OFFLINE,new ArrayList<>());
-//
-//        userService.login(u2.getId());
-//        Game game1 = new Game();
-//        game1.setName("Game1");
-//        game1.setOwner("Username1");
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        this.addGame(game1,u1.getToken());
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        u1.setStatus(UserStatus.IS_READY);
-//        this.createPlayer(game1.getId(),u1.getToken());
-//        this.addUser(game1.getId(),u2.getToken());
-//        this.createPlayer(game1.getId(),u1.getToken());
-//        this.createPlayer(game1.getId(), u2.getToken());
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        this.startGame(game1.getId(),u1.getToken());
         Game game = gameRepository.findOne(gameId);
         //First Round
         List<Round> rounds = game.getRounds();
