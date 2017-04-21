@@ -34,7 +34,7 @@ public class PlayMarketCardValidator implements IValidator {
             if(((PlayMarketCardMove)amove).getaMarketCard().isPlayed()){
                 throw  new CardAlreadyPlayedException();
             }
-            if(castedMove.getRound().getId()!=g ame.getCurrentRound().getId()){
+            if(castedMove.getRound().getId()!=game.getCurrentRound().getId()){
                     throw new NotCurrentRoundException();
             }
 ;        }
