@@ -64,6 +64,7 @@ public class AddStoneToShipMove extends AMove {
 
     public Game addStone(Game game){
         Stone stone = new Stone(super.getUser().getColor());
+        super.getUser().setSupplySled(super.getUser().getSupplySled()-1);
         ship.addStone(stone,this.position);
         game.findNextPlayer();
         return game;

@@ -70,10 +70,11 @@ public class SailShipMove extends AMove {
     * -check Siteboard available (No shipped docked)
     * */
     private Game sailShip(Game game){
-            this.ship.setDocked(true);
-            ship.setSiteBoard(this.siteBoard);
-            this.siteBoard.setOccupied(true);
-            siteBoard.setDockedShip(this.ship);
+        super.getUser().setSupplySled(super.getUser().getSupplySled()-1);
+        this.ship.setDocked(true);
+        ship.setSiteBoard(this.siteBoard);
+        this.siteBoard.setOccupied(true);
+        siteBoard.setDockedShip(this.ship);
         return game;
     }
 }

@@ -39,9 +39,10 @@ public class SailShipValidator implements IValidator {
             if(castedMove.getSiteBoard().isOccupied()){
                 throw new SiteBoardIsOccupiedException();
             }
+            if(castedMove.getUser().getSupplySled() == 0){
+                throw new NotEnoughStoneException();
+            }
 
         }
-
-
     }
 }

@@ -81,8 +81,6 @@ public class MoveService {
             siteBoardRepository.save(stoneBoard);
             userRepository.save(player);
             game.findNextPlayer();
-            int index = (game.getPlayers().lastIndexOf(game.getCurrentPlayer())+1)%game.getPlayers().size();
-            game.setNextPlayer(game.getPlayers().get(index));
             gameRepository.save(game);
         }
     }
@@ -120,6 +118,7 @@ public class MoveService {
                 market.addUser(ship.getStones()[i].getColor());
             }
         }
+        game.findNextPlayer();
     }
 
     public void giveCardToUser(Game game, AMove move){
