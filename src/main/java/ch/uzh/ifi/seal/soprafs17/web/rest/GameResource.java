@@ -215,9 +215,9 @@ public class GameResource extends GenericResource {
     public void fastForward(@PathVariable Long gameId) {
 
         gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
+//        gameService.fastForward(gameId);
+//        gameService.fastForward(gameId);
+//        gameService.fastForward(gameId);
+//        gameService.fastForward(gameId);
     }
 }

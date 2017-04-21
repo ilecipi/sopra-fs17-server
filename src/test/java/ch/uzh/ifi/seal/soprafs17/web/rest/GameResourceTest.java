@@ -95,13 +95,14 @@ public class GameResourceTest {
     @Test
     public void oneTestForAll() throws Exception {
         this.addGame();
-//        this.listGames();
-//        this.getGame();
+        this.listGames();
+        this.getGame();
         this.createPlayer();
         this.startGame();
         this.getPlayer();
         this.listGames();
         this.getGame();
+        this.fastForward();
     }
 
 
@@ -198,6 +199,23 @@ public class GameResourceTest {
         assertNotNull(player);
     }
 
+    public void fastForward() throws Exception {
+        //TODO: check the size round everytime and at the end the status of the game
+        ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforward", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+    }
 
 
 }
