@@ -28,6 +28,8 @@ public class ValidatorManager {
         this.validators.add(new AddStoneToShipValidator());
         this.validators.add(new GetStoneValidator());
         this.validators.add(new SailShipValidator());
+        this.validators.add(new GiveCardToUserValidator());
+        this.validators.add(new PlayMarketCardValidator());
     }
     public ValidatorManager(){}
 

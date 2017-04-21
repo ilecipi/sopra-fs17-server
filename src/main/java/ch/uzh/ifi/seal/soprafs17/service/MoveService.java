@@ -124,4 +124,8 @@ public class MoveService {
     public void giveCardToUser(Game game, AMove move){
             ruleBook.applyRule(game,move);
         }
+
+    public void playMarketCard(Game game, AMove move){
+        ruleBook.applyRule(game,move);
+    }
 }

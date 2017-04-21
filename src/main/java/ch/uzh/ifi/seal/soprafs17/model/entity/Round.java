@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -80,4 +81,16 @@ public class Round implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
+
+    public boolean isImmediateCard() {
+        return immediateCard;
+    }
+
+    public void setImmediateCard(boolean immediateCard) {
+        this.immediateCard = immediateCard;
+    }
+
+    @JsonIgnore
+    @Column
+    private boolean immediateCard;
 }

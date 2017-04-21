@@ -8,12 +8,13 @@ import java.util.List;
 public class RoundDTO {
     RoundDTO(){}
 
-    public RoundDTO(Long id, Long game, List<Long> moves, List<Long> ships, List<Long> marketCards) {
+    public RoundDTO(Long id, Long game, List<Long> moves, List<Long> ships, List<Long> marketCards, boolean immediateCard) {
         this.id = id;
         this.game = game;
         this.moves = moves;
         this.ships = ships;
         this.marketCards = marketCards;
+        this.immediateCard = immediateCard;
     }
 
     public Long id;
@@ -21,4 +22,5 @@ public class RoundDTO {
     public List<Long> moves;
     public List<Long> ships;
     public List<Long> marketCards;
+    public boolean immediateCard;
 }

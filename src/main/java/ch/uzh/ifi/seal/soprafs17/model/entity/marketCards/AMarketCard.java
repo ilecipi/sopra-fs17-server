@@ -40,6 +40,17 @@ public abstract class AMarketCard {
     @Column
     public boolean taken;
 
+    public boolean isPlayed() {
+        return played;
+    }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
+    }
+
+    @Column
+    public boolean played;
+
     public Long getId() {
         return id;
     }

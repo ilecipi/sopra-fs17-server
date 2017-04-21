@@ -51,7 +51,7 @@ public class RoundResource {
                 for(AMarketCard m : r.getMarketCards()){
                     marketCardsId.add(m.getId());
                 }
-                roundsDTO.add(new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId));
+                roundsDTO.add(new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId, r.isImmediateCard()));
             }
             return roundsDTO;
         }
@@ -73,7 +73,7 @@ public class RoundResource {
              for(AMarketCard m : r.getMarketCards()){
                  marketCardsId.add(m.getId());
              }
-             return new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId);
+             return new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId, r.isImmediateCard());
 
          }
 

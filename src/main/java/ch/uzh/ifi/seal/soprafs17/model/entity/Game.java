@@ -222,33 +222,36 @@ public class Game implements Serializable {
 
     public void initMarketCards() {
         Map<Integer, String> ordered = new HashMap<Integer, String>() {{
-            put(0, "PAVED_PATH");
-            put(1, "PAVED_PATH");
-            put(2, "SARCOPHAGUS");
-            put(3, "SARCOPHAGUS");
-            put(4, "ENTRANCE");
-            put(5, "ENTRANCE");
-            put(6, "PYRAMID_DECORATION");
-            put(7, "PYRAMID_DECORATION");
-            put(8, "TEMPLE_DECORATION");
-            put(9, "TEMPLE_DECORATION");
-            put(10, "BURIAL_CHAMBER_DECORATION");
-            put(11, "BURIAL_CHAMBER_DECORATION");
-            put(12, "OBELISK_DECORATION");
-            put(13, "OBELISK_DECORATION");
-            for (int i = 0; i < 10; i++) {
-                put(i + 14, "STATUE");
+            for (int i = 0; i < 39; i++) {
+                put(i , "ENTRANCE");
             }
-            put(24, "SAIL");
-            put(25, "CHISEL");
-            put(26, "CHISEL");
-            put(27, "CHISEL");
-            put(28, "LEVER");
-            put(29, "LEVER");
-            put(30, "HAMMER");
-            put(31, "HAMMER");
-            put(32, "SAIL");
-            put(33, "SAIL");
+//            put(0, "PAVED_PATH");
+//            put(1, "PAVED_PATH");
+//            put(2, "SARCOPHAGUS");
+//            put(3, "SARCOPHAGUS");
+//            put(4, "ENTRANCE");
+//            put(5, "ENTRANCE");
+//            put(6, "PYRAMID_DECORATION");
+//            put(7, "PYRAMID_DECORATION");
+//            put(8, "TEMPLE_DECORATION");
+//            put(9, "TEMPLE_DECORATION");
+//            put(10, "BURIAL_CHAMBER_DECORATION");
+//            put(11, "BURIAL_CHAMBER_DECORATION");
+//            put(12, "OBELISK_DECORATION");
+//            put(13, "OBELISK_DECORATION");
+//            for (int i = 0; i < 10; i++) {
+//                put(i + 14, "STATUE");
+//            }
+//            put(24, "SAIL");
+//            put(25, "CHISEL");
+//            put(26, "CHISEL");
+//            put(27, "CHISEL");
+//            put(28, "LEVER");
+//            put(29, "LEVER");
+//            put(30, "HAMMER");
+//            put(31, "HAMMER");
+//            put(32, "SAIL");
+//            put(33, "SAIL");
         }};
 
         List<Integer> keys = new ArrayList(ordered.keySet());
@@ -352,5 +355,70 @@ public class Game implements Serializable {
                 }
             }
         }
+    }
+
+    @JsonIgnore
+    public Market getMarket(){
+        if (!this.siteBoards.isEmpty()) {
+            for (SiteBoard s : this.siteBoards) {
+                if (s.getDiscriminatorValue().equals("market")) {
+                    return ((Market) s);
+                }
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public BurialChamber getBurialChamber(){
+        if (!this.siteBoards.isEmpty()) {
+            for (SiteBoard s : this.siteBoards) {
+                if (s.getDiscriminatorValue().equals("burialchamber")) {
+                    return ((BurialChamber) s);
+                }
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public Obelisk getObelisk(){
+        if (!this.siteBoards.isEmpty()) {
+            for (SiteBoard s : this.siteBoards) {
+                if (s.getDiscriminatorValue().equals("obelisk")) {
+                    return ((Obelisk) s);
+                }
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public Pyramid getPyramid(){
+        if (!this.siteBoards.isEmpty()) {
+            for (SiteBoard s : this.siteBoards) {
+                if (s.getDiscriminatorValue().equals("pyramid")) {
+                    return ((Pyramid) s);
+                }
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public Temple getTemple(){
+        if (!this.siteBoards.isEmpty()) {
+            for (SiteBoard s : this.siteBoards) {
+                if (s.getDiscriminatorValue().equals("temple")) {
+                    return ((Temple) s);
+                }
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public Round getCurrentRound(){
+        return this.rounds.get(this.rounds.size()-1);
     }
 }

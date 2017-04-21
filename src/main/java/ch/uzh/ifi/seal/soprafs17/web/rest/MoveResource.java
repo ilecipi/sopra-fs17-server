@@ -103,11 +103,6 @@ public class MoveResource extends GenericResource {
         AShip ship = shipRepo.findById(shipId);
         SiteBoard siteBoard = moveService.findSiteboardsByType(siteBoardsType.toLowerCase(),gameId);
         Round round = roundRepo.findById(roundId);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (game != null && user != null && ship != null && siteBoard != null && round != null) {
             SailShipMove move =new SailShipMove(game, user, ship, round, siteBoard);
             try {
@@ -121,7 +116,9 @@ public class MoveResource extends GenericResource {
             if(move.getSiteBoard() instanceof StoneBoard) {
                 moveService.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
                 game.collectPoints();
-                roundService.addRound(game.getId());
+                if(!round.isImmediateCard()) {
+                    roundService.addRound(game.getId());
+                }
             }
             else{
                 moveService.addUserToMarket(game,ship);
@@ -182,7 +179,9 @@ public class MoveResource extends GenericResource {
             moveService.giveCardToUser(game,move);
             Market market = siteBoardsService.getMarket(game);
             if(market.getUserColor().isEmpty()&&market.isOccupied()){
-                roundService.addRound(game.getId());
+                if(!round.isImmediateCard()) {
+                    roundService.addRound(game.getId());
+                }
             }
             user=userRepo.save(user);
             gameRepo.save(game);
@@ -196,4 +195,39 @@ public class MoveResource extends GenericResource {
             return "NullException";
         }
     }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/marketcard", method = RequestMethod.PUT)
+    public String playMarketCard(HttpServletResponse response,@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
+    @RequestParam("marketCardId") Long marketCardId) {
+        Game game = gameRepo.findOne(gameId);
+        User user = userRepo.findByToken(playerToken);
+        Round round = roundRepo.findById(roundId);
+        AMarketCard marketCard = marketCardRepository.findById(marketCardId);
+        if(game != null && user != null && round != null){
+            PlayMarketCardMove move = new PlayMarketCardMove(user, round, game, marketCard);
+            try{
+                validatorManager.validateSync(game,move);
+                moveRepo.save(move);
+            } catch (ValidationException e){
+                validationExceptionHandler(e,response);
+                return e.getMessage();
+            }
+            moveService.playMarketCard(game,move);
+            Market market = siteBoardsService.getMarket(game);
+            if(market.getUserColor().isEmpty()&&market.isOccupied()&&!round.isImmediateCard()){
+                roundService.addRound(game.getId());
+            }
+            marketCard.setPlayed(true);
+            marketCardRepository.save(marketCard);
+            user=userRepo.save(user);
+            gameRepo.save(game);
+            roundRepo.save(round);
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return "OK";
+        }else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "NullException";
+        }
+    }
 }
+

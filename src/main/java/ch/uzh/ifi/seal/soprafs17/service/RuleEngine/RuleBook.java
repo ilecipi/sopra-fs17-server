@@ -33,6 +33,7 @@ public class RuleBook {
         this.rules.add(new SailShipRule());
         this.rules.add(new GetStoneRule());
         this.rules.add(new GiveCardToUserRule());
+        this.rules.add(new PlayMarketCardRule());
     }
 
     public synchronized void apply(Game game, AMove move) {

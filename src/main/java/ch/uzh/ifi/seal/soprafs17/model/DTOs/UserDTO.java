@@ -27,7 +27,7 @@ public class UserDTO {
         this.stoneQuarry = stoneQuarry;
         List<String> playerCardsDTO = new ArrayList<>();
         for(AMarketCard aMarketCard: cards){
-            playerCardsDTO.add(aMarketCard.getCardType());
+            playerCardsDTO.add(aMarketCard.getCardType() +"-"+aMarketCard.getId());
         }
         this.cards=playerCardsDTO;
 

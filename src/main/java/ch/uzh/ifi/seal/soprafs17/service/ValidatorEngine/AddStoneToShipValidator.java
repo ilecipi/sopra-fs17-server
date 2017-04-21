@@ -39,6 +39,12 @@ public class AddStoneToShipValidator implements IValidator {
             if(castedMove.getShip().getMaxStones()-1<castedMove.getPosition()){
                 throw new OutOfRangeShipPosition();
             }
+            if(castedMove.getGame().getMarket().getUserColor().size()!=0){
+                throw new MarketCardsNotTaken();
+            }
+            if(castedMove.getRound().isImmediateCard()){
+                throw new ImmediateCardNotPlayedException();
+            }
         }
     }
 }

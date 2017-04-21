@@ -39,10 +39,12 @@ public class SailShipValidator implements IValidator {
             if(castedMove.getSiteBoard().isOccupied()){
                 throw new SiteBoardIsOccupiedException();
             }
-            if(castedMove.getUser().getSupplySled() == 0){
-                throw new NotEnoughStoneException();
+            if(castedMove.getGame().getMarket().getUserColor().size()!=0){
+                throw new MarketCardsNotTaken();
             }
-
+            if(castedMove.getRound().isImmediateCard()){
+                throw new ImmediateCardNotPlayedException();
+            }
         }
     }
 }

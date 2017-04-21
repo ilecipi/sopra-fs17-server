@@ -4,6 +4,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCImmediate;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Sarcophagus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
@@ -31,6 +33,10 @@ public class GiveCardToUserMove extends AMove {
     @GeneratedValue
     private Long id;
 
+    public int getPosition() {
+        return position;
+    }
+
     @Column
     private int position;
 
@@ -50,13 +56,16 @@ public class GiveCardToUserMove extends AMove {
                 }
             }
         }
-        if(market.getUserColor().size()>0&&market.getUserColor().get(0).equals(super.getUser().getColor())){
-            market.getUserColor().remove(0);
-            AMarketCard cardToTake = market.getMarketCards().get(position);
-            cardToTake.setTaken(true);
-            super.getUser().getMarketCards().add(cardToTake);
-            cardToTake.setUser(super.getUser());
+
+        market.getUserColor().remove(0);
+        AMarketCard cardToTake = market.getMarketCards().get(position);
+        if(cardToTake instanceof MCImmediate) {
+            super.getRound().setImmediateCard(true);
         }
+        cardToTake.setTaken(true);
+        super.getUser().getMarketCards().add(cardToTake);
+        cardToTake.setUser(super.getUser());
+
         return game;
     }
 }
