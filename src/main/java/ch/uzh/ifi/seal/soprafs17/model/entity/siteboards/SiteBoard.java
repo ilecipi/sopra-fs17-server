@@ -30,6 +30,7 @@ public abstract class SiteBoard {
     @Column
     private boolean isOccupied;
 
+    public SiteBoard(){}
 
     public AShip getDockedShip() {
         return dockedShip;

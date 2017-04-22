@@ -6,6 +6,7 @@ import java.util.List;
  * Created by tonio99tv on 08/04/17.
  */
 public class MarketDTO {
+    public MarketDTO(){}
 
     public Long id;
     public boolean isOccupied;

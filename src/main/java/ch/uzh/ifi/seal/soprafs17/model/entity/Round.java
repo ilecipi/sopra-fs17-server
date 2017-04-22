@@ -123,4 +123,6 @@ public class Round implements Serializable{
     @JsonIgnore
     @Column
     private boolean immediateCard;
+
+    public Round(){}
 }

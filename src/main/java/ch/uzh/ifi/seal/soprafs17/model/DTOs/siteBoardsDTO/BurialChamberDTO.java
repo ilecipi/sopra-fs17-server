@@ -10,7 +10,7 @@ import java.util.List;
  * Created by erion on 06.04.17.
  */
 public class BurialChamberDTO {
-
+    public BurialChamberDTO(){}
     public Long id;
     public List<Stone> firstRow;
     public List<Stone> secondRow;
