@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.*;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,20 @@ public class AddStoneToShipValidator implements IValidator {
             }
             if(castedMove.getRound().isImmediateCard()){
                 throw new ImmediateCardNotPlayedException();
+            }
+            if(castedMove.getRound().getIsActionCardSail()==2){
+                boolean noShipsReady = true;
+                for(AShip s : castedMove.getRound().getShips()){
+                    if(s.isReady()){
+                        noShipsReady = false;
+                    }
+                }
+                if(castedMove.getShip().getMinStones()>castedMove.getShip().getAddedStones()+1||noShipsReady){
+                    throw new ShipWontBeReadyException();
+                }
+            }
+            if(castedMove.getRound().getIsActionCardSail()==1){
+                throw new SailCardIsBeingPlayedException();
             }
         }
     }

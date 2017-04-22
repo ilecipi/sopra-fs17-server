@@ -48,6 +48,10 @@ public class SailShipValidator implements IValidator {
             if(castedMove.getRound().isActionCardHammer()){
                 throw new AddStoneHammerCardNotPlayedException();
             }
+            if(castedMove.getRound().getIsActionCardSail()==2){
+                throw new SailCardIsBeingPlayedException();
+            }
+
         }
     }
 }

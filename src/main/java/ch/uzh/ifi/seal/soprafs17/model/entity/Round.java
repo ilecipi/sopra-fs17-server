@@ -96,6 +96,15 @@ public class Round implements Serializable{
 
     public boolean isActionCardHammer;
 
+    public int getIsActionCardSail() {
+        return isActionCardSail;
+    }
+
+    public void setIsActionCardSail(int isActionCardSail) {
+        this.isActionCardSail = isActionCardSail;
+    }
+
+    public int isActionCardSail;
     public void setImmediateCard(boolean immediateCard) {
         this.immediateCard = immediateCard;
     }

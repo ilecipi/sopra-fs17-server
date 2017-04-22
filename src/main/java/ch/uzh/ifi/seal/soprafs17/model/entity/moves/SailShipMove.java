@@ -74,6 +74,9 @@ public class SailShipMove extends AMove {
         ship.setSiteBoard(this.siteBoard);
         this.siteBoard.setOccupied(true);
         siteBoard.setDockedShip(this.ship);
+        if(super.getRound().getIsActionCardSail()==1){
+            super.getRound().setIsActionCardSail(0);
+        }
         return game;
     }
 }

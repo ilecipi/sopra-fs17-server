@@ -223,7 +223,7 @@ public class Game implements Serializable {
     public void initMarketCards() {
         Map<Integer, String> ordered = new HashMap<Integer, String>() {{
             for (int i = 0; i < 140; i++) {
-                put(i , "HAMMER");
+                put(i , "SAIL");
             }
 //            put(0, "PAVED_PATH");
 //            put(1, "PAVED_PATH");
