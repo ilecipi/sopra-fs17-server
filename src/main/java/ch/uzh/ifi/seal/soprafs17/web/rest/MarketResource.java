@@ -49,9 +49,9 @@ public class MarketResource {
         List<String> currentMarketCards = new ArrayList<>();
         for (AMarketCard mc : market.getMarketCards()){
             if(mc.isTaken()){
-                currentMarketCards.add(null);
+                currentMarketCards.add("IS_TAKEN-"+mc.getId());
             }else {
-                currentMarketCards.add(mc.getCardType());
+                currentMarketCards.add(mc.getCardType()+"-"+mc.getId());
             }
         }
         return new MarketDTO(market.getId(),market.isOccupied(),currentMarketCards, market.getUserColor());
