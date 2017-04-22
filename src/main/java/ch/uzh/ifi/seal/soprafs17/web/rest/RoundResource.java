@@ -76,12 +76,4 @@ public class RoundResource {
              return new RoundDTO(r.getId(),r.getGame().getId(), movesId, shipsId,marketCardsId, r.isImmediateCard());
 
          }
-
-        @RequestMapping(value = CONTEXT + "/{gameId}/rounds",method = RequestMethod.PUT)
-        @ResponseStatus(HttpStatus.ACCEPTED)
-        public synchronized void addRound(@PathVariable Long gameId){
-            if(gameService.getGame(gameId).getRounds().size()>0){
-                RoundService.addRound(gameId);
-            }
-        }
 }

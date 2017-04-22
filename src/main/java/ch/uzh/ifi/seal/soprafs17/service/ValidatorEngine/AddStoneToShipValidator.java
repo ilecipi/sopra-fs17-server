@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.*;
@@ -37,7 +36,7 @@ public class AddStoneToShipValidator implements IValidator {
                 throw new UnavailableShipPlaceException();
             }
             if(castedMove.getShip().getMaxStones()-1<castedMove.getPosition()){
-                throw new OutOfRangeShipPosition();
+                throw new OutOfRangeShipPositionException();
             }
             if(castedMove.getGame().getMarket().getUserColor().size()!=0){
                 throw new MarketCardsNotTaken();

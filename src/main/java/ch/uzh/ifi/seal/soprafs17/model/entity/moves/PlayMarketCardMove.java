@@ -4,10 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Entrance;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.PavedPath;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Sarcophagus;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 
@@ -75,6 +72,26 @@ public class PlayMarketCardMove extends AMove {
             super.getRound().setImmediateCard(false);
             super.getUser().getMarketCards().remove(aMarketCard);
             aMarketCard.setUser(null);
+        }
+        if(this.aMarketCard instanceof Hammer){
+            super.getRound().setActionCardHammer(true);
+            //Give the right amount of stones
+            if(super.getUser().getSupplySled()==3){
+                super.getUser().setSupplySled(5);
+                super.getUser().setStoneQuarry(super.getUser().getStoneQuarry()-2);
+            }else if(super.getUser().getSupplySled()==4){
+                super.getUser().setSupplySled(5);
+                super.getUser().setStoneQuarry(super.getUser().getStoneQuarry()-1);
+            }else if(super.getUser().getSupplySled()==5){
+                super.getUser().setSupplySled(5);
+            }else{
+                super.getUser().setSupplySled(super.getUser().getSupplySled()+3);
+                super.getUser().setStoneQuarry(super.getUser().getStoneQuarry()-3);
+            }
+            super.getUser().getMarketCards().remove(aMarketCard);
+            aMarketCard.setUser(null);
+
+
         }
 
         return game;

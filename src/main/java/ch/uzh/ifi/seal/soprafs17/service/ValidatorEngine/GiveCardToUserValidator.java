@@ -29,10 +29,8 @@ public class GiveCardToUserValidator implements IValidator {
                 throw new MarketCardAlreadyTaken();
             }
             if(castedMove.getRound().isImmediateCard()){
-                System.out.println("In validator GiveCard: " + castedMove.getRound().isImmediateCard());
                 throw new ImmediateCardNotPlayedException();
             }
-
         }
     }
 }

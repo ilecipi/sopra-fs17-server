@@ -67,6 +67,9 @@ public class AddStoneToShipMove extends AMove {
         super.getUser().setSupplySled(super.getUser().getSupplySled()-1);
         ship.addStone(stone,this.position);
         game.findNextPlayer();
+        if(super.getRound().isActionCardHammer()){
+            super.getRound().setActionCardHammer(false);
+        }
         return game;
     }
 }

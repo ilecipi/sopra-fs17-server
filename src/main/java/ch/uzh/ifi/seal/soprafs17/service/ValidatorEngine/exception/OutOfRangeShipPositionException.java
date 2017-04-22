@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 /**
  * Created by ilecipi on 04.04.17.
  */
-public class OutOfRangeShipPosition extends ValidationException {
+public class OutOfRangeShipPositionException extends ValidationException {
     public Logger logger;
-    public OutOfRangeShipPosition(){
+    public OutOfRangeShipPositionException(){
         super("UnavailableShipPlaceException");
         this.logger = Logger.getLogger(getClass().getName());
     }
