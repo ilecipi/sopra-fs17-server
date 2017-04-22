@@ -66,7 +66,7 @@ public class RoundService {
         this.roundRepository = roundRepository;
     }
 
-    public static final int MAX_ROUNDS_POSSIBLE=6;
+    public static final int MAX_ROUNDS_POSSIBLE = 6;
 
     public boolean isAllShipsSailed() {
         return allShipsSailed;
@@ -78,13 +78,13 @@ public class RoundService {
 
     private boolean allShipsSailed;
 
-    public List<Round> listRounds(){
+    public List<Round> listRounds() {
         List<Round> result = new ArrayList<>();
         roundRepository.findAll().forEach(result::add);
         return result;
     }
 
-    public Round getSpecificRound(Long roundId){
+    public Round getSpecificRound(Long roundId) {
         return roundRepository.findById(roundId);
     }
 
@@ -92,27 +92,32 @@ public class RoundService {
         Game game = gameRepository.findOne(gameId);
         boolean allShipsAreDocked = true;
 
-        if(game.getRounds().size() != 0 ){
-            for(AShip ship: game.getRounds().get(game.getRounds().size()-1).getShips()){
-                if(!ship.isDocked()){
-                    allShipsAreDocked=false;
+        if (game.getRounds().size() != 0) {
+            for (AShip ship : game.getRounds().get(game.getRounds().size() - 1).getShips()) {
+                if (!ship.isDocked()) {
+                    allShipsAreDocked = false;
                 }
             }
         }
-        if(game.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsAreDocked){
+        if (game.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             game.setStatus(GameStatus.FINISHED);
-            for(User u: game.getPlayers()){
+            for (User u : game.getPlayers()) {
                 u.setStatus(UserStatus.ONLINE);
+                u.setSupplySled(0);
+                for(AMarketCard mc : u.getMarketCards()){
+                    mc.setUser(null);
+                }
+                u.setMarketCards(new ArrayList<>());
             }
         }
-        if(game.getRounds().size() < MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
+        if (game.getRounds().size() < MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             List<SiteBoard> siteBoards = game.getSiteBoards();
             if (!siteBoards.isEmpty()) {
                 for (SiteBoard s : siteBoards) {
                     s.setOccupied(false);
                     s.setDockedShip(null);
-                    if(!s.getDiscriminatorValue().equals("market")){
-                        if(((StoneBoard)s).isCounted()) {
+                    if (!s.getDiscriminatorValue().equals("market")) {
+                        if (((StoneBoard) s).isCounted()) {
                             s = (StoneBoard) s;
                             ((StoneBoard) s).setCounted(false);
                         }
@@ -127,7 +132,7 @@ public class RoundService {
             Random rn = new Random();
             int selectShip;
             int counter = 0;
-            while (notChosen&&counter<200) {
+            while (notChosen && counter < 200) {
                 counter++;
                 selectShip = rn.nextInt() % 7;
                 if (shipsCards.containsKey(selectShip)) {
@@ -152,14 +157,6 @@ public class RoundService {
             }
             round.setMarketCards(new ArrayList<AMarketCard>());
             Map<Integer, String> marketCards = game.getMarketCards();
-            while (round.getMarketCards() == null) {
-                try {
-                    this.threadSleep();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                log.debug("round marketCards were null");
-            }
             for (int i = 0; i < 4; i++) {
                 int toTake = marketCards.size() - 1;
                 String card = marketCards.remove(toTake);
@@ -199,28 +196,15 @@ public class RoundService {
             gameRepository.save(game);
             round.setGame(game);
             roundRepository.save(round);
-            siteBoards = game.getSiteBoards();
-        Market market = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("market")) {
-                    market = (Market) s;
-                }
-            }
-        }
-        int currentRound = game.getRounds().size()-1;
-        Round round1 = game.getRounds().get(currentRound);
-        market.setMarketCards(round1.getMarketCards());
-        roundRepository.save(round1);
-        siteBoardsRepository.save(market);
+            Market market = game.getMarket();
+            int currentRound = game.getRounds().size() - 1;
+            Round round1 = game.getRounds().get(currentRound);
+            market.setMarketCards(round1.getMarketCards());
+            roundRepository.save(round1);
+            siteBoardsRepository.save(market);
         }
 
     }
-
-    public void threadSleep() throws InterruptedException {
-        Thread.sleep(100);
-    }
-
 
 
 }
