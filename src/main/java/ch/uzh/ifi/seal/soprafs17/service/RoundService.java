@@ -1,8 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
+import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
@@ -99,6 +101,9 @@ public class RoundService {
         }
         if(game.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsAreDocked){
             game.setStatus(GameStatus.FINISHED);
+            for(User u: game.getPlayers()){
+                u.setStatus(UserStatus.ONLINE);
+            }
         }
         if(game.getRounds().size() < MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             List<SiteBoard> siteBoards = game.getSiteBoards();

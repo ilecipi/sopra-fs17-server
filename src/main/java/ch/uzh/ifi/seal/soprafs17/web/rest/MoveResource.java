@@ -90,7 +90,7 @@ public class MoveResource extends GenericResource {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         } else {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "NullException";
         }
     }
@@ -131,7 +131,7 @@ public class MoveResource extends GenericResource {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else{
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "NullException" + " GAME: "+game+ " USER "+ user + " SHIP: "+ship + " SITEBOARD: "+siteBoard + " ROUND: "+round;
         }
     }
@@ -191,7 +191,7 @@ public class MoveResource extends GenericResource {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "NullException";
         }
     }
@@ -225,7 +225,7 @@ public class MoveResource extends GenericResource {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return "OK";
         }else {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "NullException";
         }
     }

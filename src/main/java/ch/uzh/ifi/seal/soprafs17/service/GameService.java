@@ -117,7 +117,7 @@ public class GameService {
         //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
                 && game.getPlayers().size()>= GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS
-                && game.getStatus() != GameStatus.RUNNING){
+                && game.getStatus() == GameStatus.PENDING){
 
             //The game cannot start if not every player is ready
             boolean allPlayersReady = true;
@@ -173,7 +173,7 @@ public class GameService {
         User player = userRepository.findByToken(userToken);
 
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS
-                &&player.getStatus()==UserStatus.ONLINE) {
+                &&player.getStatus()==UserStatus.ONLINE&&GameStatus.PENDING==game.getStatus()) {
             player.getGames().add(game);
             player.setStatus(UserStatus.IN_A_LOBBY);
             if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
