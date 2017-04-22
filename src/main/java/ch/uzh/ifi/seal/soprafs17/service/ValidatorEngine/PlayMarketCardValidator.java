@@ -1,10 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Hammer;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCAction;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Sail;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.PlayMarketCardMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.SailShipMove;
@@ -62,6 +59,7 @@ public class PlayMarketCardValidator implements IValidator {
                         throw new UserCanNotPlayThisCardException();
                     }
                 }
+                //Check conditions for Sail card
                 if(castedMove.getaMarketCard() instanceof Sail){
                     if(castedMove.getUser().getSupplySled()==0){
                         throw new UserCanNotPlayThisCardException();
@@ -73,6 +71,21 @@ public class PlayMarketCardValidator implements IValidator {
                         }
                     }
                     if(!shipNotReady){
+                        throw new UserCanNotPlayThisCardException();
+                    }
+                }
+                //Check conditions for Chisel card
+                if(castedMove.getaMarketCard() instanceof Chisel){
+                    if(castedMove.getUser().getSupplySled()<2){
+                        throw new UserCanNotPlayThisCardException();
+                    }
+                    int counterFreePositions = 0;
+                    for(AShip s : castedMove.getRound().getShips()){
+                        if(s.getMaxStones()!=s.getAddedStones()&&!s.isDocked()){
+                            counterFreePositions++;
+                        }
+                    }
+                    if(counterFreePositions<2){
                         throw new UserCanNotPlayThisCardException();
                     }
                 }

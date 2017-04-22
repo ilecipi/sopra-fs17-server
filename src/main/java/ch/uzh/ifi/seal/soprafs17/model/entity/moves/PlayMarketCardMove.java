@@ -92,6 +92,9 @@ public class PlayMarketCardMove extends AMove {
         } else if (this.getaMarketCard() instanceof Sail) {
             super.getRound().setIsActionCardSail(2);
             aMarketCard.setUser(null);
+        } else if (this.getaMarketCard() instanceof Chisel){
+            super.getRound().setIsActionCardChisel(2);
+            aMarketCard.setUser(null);
         }
         return game;
     }

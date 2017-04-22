@@ -66,7 +66,7 @@ public class AddStoneToShipMove extends AMove {
         Stone stone = new Stone(super.getUser().getColor());
         super.getUser().setSupplySled(super.getUser().getSupplySled()-1);
         ship.addStone(stone,this.position);
-        if(super.getRound().getIsActionCardSail()!=2){
+        if(super.getRound().getIsActionCardSail()!=2&&super.getRound().getIsActionCardChisel()!=2){
             game.findNextPlayer();
         }
         if(super.getRound().isActionCardHammer()){
@@ -74,6 +74,9 @@ public class AddStoneToShipMove extends AMove {
         }
         if(super.getRound().getIsActionCardSail()==2){
             super.getRound().setIsActionCardSail(1);
+        }
+        if(super.getRound().getIsActionCardChisel()!=0){
+            super.getRound().setIsActionCardChisel(super.getRound().getIsActionCardChisel()-1);
         }
         return game;
     }

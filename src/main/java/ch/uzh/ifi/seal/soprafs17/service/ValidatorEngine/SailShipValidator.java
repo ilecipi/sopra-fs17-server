@@ -51,6 +51,9 @@ public class SailShipValidator implements IValidator {
             if(castedMove.getRound().getIsActionCardSail()==2){
                 throw new SailCardIsBeingPlayedException();
             }
+            if(castedMove.getRound().getIsActionCardChisel()!=0){
+                throw new ChiselCardIsBeingPlayedException();
+            }
 
         }
     }
