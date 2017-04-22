@@ -126,9 +126,10 @@ public class RoundService {
             Map<Integer, Integer[]> shipsCards = game.getShipsCards();
             Random rn = new Random();
             int selectShip;
-            ShipFactory shipFactory = new ShipFactory();
-            while (notChosen) {
-                selectShip = rn.nextInt() % 6;
+            int counter = 0;
+            while (notChosen&&counter<200) {
+                counter++;
+                selectShip = rn.nextInt() % 7;
                 if (shipsCards.containsKey(selectShip)) {
                     for (Integer i : shipsCards.get(selectShip)) {
                         if (i == 1) {

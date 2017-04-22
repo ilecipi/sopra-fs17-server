@@ -5,6 +5,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCDecoration;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Statue;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
@@ -14,7 +16,6 @@ import ch.uzh.ifi.seal.soprafs17.service.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.RuleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
-import ch.uzh.ifi.seal.soprafs17.service.ShipService;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
@@ -203,6 +204,10 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         Round round = roundRepo.findById(roundId);
         AMarketCard marketCard = marketCardRepository.findById(marketCardId);
+        if(marketCard instanceof MCDecoration || marketCard instanceof Statue){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "CardCanNotBePlayedException";
+        }
         if(game != null && user != null && round != null){
             PlayMarketCardMove move = new PlayMarketCardMove(user, round, game, marketCard);
             try{

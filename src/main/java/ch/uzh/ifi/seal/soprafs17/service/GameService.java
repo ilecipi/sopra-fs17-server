@@ -50,6 +50,9 @@ public class GameService {
     private ShipRepository shipRepository;
 
     @Autowired
+    private RoundRepository roundRepository;
+
+    @Autowired
     private SiteBoardsService siteBoardsService;
 
     @Autowired
@@ -243,6 +246,9 @@ public class GameService {
 
     public void fastForward(Long gameId) {
         Game game = gameRepository.findOne(gameId);
+        if(game.getRounds().size()>5){
+            return;
+        }
         //First Round
         List<Round> rounds = game.getRounds();
         List<User> users = game.getPlayers();
@@ -256,10 +262,12 @@ public class GameService {
 
                 if(!s.isReady()){
                     s.addStone(new Stone(u.getColor()),counter++);
+                    shipRepository.save(s);
 
                 }
                 if(s.getMaxStones()==4&&!s.isReady()){
                     s.addStone(new Stone(u.getColor()),counter++);
+                    shipRepository.save(s);
                 }
             }
         }
@@ -278,10 +286,14 @@ public class GameService {
                         ((StoneBoard)s).addStone(ship.getStones()[i]);
                     }
                 }
+                shipRepository.save(ship);
+                siteboardRepository.save(s);
             }
         }
         game.collectPoints();
         roundService.addRound(game.getId());
+        roundRepository.save(game.getCurrentRound());
+        gameRepository.save(game);
 
     }
 }
