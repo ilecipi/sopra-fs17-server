@@ -49,11 +49,11 @@ public class AddStoneToShipValidator implements IValidator {
             if(castedMove.getRound().getIsActionCardSail()==2){
                 boolean noShipsReady = true;
                 for(AShip s : castedMove.getRound().getShips()){
-                    if(s.isReady()){
+                    if(s.isReady()&&!s.isDocked()){
                         noShipsReady = false;
                     }
                 }
-                if(castedMove.getShip().getMinStones()>castedMove.getShip().getAddedStones()+1||noShipsReady){
+                if(castedMove.getShip().getMinStones()>castedMove.getShip().getAddedStones()+1&&noShipsReady){
                     throw new ShipWontBeReadyException();
                 }
             }

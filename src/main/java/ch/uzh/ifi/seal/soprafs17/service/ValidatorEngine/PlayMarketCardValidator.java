@@ -65,12 +65,19 @@ public class PlayMarketCardValidator implements IValidator {
                         throw new UserCanNotPlayThisCardException();
                     }
                     boolean shipNotReady = false;
+                    boolean allShipFull = true;
                     for(AShip s : game.getCurrentRound().getShips()){
                         if(s.getMinStones()<=s.getAddedStones()+1&&!s.isDocked()){
                             shipNotReady = true;
                         }
+                        if(s.getAddedStones()<s.getMaxStones()&&!s.isDocked()){
+                            allShipFull = false;
+                        }
                     }
                     if(!shipNotReady){
+                        throw new UserCanNotPlayThisCardException();
+                    }
+                    if(allShipFull){
                         throw new UserCanNotPlayThisCardException();
                     }
                 }
