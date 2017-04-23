@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AddStoneToShipMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;

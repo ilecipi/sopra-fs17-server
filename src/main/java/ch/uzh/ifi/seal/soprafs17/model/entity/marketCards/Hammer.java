@@ -31,4 +31,6 @@ public class Hammer extends AMarketCard implements MCAction{
     public String getCardType() {
         return this.cardType;
     }
+
+
 }

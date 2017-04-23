@@ -36,6 +36,7 @@ public class BurialChamber extends StoneBoard implements Serializable{
 
     private int columnCounter = 0;
 
+    private int addedStones = 0;
 
     private final String Type = "endOfGame";
 
@@ -44,11 +45,14 @@ public class BurialChamber extends StoneBoard implements Serializable{
     public void addStone(Stone stone) {
             if(firstRow.size()==columnCounter){
                 firstRow.add(stone);
+                addedStones++;
             }else if(secondRow.size()==columnCounter){
                 secondRow.add(stone);
+                addedStones++;
             }else{
                 thirdRow.add(stone);
                 columnCounter++;
+                addedStones++;
             }
     }
 
@@ -256,6 +260,10 @@ public class BurialChamber extends StoneBoard implements Serializable{
 
     public void setThirdRow(List<Stone> thirdRow) {
         this.thirdRow = thirdRow;
+    }
+
+    public int getAddedStones() {
+        return addedStones;
     }
 
 }

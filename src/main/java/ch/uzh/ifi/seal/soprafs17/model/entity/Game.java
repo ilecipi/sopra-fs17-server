@@ -37,6 +37,9 @@ public class Game implements Serializable {
     @OneToOne
     private User nextPlayer;
 
+    @JsonIgnore
+    private boolean entranceCardIsUsed = false;
+
     public List<Round> getRounds() {
         return rounds;
     }
@@ -266,14 +269,11 @@ public class Game implements Serializable {
     }
 
     @ElementCollection
-    Map<String, Integer> tmpPyramidPointsDispari;
+    Map<String, Integer> PyramidPointsOddRounds;
     @ElementCollection
-    Map<String, Integer> tmpPyramidPointsPari;
+    Map<String, Integer> PyramidPointsEvenRounds;
     @ElementCollection
-    Map<String, Integer> tmpTemplePointsDispari;
-    @ElementCollection
-    Map<String, Integer> tmpTemplePointsPari;
-
+    Map<String, Integer> TemplePoints;
 
     public void collectPoints() {
         List<SiteBoard> siteBoards = this.getSiteBoards();
@@ -305,33 +305,41 @@ public class Game implements Serializable {
         }
 
         if (getRounds().size() % 2 == 1) {
-            tmpPyramidPointsDispari = pyramid.countAfterMove();
+            PyramidPointsOddRounds = pyramid.countAfterMove();
         } else if (getRounds().size() % 2 == 0) {
-            tmpPyramidPointsPari = pyramid.countAfterMove();
+            PyramidPointsEvenRounds = pyramid.countAfterMove();
         }
 
-        if (pyramid.isOccupied() && !pyramid.isCounted()) {
-            pyramid.setCounted(true);
-            for (String color : tmpPyramidPointsDispari.keySet()) {
-                if (this.colors.get(color)) {
+        if ((pyramid.isOccupied() && !pyramid.isCounted()) || this.entranceCardIsUsed) {
 
+            this.entranceCardIsUsed = false;
+            if(pyramid.isOccupied() && !pyramid.isCounted()){
+                pyramid.setCounted(true);
+            }
+            for (String color : PyramidPointsOddRounds.keySet()) {
+
+                if (this.colors.get(color)) {
                     if (this.getRounds().size() == 1) {
-                        this.points.put(color, points.get(color) + tmpPyramidPointsDispari.get(color));
-                    } else if (this.getRounds().size() % 2 ==0 && !tmpPyramidPointsDispari.get(color).equals(tmpPyramidPointsPari.get(color))) {
-                        this.points.put(color, points.get(color) + (tmpPyramidPointsPari.get(color) - tmpPyramidPointsDispari.get(color)));
-                    }else if (this.getRounds().size() % 2 ==1 && !tmpPyramidPointsDispari.get(color).equals(tmpPyramidPointsPari.get(color))) {
-                        this.points.put(color, points.get(color) + (tmpPyramidPointsDispari.get(color) - tmpPyramidPointsPari.get(color)));
+                        this.points.put(color, PyramidPointsOddRounds.get(color));
+                    }
+
+                    else if (this.getRounds().size() % 2 == 0 && !PyramidPointsOddRounds.get(color).equals(PyramidPointsEvenRounds.get(color)) && !this.entranceCardIsUsed) {
+                        this.points.put(color, points.get(color) + (PyramidPointsEvenRounds.get(color) - PyramidPointsOddRounds.get(color)));
+                    }
+
+                    else if (this.getRounds().size() % 2 == 1 && !PyramidPointsOddRounds.get(color).equals(PyramidPointsEvenRounds.get(color)) && !this.entranceCardIsUsed) {
+                        this.points.put(color, points.get(color) + (PyramidPointsOddRounds.get(color) - PyramidPointsEvenRounds.get(color)));
                     }
                 }
             }
         }
 
         if (allShipsDocked && temple.isOccupied() && !temple.isCounted()) {
-            tmpTemplePointsDispari = temple.countEndOfRound();
+             TemplePoints = temple.countEndOfRound();
             temple.setCounted(true);
-            for (String color : tmpTemplePointsDispari.keySet()) {
+            for (String color :  TemplePoints.keySet()) {
                 if (this.colors.get(color)) {
-                    this.points.put(color,points.get(color) + tmpTemplePointsDispari.get(color));
+                    this.points.put(color,points.get(color) +  TemplePoints.get(color));
                 }
             }
         }
@@ -352,6 +360,57 @@ public class Game implements Serializable {
                 for (String color : tmpObeliskPoints.keySet()) {
                     if (this.colors.get(color)) {
                         this.points.put(color, points.get(color) + tmpObeliskPoints.get(color));
+                    }
+                }
+            }
+            for(User user:this.getPlayers()){
+                int statuesCounter = 0;
+                for(int i = 0; i < user.getMarketCards().size();i++){
+
+                    //if user didn't use specific cards (lever,hammer,sail) gets an additional point
+                    if(user.getMarketCards().get(i).getCardType().equals("LEVER") || user.getMarketCards().get(i).getCardType().equals("HAMMER") || user.getMarketCards().get(i).getCardType().equals("SAIL")){
+                        this.points.put(user.getColor(),points.get(user.getColor()) + 1);
+                    }
+                    //if user has the pyramid decoration card
+                    if(user.getMarketCards().get(i).getCardType().equals("PYRAMID_DECORATION")){
+                        this.points.put(user.getColor(),points.get(user.getColor()) + pyramid.getAddedStones().size()/3);
+                    }
+
+                    //if user has the temple decoration card
+                    if(user.getMarketCards().get(i).getCardType().equals("TEMPLE_DECORATION")){
+                        this.points.put(user.getColor(),points.get(user.getColor()) + temple.getAddedStones()/3);
+                    }
+
+                    //if user has the burial chamber decoration card
+                    if(user.getMarketCards().get(i).getCardType().equals("BURIAL_CHAMBER_DECORATION")){
+                        this.points.put(user.getColor(),points.get(user.getColor()) + burialChamber.getAddedStones()/3);
+                    }
+
+                    //if user has the obelisk decoration card
+                    if(user.getMarketCards().get(i).getCardType().equals("OBELISK_DECORATION")){
+                        this.points.put(user.getColor(),points.get(user.getColor()) + obelisk.getAddedStones()/3);
+                    }
+
+                    //count the statue cards of each user
+                    if(user.getMarketCards().get(i).getCardType().equals("STATUE")){
+                        statuesCounter++;
+                    }
+
+                }
+                //collect points for each statue card of the user
+                if(statuesCounter != 0){
+                    if(statuesCounter == 1){
+                        this.points.put(user.getColor(), points.get(user.getColor()) + 1);
+                    }else if(statuesCounter == 2){
+                        this.points.put(user.getColor(), points.get(user.getColor()) + 3);
+                    }else if(statuesCounter == 3){
+                        this.points.put(user.getColor(), points.get(user.getColor()) + 6);
+                    }else if(statuesCounter == 4){
+                        this.points.put(user.getColor(), points.get(user.getColor()) + 10);
+                    }else if(statuesCounter == 5){
+                        this.points.put(user.getColor(), points.get(user.getColor()) + 15);
+                    }else {
+                        this.points.put(user.getColor(), points.get(user.getColor()) + (15 + 2*(statuesCounter-5)));
                     }
                 }
             }
@@ -421,5 +480,13 @@ public class Game implements Serializable {
     @JsonIgnore
     public Round getCurrentRound(){
         return this.rounds.get(this.rounds.size()-1);
+    }
+
+    public boolean isEntranceCardIsUsed() {
+        return entranceCardIsUsed;
+    }
+
+    public void setEntranceCardIsUsed() {
+        this.entranceCardIsUsed = true;
     }
 }

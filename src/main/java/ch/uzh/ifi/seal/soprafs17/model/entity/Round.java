@@ -73,6 +73,15 @@ public class Round implements Serializable{
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AMarketCard> marketCards;
 
+    public boolean isActionCardHammer;
+
+    public int isActionCardChisel;
+
+    public int isActionCardSail;
+
+    @JsonIgnore
+    @Column
+    private boolean immediateCard;
 
     public Long getId() {
         return id;
@@ -94,8 +103,6 @@ public class Round implements Serializable{
         isActionCardHammer = actionCardHammer;
     }
 
-    public boolean isActionCardHammer;
-
     public int getIsActionCardChisel() {
         return isActionCardChisel;
     }
@@ -103,9 +110,6 @@ public class Round implements Serializable{
     public void setIsActionCardChisel(int isActionCardChisel) {
         this.isActionCardChisel = isActionCardChisel;
     }
-
-    public int isActionCardChisel;
-
 
     public int getIsActionCardSail() {
         return isActionCardSail;
@@ -115,12 +119,8 @@ public class Round implements Serializable{
         this.isActionCardSail = isActionCardSail;
     }
 
-    public int isActionCardSail;
     public void setImmediateCard(boolean immediateCard) {
         this.immediateCard = immediateCard;
     }
 
-    @JsonIgnore
-    @Column
-    private boolean immediateCard;
 }

@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.marketCards;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by tonio99tv on 10/04/17.
@@ -31,4 +28,5 @@ public class Lever extends AMarketCard implements MCAction {
     public String getCardType() {
         return this.cardType;
     }
+
 }

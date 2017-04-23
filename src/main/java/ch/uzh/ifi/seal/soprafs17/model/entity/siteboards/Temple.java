@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -34,10 +35,13 @@ public class Temple extends StoneBoard implements Serializable {
     }
 
     @Column
-    int insertIndex = 0;
+    private int insertIndex = 0;
 
     @Column
-    int completedRows = 0;
+    private int completedRows = 0;
+
+    @JsonIgnore
+    private int addedStones = 0;
 
     private final String type = "endOfRound";
 
@@ -107,8 +111,10 @@ public class Temple extends StoneBoard implements Serializable {
             stones[insertIndex++]=stone;
             completedRows++;
             insertIndex = insertIndex %stones.length;
+            addedStones++;
         }else {
             stones[insertIndex++] = stone;
+            addedStones++;
         }
     }
 
@@ -122,5 +128,8 @@ public class Temple extends StoneBoard implements Serializable {
     }
     public int getCompletedRows() {
         return completedRows;
+    }
+    public int getAddedStones() {
+        return addedStones;
     }
 }

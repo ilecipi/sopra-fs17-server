@@ -59,9 +59,9 @@ public class PlayMarketCardMove extends AMove {
             super.getRound().setImmediateCard(false);
             super.getUser().getMarketCards().remove(aMarketCard);
             aMarketCard.setUser(null);
-            System.out.println(super.getGame().getRounds().size());
         } else if (this.aMarketCard instanceof Entrance) {
             game.getPyramid().addStone(new Stone(super.getUser().getColor()));
+            game.setEntranceCardIsUsed();
             super.getUser().setStoneQuarry(super.getUser().getStoneQuarry() - 1);
             super.getRound().setImmediateCard(false);
             super.getUser().getMarketCards().remove(aMarketCard);

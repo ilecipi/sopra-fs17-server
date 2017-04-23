@@ -33,15 +33,15 @@ public class Obelisk extends StoneBoard {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
-
-    private int numberOfPlayers;
-
     @Id
     @GeneratedValue
     private Long id;
+
+    private int addedStones = 0;
+
+    private int numberOfPlayers;
+
+
 
     @JsonIgnore
     @OneToOne
@@ -73,12 +73,15 @@ public class Obelisk extends StoneBoard {
             }else if(stone.getColor().equals("grey")){
                 int tmpPoints = obelisks.get(stone.getColor());
                 obelisks.put(stone.getColor(), ++tmpPoints);
+                addedStones++;
             }else if (stone.getColor().equals("black")){
                 int tmpPoints = obelisks.get(stone.getColor());
                 obelisks.put(stone.getColor(), ++tmpPoints);
+                addedStones++;
             }else{
                 int tmpPoints = obelisks.get(stone.getColor());
                 obelisks.put(stone.getColor(), ++tmpPoints);
+                addedStones++;
             }
         }
     }
@@ -377,4 +380,13 @@ public class Obelisk extends StoneBoard {
         this.id = id;
 
     }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public int getAddedStones() {
+        return addedStones;
+    }
+
 }

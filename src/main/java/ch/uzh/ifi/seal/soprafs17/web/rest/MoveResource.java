@@ -222,6 +222,7 @@ public class MoveResource extends GenericResource {
             if(market.getUserColor().isEmpty()&&market.isOccupied()&&!round.isImmediateCard()){
                 roundService.addRound(game.getId());
             }
+            game.collectPoints();
             marketCard.setPlayed(true);
             marketCardRepository.save(marketCard);
             user=userRepo.save(user);
