@@ -211,6 +211,7 @@ public class MoveResource extends GenericResource {
             Market market = siteBoardsService.getMarket(game);
             if(market.getUserColor().isEmpty()&&market.isOccupied()){
                 if(!round.isImmediateCard()) {
+                    game.collectPoints();
                     roundService.addRound(game.getId());
                 }
             }
@@ -250,6 +251,7 @@ public class MoveResource extends GenericResource {
             moveService.playMarketCard(game,move);
             Market market = siteBoardsService.getMarket(game);
             if(market.getUserColor().isEmpty()&&market.isOccupied()&&!round.isImmediateCard()){
+                game.collectPoints();
                 roundService.addRound(game.getId());
             }
             game.collectPoints();
