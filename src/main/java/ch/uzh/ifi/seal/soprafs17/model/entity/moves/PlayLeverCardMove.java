@@ -54,6 +54,9 @@ public class PlayLeverCardMove extends AMove {
     @Override
     public Game makeMove(Game game) {
         super.getRound().setStonesLeverCard(this.stones);
+        List<String> tmp = new ArrayList<>();
+        tmp.add("played");
+        super.getRound().setListActionCardLever(tmp);
         return game;
     }
 }
