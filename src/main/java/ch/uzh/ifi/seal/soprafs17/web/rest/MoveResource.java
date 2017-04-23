@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Lever;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCDecoration;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Statue;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.*;
@@ -77,6 +78,7 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
+        user.getMarketCards().add(marketCardRepository.save(new Lever()));
         if (game != null && user != null && ship != null && round != null) {
             AddStoneToShipMove move =new AddStoneToShipMove(game, user, ship, position, round);
             try {
@@ -128,12 +130,14 @@ public class MoveResource extends GenericResource {
                 if(!game.getCurrentRound().isActionCardLever()) {
                     moveService.addUserToMarket(game, ship);
                 }else{
+                    //array for the client
                     List<String> tmp = new ArrayList<>();
                     for (int i = ship.getStones().length - 1; i >= 0; i--) {
                         if (ship.getStones()[i] != null) {
                             tmp.add(ship.getStones()[i].getColor());
                         }
                     }
+                    game.setTmpSiteBoardId(game.getMarket().getId());
                     game.getCurrentRound().setListActionCardLever(tmp);
                     roundRepo.save(game.getCurrentRound());
                 }
@@ -265,9 +269,8 @@ public class MoveResource extends GenericResource {
             moveRepo.save(move);
             //VALIDATOR
             moveService.playLeverCard(game,move);
-            moveService.addStoneToSiteBoard(game, move);
-            moveService.addUserToMarketLever(game);
-        }
+            moveService.addLeverUser(game);
+            }
         userRepo.save(user);
         gameRepo.save(game);
         roundRepo.save(round);

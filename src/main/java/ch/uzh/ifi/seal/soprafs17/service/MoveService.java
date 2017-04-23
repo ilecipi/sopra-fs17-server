@@ -80,6 +80,15 @@ public class MoveService {
         if (player == game.getCurrentPlayer()) {
             //if the Lever card is played
             if (game.getCurrentRound().isActionCardLever()) {
+                List<String> tmp = new ArrayList<>();
+                for (int i = dockedShip.getStones().length - 1; i >= 0; i--) {
+                    if (dockedShip.getStones()[i] != null) {
+                        tmp.add(dockedShip.getStones()[i].getColor());
+                    }
+                }
+                game.setTmpSiteBoardId(siteBoardId);
+                game.getCurrentRound().setListActionCardLever(tmp);
+                roundRepository.save(game.getCurrentRound());
             } else {
                 for (int i = dockedShip.getStones().length - 1; i >= 0; i--) {
                     if (dockedShip.getStones()[i] != null) {
@@ -96,21 +105,24 @@ public class MoveService {
         }
     }
 
-    public void addStoneToSiteBoard(Game game, AMove move) {
+    public void addStoneToSiteBoard(Game game) {
         //if the Lever card is played
         StoneBoard stoneBoard = siteBoardRepository.findById(game.getTmpSiteBoardId());
         if (game.getCurrentRound().isActionCardLever()) {
             if (stoneBoard!=null&&!stoneBoard.getDiscriminatorValue().equals("market")) {
                 for (Stone s : game.getCurrentRound().getStonesLeverCard()) {
                     ((StoneBoard) stoneBoard).addStone(s);
-
                     siteBoardRepository.save(stoneBoard);
+                }
+                if (stoneBoard.getDiscriminatorValue().equals("pyramid")) {
+                    game.collectPoints();
                 }
                 if (stoneBoard.getDiscriminatorValue().equals("temple")) {
                     game.collectPoints();
                 }
                 game.findNextPlayer();
                 game.getCurrentRound().setActionCardLever(false);
+                game.getCurrentRound().setListActionCardLever(new ArrayList<>());
                 roundService.addRound(game.getId());
             }
         }
@@ -182,6 +194,9 @@ public class MoveService {
             }
             Market market = game.getMarket();
             market.setUserColor(userColors);
+            game.findNextPlayer();
+            game.getCurrentRound().setActionCardLever(false);
+            game.getCurrentRound().setListActionCardLever(new ArrayList<>());
             siteBoardRepository.save(market);
         }
 
@@ -195,5 +210,14 @@ public class MoveService {
 
     public void playLeverCard(Game game, AMove move) {
         ruleBook.applyRule(game, move);
+    }
+
+    public void addLeverUser(Game game){
+        Long id  = game.getTmpSiteBoardId();
+        if(game.getMarket().getId().equals(id)){
+            this.addUserToMarketLever(game);
+        }else{
+            this.addStoneToSiteBoard(game);
+        }
     }
 }
