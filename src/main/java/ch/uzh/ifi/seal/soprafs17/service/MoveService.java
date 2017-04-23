@@ -73,6 +73,11 @@ public class MoveService {
         User player = userRepository.findByToken(playerToken);
         AShip dockedShip = shipRepository.findById(shipId);
         if(player == game.getCurrentPlayer() /*&& temple.getDiscriminatorValue().equals("temple")*/){
+            if(game.getCurrentRound().isActionCardLever()){
+                for(String s : game.getCurrentRound().getUserColorsLeverCard()){
+                    stoneBoard.addStone(new Stone("s"));
+                }
+            }
             for(int i = dockedShip.getStones().length-1; i>=0;i--){
                 if(dockedShip.getStones()[i] != null){
                     stoneBoard.addStone(dockedShip.getStones()[i]);
@@ -127,5 +132,9 @@ public class MoveService {
 
     public void playMarketCard(Game game, AMove move){
         ruleBook.applyRule(game,move);
+    }
+
+    public void playLeverCard(Game game, AMove move){
+        ruleBook.applyRule(game, move);
     }
 }

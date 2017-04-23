@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,6 +79,28 @@ public class Round implements Serializable{
     public int isActionCardChisel;
 
     public int isActionCardSail;
+
+    public boolean isActionCardLever() {
+        return isActionCardLever;
+    }
+
+    public void setActionCardLever(boolean actionCardLever) {
+        isActionCardLever = actionCardLever;
+    }
+
+    public List<String> getUserColorsLeverCard() {
+        return userColorsLeverCard;
+    }
+
+    public void setUserColorsLeverCard(List<String> userColorsLeverCard) {
+        this.userColorsLeverCard = userColorsLeverCard;
+    }
+
+    @ElementCollection
+    private List<String> userColorsLeverCard = new ArrayList<>();
+
+    @JsonIgnore
+    private boolean isActionCardLever = false;
 
     @JsonIgnore
     @Column

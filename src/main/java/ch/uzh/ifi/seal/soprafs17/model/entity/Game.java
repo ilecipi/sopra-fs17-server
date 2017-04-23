@@ -479,7 +479,11 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public Round getCurrentRound(){
-        return this.rounds.get(this.rounds.size()-1);
+        if(rounds.size()!=0) {
+            return this.rounds.get(this.rounds.size() - 1);
+        }else{
+            return null;
+        }
     }
 
     public boolean isEntranceCardIsUsed() {

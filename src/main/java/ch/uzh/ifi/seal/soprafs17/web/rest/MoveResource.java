@@ -19,11 +19,14 @@ import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.ValidatorManager;
 import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
+import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by erion on 29.03.17.
@@ -234,6 +237,25 @@ public class MoveResource extends GenericResource {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "NullException";
         }
+    }
+    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/lever", method = RequestMethod.PUT)
+    public String playLeverCard(HttpServletResponse response,@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
+                                 @RequestParam("userColors") List<String> userColors) {
+        Game game = gameRepo.findOne(gameId);
+        User user = userRepo.findByToken(playerToken);
+        Round round = roundRepo.findById(roundId);
+
+
+
+
+
+
+        System.out.println(userColors.size());
+        System.out.println(userColors);
+        for(String s : userColors){
+            System.out.println(s);
+        }
+        return null;
     }
 }
 

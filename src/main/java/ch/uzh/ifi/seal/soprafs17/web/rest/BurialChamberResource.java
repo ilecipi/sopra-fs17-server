@@ -34,6 +34,7 @@ public class BurialChamberResource {
     @ResponseStatus(HttpStatus.OK)
     public BurialChamberDTO getBurialChamber(@PathVariable Long gameId){
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
+
         BurialChamber burialChamber=null;
         if(!siteBoards.isEmpty()){
             for(SiteBoard s: siteBoards){
