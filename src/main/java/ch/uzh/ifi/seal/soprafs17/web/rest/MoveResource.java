@@ -126,6 +126,7 @@ public class MoveResource extends GenericResource {
 
                 //Neither an ImmediateCard nor an ActionCardLever is being played
                 if(!round.isImmediateCard()&&!round.isActionCardLever()) {
+
                     roundService.addRound(game.getId());
                 }
             }
@@ -281,8 +282,8 @@ public class MoveResource extends GenericResource {
             //VALIDATOR
             moveService.playLeverCard(game,move);
             moveService.addLeverUser(game);
-            game.collectPoints();
-            roundService.addRound(game.getId());
+//            game.collectPoints();
+//            roundService.addRound(game.getId());
             round.setActionCardLever(false);
             }
         userRepo.save(user);

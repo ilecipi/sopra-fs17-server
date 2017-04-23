@@ -193,7 +193,6 @@ public class MoveService {
             game.getCurrentRound().setActionCardLever(false);
             game.getCurrentRound().setListActionCardLever(new ArrayList<>());
             market.setOccupied(true);
-            gameRepository.save(game);
             siteBoardRepository.save(market);
         }
 
@@ -216,9 +215,10 @@ public class MoveService {
         }else{
             this.addStoneToSiteBoard(game);
         }
-
-        game.findNextPlayer();
-        gameRepository.save(game);
-        roundService.addRound(game.getId());
+        if(game.getMarket().getUserColor().size()==0) {
+            game.findNextPlayer();
+            game.collectPoints();
+            roundService.addRound(game.getId());
+        }
     }
 }
