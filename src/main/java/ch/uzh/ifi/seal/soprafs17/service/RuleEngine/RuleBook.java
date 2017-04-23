@@ -34,6 +34,7 @@ public class RuleBook {
         this.rules.add(new GetStoneRule());
         this.rules.add(new GiveCardToUserRule());
         this.rules.add(new PlayMarketCardRule());
+        this.rules.add(new PlayLeverCardRule());
     }
 
     public synchronized void apply(Game game, AMove move) {

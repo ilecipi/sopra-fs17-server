@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,26 +34,26 @@ public class PlayLeverCardMove extends AMove {
     private Long id;
 
 
-    public List<String> getUserColors() {
-        return userColors;
+    public Stone[] getStones() {
+        return stones;
     }
 
-    public void setUserColors(List<String> userColors) {
-        this.userColors = userColors;
+    public void setStones(Stone[] stones) {
+        this.stones = stones;
     }
 
-    @ElementCollection
-    private List<String> userColors;
+    @Column
+    Stone[] stones;
 
 
-    public PlayLeverCardMove(User user, Round round, Game game, List<String> userColors) {
+    public PlayLeverCardMove(User user, Round round, Game game, Stone[] stones) {
         super(user, game, round);
-        this.userColors = userColors;
+        this.stones = stones;
     }
 
     @Override
     public Game makeMove(Game game) {
-//        super.getRound().setActionCardLever(false);
+        super.getRound().setStonesLeverCard(this.stones);
         return game;
     }
 }

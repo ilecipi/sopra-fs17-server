@@ -31,6 +31,9 @@ public class GiveCardToUserValidator implements IValidator {
             if(castedMove.getRound().isImmediateCard()){
                 throw new ImmediateCardNotPlayedException();
             }
+            if(castedMove.getRound().isActionCardLever()){
+                throw new LeverCardIsBeingPlayedException();
+            }
         }
     }
 }

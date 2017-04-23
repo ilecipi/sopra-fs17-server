@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,87 +55,145 @@ public class MoveService {
     private ValidatorManager validatorManager;
 
     @Autowired
+    private RoundService roundService;
+
+    @Autowired
     public MoveService(MoveRepository moveRepository) {
         this.moveRepository = moveRepository;
     }
 
 
-    public AMove getMove(Long moveId){
+    public AMove getMove(Long moveId) {
         return moveRepository.findOne(moveId);
     }
 
-    public void addStoneToShip(Game game, AMove move){
-        ruleBook.applyRule(game,move);
+    public void addStoneToShip(Game game, AMove move) {
+        ruleBook.applyRule(game, move);
     }
-    public void addStoneToSiteBoard(Long siteBoardId,String playerToken,Long gameId,Long shipId){
+
+    public void addStoneToSiteBoard(Long siteBoardId, String playerToken, Long gameId, Long shipId) {
         //TODO: no REPOSITORY IN HERE
         StoneBoard stoneBoard = siteBoardRepository.findById(siteBoardId);
         Game game = gameRepository.findOne(gameId);
         User player = userRepository.findByToken(playerToken);
         AShip dockedShip = shipRepository.findById(shipId);
-        if(player == game.getCurrentPlayer() /*&& temple.getDiscriminatorValue().equals("temple")*/){
-            if(game.getCurrentRound().isActionCardLever()){
-                for(String s : game.getCurrentRound().getUserColorsLeverCard()){
-                    stoneBoard.addStone(new Stone("s"));
-                }
-            }
-            for(int i = dockedShip.getStones().length-1; i>=0;i--){
-                if(dockedShip.getStones()[i] != null){
-                    stoneBoard.addStone(dockedShip.getStones()[i]);
+        if (player == game.getCurrentPlayer()) {
+            //if the Lever card is played
+            if (game.getCurrentRound().isActionCardLever()) {
+            } else {
+                for (int i = dockedShip.getStones().length - 1; i >= 0; i--) {
+                    if (dockedShip.getStones()[i] != null) {
+                        stoneBoard.addStone(dockedShip.getStones()[i]);
+                    }
                 }
             }
             siteBoardRepository.save(stoneBoard);
             userRepository.save(player);
-            game.findNextPlayer();
+            if (!game.getCurrentRound().isActionCardLever()) {
+                game.findNextPlayer();
+            }
             gameRepository.save(game);
         }
     }
-    public void sailShip(Game game,AMove move){
-        ruleBook.applyRule(game,move);
+
+    public void addStoneToSiteBoard(Game game, AMove move) {
+        //if the Lever card is played
+        StoneBoard stoneBoard = siteBoardRepository.findById(game.getTmpSiteBoardId());
+        if (game.getCurrentRound().isActionCardLever()) {
+            if (stoneBoard!=null&&!stoneBoard.getDiscriminatorValue().equals("market")) {
+                for (Stone s : game.getCurrentRound().getStonesLeverCard()) {
+                    ((StoneBoard) stoneBoard).addStone(s);
+
+                    siteBoardRepository.save(stoneBoard);
+                }
+                if (stoneBoard.getDiscriminatorValue().equals("temple")) {
+                    game.collectPoints();
+                }
+                game.findNextPlayer();
+                game.getCurrentRound().setActionCardLever(false);
+                roundService.addRound(game.getId());
+            }
         }
-    public void getStone(Game game,AMove move){
-        ruleBook.applyRule(game,move);
+        gameRepository.save(game);
     }
-    public SiteBoard findSiteboardsByType(String siteBoardType,Long gameId){
+
+    public void sailShip(Game game, AMove move) {
+        ruleBook.applyRule(game, move);
+    }
+
+    public void getStone(Game game, AMove move) {
+        ruleBook.applyRule(game, move);
+    }
+
+    public SiteBoard findSiteboardsByType(String siteBoardType, Long gameId) {
         List<SiteBoard> siteBoards = gameRepository.findOne(gameId).getSiteBoards();
-        SiteBoard siteBoard= null;
+        SiteBoard siteBoard = null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {
                 if (s.getDiscriminatorValue().equals(siteBoardType)) {
-                    siteBoard=s;
+                    siteBoard = s;
                 }
             }
         }
         return siteBoard;
     }
 
-    public void addUserToMarket(Game game, AShip ship){
-        List<SiteBoard> siteBoards = game.getSiteBoards();
-        Market market = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("market")) {
-                    market= (Market) s;
+    public void addUserToMarket(Game game, AShip ship) {
+        if(!game.getCurrentRound().isActionCardLever()) {
+            List<SiteBoard> siteBoards = game.getSiteBoards();
+            Market market = null;
+            if (!siteBoards.isEmpty()) {
+                for (SiteBoard s : siteBoards) {
+                    if (s.getDiscriminatorValue().equals("market")) {
+                        market = (Market) s;
+                    }
                 }
             }
-        }
-        for(int i = ship.getStones().length-1; i>=0;i--){
-            if(ship.getStones()[i] != null){
-                market.addUser(ship.getStones()[i].getColor());
+            for (int i = ship.getStones().length - 1; i >= 0; i--) {
+                if (ship.getStones()[i] != null) {
+                    market.addUser(ship.getStones()[i].getColor());
+                }
             }
+            game.findNextPlayer();
+        }else{
+            List<String> tmp = new ArrayList<>();
+            for (int i = ship.getStones().length - 1; i >= 0; i--) {
+                if (ship.getStones()[i] != null) {
+                    tmp.add(ship.getStones()[i].getColor());
+                }
+            }
+            game.getCurrentRound().setListActionCardLever(tmp);
+            roundRepository.save(game.getCurrentRound());
+            List<String> userColors = new ArrayList<>();
+            for (Stone s : game.getCurrentRound().getStonesLeverCard()) {
+                userColors.add(s.getColor());
+            }
+            Market market = game.getMarket();
+            market.setUserColor(userColors);
+            siteBoardRepository.save(market);
         }
-        game.findNextPlayer();
     }
 
-    public void giveCardToUser(Game game, AMove move){
-            ruleBook.applyRule(game,move);
+    public void addUserToMarketLever(Game game) {
+            roundRepository.save(game.getCurrentRound());
+            List<String> userColors = new ArrayList<>();
+            for (Stone s : game.getCurrentRound().getStonesLeverCard()) {
+                userColors.add(s.getColor());
+            }
+            Market market = game.getMarket();
+            market.setUserColor(userColors);
+            siteBoardRepository.save(market);
         }
 
-    public void playMarketCard(Game game, AMove move){
-        ruleBook.applyRule(game,move);
+    public void giveCardToUser(Game game, AMove move) {
+        ruleBook.applyRule(game, move);
     }
 
-    public void playLeverCard(Game game, AMove move){
+    public void playMarketCard(Game game, AMove move) {
+        ruleBook.applyRule(game, move);
+    }
+
+    public void playLeverCard(Game game, AMove move) {
         ruleBook.applyRule(game, move);
     }
 }

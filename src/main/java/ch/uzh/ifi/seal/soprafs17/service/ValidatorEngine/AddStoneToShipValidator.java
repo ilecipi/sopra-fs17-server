@@ -60,6 +60,9 @@ public class AddStoneToShipValidator implements IValidator {
             if(castedMove.getRound().getIsActionCardSail()==1){
                 throw new SailCardIsBeingPlayedException();
             }
+            if(castedMove.getRound().isActionCardLever()){
+                throw new LeverCardIsBeingPlayedException();
+            }
         }
     }
 }

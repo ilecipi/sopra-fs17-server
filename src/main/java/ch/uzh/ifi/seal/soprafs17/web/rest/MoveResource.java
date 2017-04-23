@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCDecoration;
@@ -67,7 +68,6 @@ public class MoveResource extends GenericResource {
     public MoveDTO getMove(@PathVariable Long moveId) {
         AMove m = moveRepo.findOne(moveId);
         logger.debug("getMove: " + moveId);
-        System.out.println(m.getId());
         return new MoveDTO(m.getId(), m.getUser().getId(), m.getRound().getId(), m.getGame().getId());
     }
 
@@ -118,14 +118,25 @@ public class MoveResource extends GenericResource {
             }
             moveService.sailShip(game, move);
             if(move.getSiteBoard() instanceof StoneBoard) {
-                moveService.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
-                game.collectPoints();
-                if(!round.isImmediateCard()) {
+                    moveService.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
+                    game.collectPoints();
+                if(!round.isImmediateCard()&&!round.isActionCardLever()) {
                     roundService.addRound(game.getId());
                 }
             }
             else{
-                moveService.addUserToMarket(game,ship);
+                if(!game.getCurrentRound().isActionCardLever()) {
+                    moveService.addUserToMarket(game, ship);
+                }else{
+                    List<String> tmp = new ArrayList<>();
+                    for (int i = ship.getStones().length - 1; i >= 0; i--) {
+                        if (ship.getStones()[i] != null) {
+                            tmp.add(ship.getStones()[i].getColor());
+                        }
+                    }
+                    game.getCurrentRound().setListActionCardLever(tmp);
+                    roundRepo.save(game.getCurrentRound());
+                }
             }
             siteBoardRepo.save(siteBoard);
             gameRepo.save(game);
@@ -245,16 +256,22 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         Round round = roundRepo.findById(roundId);
 
-
-
-
-
-
-        System.out.println(userColors.size());
-        System.out.println(userColors);
-        for(String s : userColors){
-            System.out.println(s);
+        if(game != null && user != null && round != null){
+            Stone[] tmpStones = new Stone[userColors.size()];
+            for(int i = 0;i<tmpStones.length;i++){
+                tmpStones[i] = new Stone(userColors.get(i));
+            }
+            PlayLeverCardMove move = new PlayLeverCardMove(user,round,game,tmpStones);
+            moveRepo.save(move);
+            //VALIDATOR
+            moveService.playLeverCard(game,move);
+            moveService.addStoneToSiteBoard(game, move);
+            moveService.addUserToMarketLever(game);
         }
+        userRepo.save(user);
+        gameRepo.save(game);
+        roundRepo.save(round);
+
         return null;
     }
 }

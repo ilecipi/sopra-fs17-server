@@ -45,6 +45,9 @@ public class GetStoneValidator implements IValidator {
             if(castedMove.getRound().getIsActionCardChisel()!=0){
                 throw new ChiselCardIsBeingPlayedException();
             }
+            if(castedMove.getRound().isActionCardLever()){
+                throw new LeverCardIsBeingPlayedException();
+            }
         }
     }
 }

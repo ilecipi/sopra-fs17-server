@@ -89,6 +89,34 @@ public class PlayMarketCardValidator implements IValidator {
                         throw new UserCanNotPlayThisCardException();
                     }
                 }
+
+                //Check conditions for Lever card
+                if(castedMove.getaMarketCard() instanceof Lever){
+                   boolean noShipReady = true;
+                   for(AShip s : castedMove.getRound().getShips()){
+                       if(s.isReady()&&!s.isDocked()){
+                           noShipReady = false;
+                       }
+                   }
+                   if(noShipReady){
+                       throw new UserCanNotPlayThisCardException();
+                   }
+                }
+                if(castedMove.getRound().isActionCardLever()){
+                    throw new LeverCardIsBeingPlayedException();
+                }
+                if(castedMove.getRound().getIsActionCardSail()!=0){
+                    throw new SailCardIsBeingPlayedException();
+                }
+                if(castedMove.getRound().getIsActionCardChisel()!=0){
+                    throw new ChiselCardIsBeingPlayedException();
+                }
+                if(castedMove.getRound().getIsActionCardSail()!=0){
+                    throw new SailCardIsBeingPlayedException();
+                }
+                if(castedMove.getRound().isActionCardHammer()){
+                    throw new HammerCardIsBeingPlayedException();
+                }
             }
 ;        }
     }

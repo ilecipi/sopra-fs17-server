@@ -96,11 +96,33 @@ public class Round implements Serializable{
         this.userColorsLeverCard = userColorsLeverCard;
     }
 
+    public Stone[] getStonesLeverCard() {
+        return stonesLeverCard;
+    }
+
+    public void setStonesLeverCard(Stone[] stonesLeverCard) {
+        this.stonesLeverCard = stonesLeverCard;
+    }
+
+    @Column
+    Stone[] stonesLeverCard;
+
     @ElementCollection
     private List<String> userColorsLeverCard = new ArrayList<>();
 
     @JsonIgnore
     private boolean isActionCardLever = false;
+
+    public List<String> getListActionCardLever() {
+        return ListActionCardLever;
+    }
+
+    public void setListActionCardLever(List<String> listActionCardLever) {
+        ListActionCardLever = listActionCardLever;
+    }
+
+    @ElementCollection
+    private List<String> ListActionCardLever = new ArrayList<>();
 
     @JsonIgnore
     @Column

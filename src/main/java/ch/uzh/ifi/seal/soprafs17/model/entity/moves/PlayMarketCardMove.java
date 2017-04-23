@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,6 +98,9 @@ public class PlayMarketCardMove extends AMove {
             aMarketCard.setUser(null);
         } else if (this.getaMarketCard() instanceof Lever){
             super.getRound().setActionCardLever(true);
+            List<String> tmp = new ArrayList<>();
+            tmp.add("played");
+            super.getRound().setListActionCardLever(tmp);
             aMarketCard.setUser(null);
         }
 
