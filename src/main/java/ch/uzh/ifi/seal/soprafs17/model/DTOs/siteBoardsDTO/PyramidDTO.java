@@ -11,10 +11,12 @@ public class PyramidDTO {
 
     public Long id;
     public List<Stone> addedStones;
+    public boolean occupied;
 
 
-    public PyramidDTO(Long id,List<Stone> addedStones){
+    public PyramidDTO(Long id,List<Stone> addedStones, boolean occupied){
         this.id=id;
         this.addedStones=addedStones;
+        this.occupied = occupied;
     }
 }

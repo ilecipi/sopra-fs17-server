@@ -78,7 +78,6 @@ public class MoveResource extends GenericResource {
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);
         Round round = roundRepo.findById(roundId);
-        user.getMarketCards().add(marketCardRepository.save(new Lever()));
         if (game != null && user != null && ship != null && round != null) {
             AddStoneToShipMove move =new AddStoneToShipMove(game, user, ship, position, round);
             try {
@@ -121,22 +120,34 @@ public class MoveResource extends GenericResource {
             moveService.sailShip(game, move);
             if(move.getSiteBoard() instanceof StoneBoard) {
                     moveService.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
-                    game.collectPoints();
+                    if(!round.isActionCardLever()) {
+                        game.collectPoints();
+                    }
+
+                //Neither an ImmediateCard nor an ActionCardLever is being played
                 if(!round.isImmediateCard()&&!round.isActionCardLever()) {
                     roundService.addRound(game.getId());
                 }
             }
+            //It's the Market
             else{
+                //If the ActionCardLever is not played
                 if(!game.getCurrentRound().isActionCardLever()) {
                     moveService.addUserToMarket(game, ship);
-                }else{
-                    //array for the client
+                }
+                //If the ActionCardLever is played
+                else{
+                    //array of stones for the client
                     List<String> tmp = new ArrayList<>();
                     for (int i = ship.getStones().length - 1; i >= 0; i--) {
                         if (ship.getStones()[i] != null) {
                             tmp.add(ship.getStones()[i].getColor());
                         }
                     }
+
+                    ship.setDocked(true);
+                    ship.setSiteBoard(game.getMarket());
+                    //Save the Market Id for later
                     game.setTmpSiteBoardId(game.getMarket().getId());
                     game.getCurrentRound().setListActionCardLever(tmp);
                     roundRepo.save(game.getCurrentRound());
@@ -270,6 +281,9 @@ public class MoveResource extends GenericResource {
             //VALIDATOR
             moveService.playLeverCard(game,move);
             moveService.addLeverUser(game);
+            game.collectPoints();
+            roundService.addRound(game.getId());
+            round.setActionCardLever(false);
             }
         userRepo.save(user);
         gameRepo.save(game);

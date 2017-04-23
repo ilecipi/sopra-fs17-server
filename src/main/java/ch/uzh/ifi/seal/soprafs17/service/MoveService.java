@@ -86,6 +86,8 @@ public class MoveService {
                         tmp.add(dockedShip.getStones()[i].getColor());
                     }
                 }
+                dockedShip.setDocked(true);
+                dockedShip.setSiteBoard(stoneBoard);
                 game.setTmpSiteBoardId(siteBoardId);
                 game.getCurrentRound().setListActionCardLever(tmp);
                 roundRepository.save(game.getCurrentRound());
@@ -114,18 +116,12 @@ public class MoveService {
                     ((StoneBoard) stoneBoard).addStone(s);
                     siteBoardRepository.save(stoneBoard);
                 }
-                if (stoneBoard.getDiscriminatorValue().equals("pyramid")) {
-                    game.collectPoints();
-                }
-                if (stoneBoard.getDiscriminatorValue().equals("temple")) {
-                    game.collectPoints();
-                }
-                game.findNextPlayer();
                 game.getCurrentRound().setActionCardLever(false);
                 game.getCurrentRound().setListActionCardLever(new ArrayList<>());
-                roundService.addRound(game.getId());
+                stoneBoard.setOccupied(true);
             }
         }
+        siteBoardRepository.save(stoneBoard);
         gameRepository.save(game);
     }
 
@@ -194,9 +190,10 @@ public class MoveService {
             }
             Market market = game.getMarket();
             market.setUserColor(userColors);
-            game.findNextPlayer();
             game.getCurrentRound().setActionCardLever(false);
             game.getCurrentRound().setListActionCardLever(new ArrayList<>());
+            market.setOccupied(true);
+            gameRepository.save(game);
             siteBoardRepository.save(market);
         }
 
@@ -219,5 +216,9 @@ public class MoveService {
         }else{
             this.addStoneToSiteBoard(game);
         }
+
+        game.findNextPlayer();
+        gameRepository.save(game);
+        roundService.addRound(game.getId());
     }
 }

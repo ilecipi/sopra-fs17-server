@@ -47,7 +47,7 @@ public class PyramidResource {
             }
         }
 
-        return new PyramidDTO(pyramid.getId(),pyramid.getAddedStones());
+        return new PyramidDTO(pyramid.getId(),pyramid.getAddedStones(), pyramid.isOccupied());
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid/points")
