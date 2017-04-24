@@ -237,36 +237,36 @@ public class Game implements Serializable {
     public void initMarketCards() {
         Map<Integer, String> ordered = new HashMap<Integer, String>() {{
             //For testing cards
-//            for (int i = 0; i < 140; i++) {
-//                put(i , "LEVER");
-//            }
-            put(0, "PAVED_PATH");
-            put(1, "PAVED_PATH");
-            put(2, "SARCOPHAGUS");
-            put(3, "SARCOPHAGUS");
-            put(4, "ENTRANCE");
-            put(5, "ENTRANCE");
-            put(6, "PYRAMID_DECORATION");
-            put(7, "PYRAMID_DECORATION");
-            put(8, "TEMPLE_DECORATION");
-            put(9, "TEMPLE_DECORATION");
-            put(10, "BURIAL_CHAMBER_DECORATION");
-            put(11, "BURIAL_CHAMBER_DECORATION");
-            put(12, "OBELISK_DECORATION");
-            put(13, "OBELISK_DECORATION");
-            for (int i = 0; i < 10; i++) {
-                put(i + 14, "STATUE");
+            for (int i = 0; i < 140; i++) {
+                put(i , "CHISEL");
             }
-            put(24, "SAIL");
-            put(25, "CHISEL");
-            put(26, "CHISEL");
-            put(27, "CHISEL");
-            put(28, "LEVER");
-            put(29, "LEVER");
-            put(30, "HAMMER");
-            put(31, "HAMMER");
-            put(32, "SAIL");
-            put(33, "SAIL");
+//            put(0, "PAVED_PATH");
+//            put(1, "PAVED_PATH");
+//            put(2, "SARCOPHAGUS");
+//            put(3, "SARCOPHAGUS");
+//            put(4, "ENTRANCE");
+//            put(5, "ENTRANCE");
+//            put(6, "PYRAMID_DECORATION");
+//            put(7, "PYRAMID_DECORATION");
+//            put(8, "TEMPLE_DECORATION");
+//            put(9, "TEMPLE_DECORATION");
+//            put(10, "BURIAL_CHAMBER_DECORATION");
+//            put(11, "BURIAL_CHAMBER_DECORATION");
+//            put(12, "OBELISK_DECORATION");
+//            put(13, "OBELISK_DECORATION");
+//            for (int i = 0; i < 10; i++) {
+//                put(i + 14, "STATUE");
+//            }
+//            put(24, "SAIL");
+//            put(25, "CHISEL");
+//            put(26, "CHISEL");
+//            put(27, "CHISEL");
+//            put(28, "LEVER");
+//            put(29, "LEVER");
+//            put(30, "HAMMER");
+//            put(31, "HAMMER");
+//            put(32, "SAIL");
+//            put(33, "SAIL");
         }};
 
         List<Integer> keys = new ArrayList(ordered.keySet());

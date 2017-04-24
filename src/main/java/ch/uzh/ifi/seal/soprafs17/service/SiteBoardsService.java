@@ -1,20 +1,16 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.*;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.MoveRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NullException;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.NullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
