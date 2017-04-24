@@ -86,7 +86,7 @@ public class PlayMarketCardValidator implements IValidator {
                     int counterFreePositions = 0;
                     for(AShip s : castedMove.getRound().getShips()){
                         if(s.getMaxStones()!=s.getAddedStones()&&!s.isDocked()){
-                            counterFreePositions++;
+                            counterFreePositions += s.getMaxStones()-s.getAddedStones();
                         }
                     }
                     if(counterFreePositions<2){
