@@ -87,24 +87,9 @@ public class UserResource extends GenericResource {
             }
         }
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
-//        return u;
     }
 
-//    @RequestMapping(method = RequestMethod.POST, value = "/{userId}/login")
-//    @ResponseStatus(HttpStatus.OK)
-//    public UserDTO login(@PathVariable Long userId) {
-//        logger.debug("login: " + userId);
-//        User u = userService.login(userId);
-//        List<Long> gamesId = new ArrayList<>();
-//        List<Long> movesId = new ArrayList<>();
-//        for(Game g : u.getGames()){
-//            gamesId.add(g.getId());
-//        }
-//        for(AMove m : u.getAMoves()){
-//            movesId.add(m.getId());
-//        }
-//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getStoneQuarry());
-//    }
+
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}/logout")
     @ResponseStatus(HttpStatus.OK)

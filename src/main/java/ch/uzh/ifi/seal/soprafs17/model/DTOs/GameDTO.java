@@ -11,7 +11,7 @@ import java.util.Map;
 public class GameDTO {
     GameDTO(){}
     public GameDTO(Long id, String name, String owner, GameStatus status, Long currentPlayer, Long nextPlayer,
-                   List<Long> rounds, List<UserDTO> players, List<Long> siteBoards, Map<String, Integer> points, Map<Integer, String> marketCards, boolean isActionCardHammer,
+                   List<Long> rounds, List<UserDTO> players, List<Long> siteBoards, Map<String, Integer> points, boolean isActionCardHammer,
                    List<String> isActionCardLever, int isActionCardChisel, int isActionCardSail,int discardedCardsCounter) {
         this.id = id;
         this.name = name;
@@ -23,7 +23,6 @@ public class GameDTO {
         this.players = players;
         this.siteBoards = siteBoards;
         this.points=points;
-        this.marketCards=marketCards;
         this.isActionCardHammer = isActionCardHammer;
         this.isActionCardLever = isActionCardLever;
         this.isActionCardChisel = isActionCardChisel;
@@ -41,7 +40,6 @@ public class GameDTO {
     public List<UserDTO> players;
     public List<Long> siteBoards;
     public Map<String,Integer> points;
-    public Map<Integer, String> marketCards;
     public boolean isActionCardHammer;
     public List<String> isActionCardLever;
     public int isActionCardChisel;

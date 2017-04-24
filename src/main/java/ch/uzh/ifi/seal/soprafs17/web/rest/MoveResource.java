@@ -14,7 +14,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.service.RoundService;
-import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
@@ -52,7 +52,7 @@ public class MoveResource extends GenericResource {
     @Autowired
     MoveRepository moveRepo;
     @Autowired
-    RuleBook ruleBook;
+    RuleManager ruleManager;
     @Autowired
     ValidatorManager validatorManager;
 
@@ -71,7 +71,8 @@ public class MoveResource extends GenericResource {
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
-    public synchronized String addStoneToShip(HttpServletResponse response, @PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
+    public synchronized String addStoneToShip(HttpServletResponse response, @PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId,
+                                              @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
         Game game = gameRepo.findOne(gameId);
         User user = userRepo.findByToken(playerToken);
         AShip ship = shipRepo.findById(shipId);

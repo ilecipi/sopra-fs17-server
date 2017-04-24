@@ -7,7 +7,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
-import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.ValidatorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class MoveService {
     private SiteBoardRepository siteBoardRepository;
 
     @Autowired
-    private RuleBook ruleBook;
+    private RuleManager ruleManager;
 
     @Autowired
     private ValidatorManager validatorManager;
@@ -62,7 +62,7 @@ public class MoveService {
     }
 
     public void addStoneToShip(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleManager.applyRule(game, move);
     }
 
     public void addStoneToSiteBoard(Long siteBoardId, String playerToken, Long gameId, Long shipId) {
@@ -120,11 +120,11 @@ public class MoveService {
     }
 
     public void sailShip(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleManager.applyRule(game, move);
     }
 
     public void getStone(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleManager.applyRule(game, move);
     }
 
     public SiteBoard findSiteboardsByType(String siteBoardType, Long gameId) {
@@ -191,15 +191,15 @@ public class MoveService {
         }
 
     public void giveCardToUser(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleManager.applyRule(game, move);
     }
 
     public void playMarketCard(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleManager.applyRule(game, move);
     }
 
     public void playLeverCard(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleManager.applyRule(game, move);
     }
 
     public void addLeverUser(Game game){

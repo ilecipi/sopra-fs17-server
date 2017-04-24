@@ -12,7 +12,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
-import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ public class GameService {
     @Autowired
     private RoundService roundService;
     @Autowired
-    private RuleBook ruleBook;
+    private RuleManager ruleManager;
     @Autowired
     private ValidatorManager validatorManager;
 

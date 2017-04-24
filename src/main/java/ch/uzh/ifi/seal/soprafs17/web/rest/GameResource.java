@@ -9,7 +9,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
-import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class GameResource extends GenericResource {
     GameService gameService;
 
     @Autowired
-    RuleBook ruleBook;
+    RuleManager ruleManager;
 
     @Autowired
     ValidatorManager validatorBook;
@@ -85,21 +85,21 @@ public class GameResource extends GenericResource {
                 if(g.getNextPlayer()!=null) {
                     if(g.getCurrentRound()!=null) {
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),g.getCurrentRound().isActionCardHammer()
+                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),g.getCurrentRound().isActionCardHammer()
                         ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter()));
                     }else{
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,g.getDiscardedCardsCounter()));
+                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter()));
                     }
                 }
                 else{
                     if(g.getCurrentRound()!=null) {
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),g.getCurrentRound().isActionCardHammer()
+                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(),g.getCurrentRound().isActionCardHammer()
                                 ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter()));
                     }else{
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,g.getDiscardedCardsCounter()));
+                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter()));
                     }
                 }
             }
@@ -148,20 +148,20 @@ public class GameResource extends GenericResource {
             if (g.getNextPlayer() != null) {
                 if (g.getCurrentRound()!=null) {
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(), g.getCurrentRound().isActionCardHammer()
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getCurrentRound().isActionCardHammer()
                             , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter());
                 }else{
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,g.getDiscardedCardsCounter());
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter());
                 }
             } else {
                 if (g.getCurrentRound()!=null) {
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(), g.getCurrentRound().isActionCardHammer()
+                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getCurrentRound().isActionCardHammer()
                             ,g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter());
                 }else{
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,g.getDiscardedCardsCounter());
+                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter());
                 }
             }
         }
@@ -190,7 +190,6 @@ public class GameResource extends GenericResource {
             for(AMove m : u.getAMoves()){
                 movesId.add(m.getId());
             }
-            //UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color)
             usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
         }
         return usersDTO;
