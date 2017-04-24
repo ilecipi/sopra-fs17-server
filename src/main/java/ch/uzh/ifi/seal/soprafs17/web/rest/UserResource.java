@@ -71,7 +71,7 @@ public class UserResource extends GenericResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable Long userId) {
+    public UserDTO getUser(@PathVariable Long userId) {
         logger.debug("getUser: " + userId);
         User u = userService.getUser(userId);
         List<Long> gamesId = new ArrayList<>();
@@ -86,8 +86,8 @@ public class UserResource extends GenericResource {
                 movesId.add(m.getId());
             }
         }
-//        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled());
-        return u;
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
+//        return u;
     }
 
 //    @RequestMapping(method = RequestMethod.POST, value = "/{userId}/login")
