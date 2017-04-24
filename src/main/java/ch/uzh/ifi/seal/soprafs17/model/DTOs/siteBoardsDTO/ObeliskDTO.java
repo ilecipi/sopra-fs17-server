@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by erion on 06.04.17.
  */
 public class ObeliskDTO {
-
+    public ObeliskDTO(){}
     public Long id;
     public Map<String,Integer> obelisks;
     boolean isOccupied;

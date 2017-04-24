@@ -33,33 +33,15 @@ public class BurialChamberResource {
     @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber")
     @ResponseStatus(HttpStatus.OK)
     public BurialChamberDTO getBurialChamber(@PathVariable Long gameId){
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-
-        BurialChamber burialChamber=null;
-        if(!siteBoards.isEmpty()){
-            for(SiteBoard s: siteBoards){
-                if(s.getDiscriminatorValue().equals("burialchamber")){
-                    burialChamber=(BurialChamber)s;
-                }
-            }
-        }
-        BurialChamberDTO burialChamberDTO= new BurialChamberDTO(burialChamber.getId(),burialChamber.getFirstRow(),
+        BurialChamber burialChamber=gameRepo.findOne(gameId).getBurialChamber();
+        return new BurialChamberDTO(burialChamber.getId(),burialChamber.getFirstRow(),
                                 burialChamber.getSecondRow(),burialChamber.getThirdRow(),burialChamber.isOccupied());
-        return burialChamberDTO;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber/points")
     @ResponseStatus(HttpStatus.OK)
     public Map<String,Integer> getObeliskPoints(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        BurialChamber burialChamber = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("burialchamber")) {
-                    burialChamber = (BurialChamber) s;
-                }
-            }
-        }
+        BurialChamber burialChamber = gameRepo.findOne(gameId).getBurialChamber();
         return siteBoardsService.getBurialChamberPoints(burialChamber.getId());
     }
 

@@ -78,9 +78,6 @@ public class SiteBoardsService {
 
     public String addBurialChamber(Long gameId){
         Game game = gameRepository.findOne(gameId);
-//        List<Stone> firstRow = new ArrayList<>();
-//        List<Stone> secondRow = new ArrayList<>();
-//        List<Stone> thirdRow = new ArrayList<>();
         StoneBoard burialChamber = new BurialChamber();
         game.getSiteBoards().add(burialChamber);
         burialChamber.setGame(game);

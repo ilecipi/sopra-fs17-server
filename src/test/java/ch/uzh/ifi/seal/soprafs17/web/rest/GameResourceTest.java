@@ -5,8 +5,11 @@ import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.BurialChamber;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -192,6 +195,24 @@ public class GameResourceTest {
         wr.close();
         int responseCode = con.getResponseCode();
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
+
+        ResponseEntity<MarketDTO> responseMarket = template.exchange(base + "games" +"/1"+"/market", HttpMethod.GET, null, MarketDTO.class);
+        assertNotNull(responseMarket.getBody());
+
+        ResponseEntity<PyramidDTO> responsePyramid = template.exchange(base + "games" +"/1"+"/pyramid", HttpMethod.GET, null, PyramidDTO.class);
+        assertNotNull(responsePyramid.getBody());
+
+        ResponseEntity<ObeliskDTO> responseObelisk = template.exchange(base + "games" +"/1"+"/obelisk", HttpMethod.GET, null, ObeliskDTO.class);
+        assertNotNull(responseObelisk.getBody());
+
+        ResponseEntity<BurialChamberDTO> responseBurialChamber = template.exchange(base + "games" +"/1"+"/burialChamber", HttpMethod.GET, null, BurialChamberDTO.class);
+        assertNotNull(responseBurialChamber.getBody());
+
+        ResponseEntity<TempleDTO> responseTemple = template.exchange(base + "games" +"/1"+"/temple", HttpMethod.GET, null, TempleDTO.class);
+        assertNotNull(responseTemple.getBody());
+
+
+
     }
 
     public void getPlayer() throws Exception {
@@ -201,8 +222,36 @@ public class GameResourceTest {
 
     public void fastForward() throws Exception {
         //TODO: check the size round everytime and at the end the status of the game
+        ResponseEntity<GameDTO> responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(1,responseGameDTO.getBody().rounds.size());
+
         ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(2,responseGameDTO.getBody().rounds.size());
+
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(3,responseGameDTO.getBody().rounds.size());
+
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(4,responseGameDTO.getBody().rounds.size());
+
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(5,responseGameDTO.getBody().rounds.size());
+
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(6,responseGameDTO.getBody().rounds.size());
+
+
+
     }
 
 

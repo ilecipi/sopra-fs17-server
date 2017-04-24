@@ -39,29 +39,17 @@ public class PyramidResource {
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid")
     @ResponseStatus(HttpStatus.OK)
     public PyramidDTO getPyramid(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Pyramid pyramid = null;
-        if (!siteBoards.isEmpty()) for (SiteBoard s : siteBoards) {
-            if (s.getDiscriminatorValue().equals("pyramid")) {
-                pyramid = (Pyramid) s;
-            }
+        Pyramid pyramid = gameRepo.findOne(gameId).getPyramid();
+        if(pyramid!=null) {
+            return new PyramidDTO(pyramid.getId(),pyramid.getAddedStones(), pyramid.isOccupied());
         }
-
-        return new PyramidDTO(pyramid.getId(),pyramid.getAddedStones(), pyramid.isOccupied());
+        return null;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid/points")
     @ResponseStatus(HttpStatus.OK)
     public Map<String,Integer> getPyramidPoints(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Pyramid pyramid = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("pyramid")) {
-                    pyramid = (Pyramid) s;
-                }
-            }
-        }
+        Pyramid pyramid = gameRepo.findOne(gameId).getPyramid();
         return siteBoardsService.getPyramidPoints(pyramid.getId());
     }
 

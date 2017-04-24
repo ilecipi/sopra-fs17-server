@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.TempleDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
@@ -34,18 +35,14 @@ public class TempleResource extends GenericResource {
     @RequestMapping(value = CONTEXT + "/{gameId}/temple")
     @ResponseStatus(HttpStatus.OK)
     public TempleDTO getTemple(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Temple temple = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("temple")){
-                   temple = (Temple)s;
-                }
-            }
-            TempleDTO templeDTO = new TempleDTO(temple.getId(),temple.getStones(),gameId,temple.isOccupied(),temple.getInsertIndex(),temple.getCompletedRows());
+        Game game = gameRepo.findOne(gameId);
+        Temple temple = gameRepo.findOne(gameId).getTemple();
+        if(temple!=null) {
+            TempleDTO templeDTO = new TempleDTO(temple.getId(), temple.getStones(), gameId, temple.isOccupied(), temple.getInsertIndex(), temple.getCompletedRows());
             return templeDTO;
+        }else{
+            return null;
         }
-        return null;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/temple/points")

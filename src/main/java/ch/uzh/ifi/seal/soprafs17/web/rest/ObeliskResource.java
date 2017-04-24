@@ -37,31 +37,14 @@ public class ObeliskResource {
     @RequestMapping(value = CONTEXT + "/{gameId}/obelisk")
     @ResponseStatus(HttpStatus.OK)
     public ObeliskDTO getObelisk(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Obelisk obelisk = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("obelisk")) {
-                    obelisk = (Obelisk) s;
-                }
-            }
-        }
-        ObeliskDTO obeliskDTO = new ObeliskDTO(obelisk.getId(),obelisk.getObelisks(),obelisk.isOccupied());
-        return obeliskDTO;
+        Obelisk obelisk = gameRepo.findOne(gameId).getObelisk();
+        return new ObeliskDTO(obelisk.getId(),obelisk.getObelisks(),obelisk.isOccupied());
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/obelisk/points")
     @ResponseStatus(HttpStatus.OK)
     public Map<String,Integer> getObeliskPoints(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Obelisk obelisk = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("obelisk")) {
-                    obelisk = (Obelisk) s;
-                }
-            }
-        }
+        Obelisk obelisk = gameRepo.findOne(gameId).getObelisk();
         return siteBoardsService.getObeliskPoints(obelisk.getId());
     }
 }

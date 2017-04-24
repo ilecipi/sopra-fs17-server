@@ -168,4 +168,5 @@ public class Round implements Serializable{
         this.immediateCard = immediateCard;
     }
 
+    public Round(){}
 }

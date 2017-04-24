@@ -11,7 +11,6 @@ import java.util.List;
  * Created by erion on 04.04.17.
  */
 public class TempleDTO extends StoneBoardDTO{
-
     public Long id;
     public Stone[] stones;
     public Long game;
