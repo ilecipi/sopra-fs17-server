@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
  * Created by erion on 05.04.17.
  */
 @Service
-public class GetStoneRule extends RuleBook implements IRule{
+public class GetStoneRule implements IRule{
 
 
     public boolean supports(AMove move) {

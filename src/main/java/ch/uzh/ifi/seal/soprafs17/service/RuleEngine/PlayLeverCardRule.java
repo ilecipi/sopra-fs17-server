@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Created by erion on 03.04.17.
  */
 @Service
-public class PlayLeverCardRule extends RuleBook implements IRule {
+public class PlayLeverCardRule implements IRule {
 
     
     public boolean supports(AMove move){

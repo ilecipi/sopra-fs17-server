@@ -9,7 +9,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GiveCardToUserMove;
 /**
  * Created by ilecipi on 13.04.17.
  */
-public class GiveCardToUserRule extends RuleBook implements IRule {
+public class GiveCardToUserRule implements IRule {
 
     public boolean supports(AMove move){
         return move instanceof GiveCardToUserMove;

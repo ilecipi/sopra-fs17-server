@@ -2,9 +2,6 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.ShipDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.OneSeatedShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.ShipFactory;
 import ch.uzh.ifi.seal.soprafs17.model.repository.ShipRepository;
 import ch.uzh.ifi.seal.soprafs17.service.ShipService;
 import org.slf4j.Logger;

@@ -44,7 +44,7 @@ public class PlayMarketCardMove extends AMove {
     }
 
     @OneToOne
-    AMarketCard aMarketCard;
+    private AMarketCard aMarketCard;
 
 
     public PlayMarketCardMove(User user, Round round, Game game, AMarketCard aMarketCard) {

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by erion on 03.04.17.
  */
 @Service
-public class AddStoneToShipRule extends RuleBook implements IRule {
+public class AddStoneToShipRule implements IRule {
 
     
     public boolean supports(AMove move){

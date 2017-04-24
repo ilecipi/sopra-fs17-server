@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
-public class SailShipRule extends RuleBook implements IRule {
+public class SailShipRule implements IRule {
 
     public boolean supports(AMove move){
         return move instanceof SailShipMove;

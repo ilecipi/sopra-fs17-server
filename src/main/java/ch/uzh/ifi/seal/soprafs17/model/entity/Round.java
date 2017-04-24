@@ -74,11 +74,11 @@ public class Round implements Serializable{
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AMarketCard> marketCards;
 
-    public boolean isActionCardHammer;
+    private boolean isActionCardHammer;
 
-    public int isActionCardChisel;
+    private  int isActionCardChisel;
 
-    public int isActionCardSail;
+    private int isActionCardSail;
 
     public boolean isActionCardLever() {
         return isActionCardLever;

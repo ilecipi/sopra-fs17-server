@@ -50,7 +50,7 @@ public class Game implements Serializable {
 
     @OneToMany
     @JsonIgnore
-    private List<Round> rounds = new ArrayList<Round>();
+    private List<Round> rounds = new ArrayList<>();
 
     //Colors that are not chosen yet
     @ElementCollection

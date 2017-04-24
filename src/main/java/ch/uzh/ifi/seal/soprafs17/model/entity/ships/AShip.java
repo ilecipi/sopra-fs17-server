@@ -22,7 +22,7 @@ public abstract class AShip implements IShip, Serializable {
     private Long id;
 
     @Column
-    public Stone[] stones;
+    Stone[] stones;
 
 
     @Column
@@ -60,29 +60,29 @@ public abstract class AShip implements IShip, Serializable {
     }
 
     @Override
-    public void addStone(Stone stone, int i) throws ShipException {
+    public void addStone(Stone stone, int position) throws ShipException {
         if (this.addedStones >= this.getMaxStones()) {
             throw new ShipIsFullException();
         }
 
-        if (this.stones[i] != null) {
+        if (this.stones[position] != null) {
             throw new PlaceUnavailableException();
         }
 
-        this.stones[i] = stone;
+        this.stones[position] = stone;
         this.addedStones++;
     }
 
     @Override
-    public Stone removeStone(int i) {
+    public Stone removeStone(int position) {
         if(this.addedStones==0){
             throw new ShipIsEmptyException();
         }
-        if(stones[i]==null){
+        if(stones[position]==null){
             throw new RemoveUnavailableException();
         }
-            Stone tmp = stones[i];
-            stones[i] = null;
+            Stone tmp = stones[position];
+            stones[position] = null;
             addedStones--;
             return tmp;
     }

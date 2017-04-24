@@ -1,23 +1,12 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
-import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.IShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.OneSeatedShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.ShipFactory;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by ilecipi on 22.03.17.

@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("four_seated")
-public class FourSeatedShip extends AShip {
+public class  FourSeatedShip extends AShip {
     private static final int MIN_STONES_REQUIRED = 3;
     private static final int MAX_STONES_REQUIRED = 4;
 
