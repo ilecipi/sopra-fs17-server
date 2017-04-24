@@ -83,7 +83,7 @@ public class GetStoneMove extends AMove{
                  super.getUser().setSupplySled(toAddStone);
                  super.getUser().setStoneQuarry(super.getUser().getStoneQuarry()-2);
 
-                } else {
+                } else if(super.getUser().getStoneQuarry()==1){
                  toAddStone = 4;
                  super.getUser().setSupplySled(toAddStone);
                  super.getUser().setStoneQuarry(super.getUser().getStoneQuarry()-1);

@@ -2,10 +2,8 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.NotCurrentPlayerException;
-import ch.uzh.ifi.seal.soprafs17.service.ValidatorEngine.exception.ValidationException;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
