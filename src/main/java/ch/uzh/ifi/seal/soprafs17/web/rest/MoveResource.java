@@ -14,7 +14,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.service.RoundService;
-import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
@@ -35,6 +35,7 @@ import java.util.List;
 public class MoveResource extends GenericResource {
 
     static final String CONTEXT = "/games";
+
 
     @Autowired
     MoveService moveService;
