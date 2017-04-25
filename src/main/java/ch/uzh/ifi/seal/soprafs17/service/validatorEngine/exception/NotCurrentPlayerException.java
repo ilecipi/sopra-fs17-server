@@ -9,8 +9,6 @@ import java.util.logging.Logger;
 /**
  * Created by ilecipi on 04.04.17.
  */
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Not Current Player")
 public class NotCurrentPlayerException extends ValidationException {
 
     private Logger logger;
@@ -18,7 +16,6 @@ public class NotCurrentPlayerException extends ValidationException {
     public NotCurrentPlayerException() {
         super("NotCurrentPlayerException");
         this.logger = Logger.getLogger(getClass().getName());
-//        throw new RuntimeException("NotCurrentPlayerException");
     }
 
 

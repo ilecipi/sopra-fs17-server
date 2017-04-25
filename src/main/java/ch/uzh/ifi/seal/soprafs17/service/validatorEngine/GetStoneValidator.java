@@ -37,7 +37,7 @@ public class GetStoneValidator implements IValidator {
                 throw new ImmediateCardNotPlayedException();
             }
             if(castedMove.getRound().isActionCardHammer()){
-                throw new AddStoneHammerCardNotPlayedException();
+                throw new HammerCardIsBeingPlayedException();
             }
             if(castedMove.getRound().getIsActionCardSail()!=0){
                 throw new SailCardIsBeingPlayedException();

@@ -35,6 +35,10 @@ public class PlayMarketCardValidator implements IValidator {
             if(castedMove.getRound().getId()!=game.getCurrentRound().getId()){
                     throw new NotCurrentRoundException();
             }
+            //If it is a Decoration card or a Statue it cannot be played
+            if(castedMove.getaMarketCard() instanceof MCDecoration || castedMove.getaMarketCard() instanceof Statue){
+                throw new UserCanNotPlayThisCardException();
+            }
             //Check conditions for Action cards
             if(castedMove.getaMarketCard() instanceof MCAction){
                 if(castedMove.getGame().getMarket().getUserColor().size()!=0){
