@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by erion on 04.04.17.
  */
-public class TempleDTO extends StoneBoardDTO{
+public class TempleDTO extends StoneBoardDTO {
     public Long id;
     public Stone[] stones;
     public Long game;
@@ -18,14 +18,15 @@ public class TempleDTO extends StoneBoardDTO{
     public int insertIndex;
     public int completedRows;
 
-    public TempleDTO(){}
+    public TempleDTO() {
+    }
 
-    public TempleDTO(Long id, Stone[] stones, Long gameId, boolean isOccupied,int insertIndex,int completedRows){
-        this.id=id;
-        this.stones=stones;
-        this.game=gameId;
-        this.isOccupied=isOccupied;
-        this.insertIndex=insertIndex;
+    public TempleDTO(Long id, Stone[] stones, Long gameId, boolean isOccupied, int insertIndex, int completedRows) {
+        this.id = id;
+        this.stones = stones;
+        this.game = gameId;
+        this.isOccupied = isOccupied;
+        this.insertIndex = insertIndex;
         this.completedRows = completedRows;
     }
 }

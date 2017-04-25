@@ -30,7 +30,7 @@ public class ThreeSeatedShip extends AShip {
     @GeneratedValue
     private Long id;
 
-    public ThreeSeatedShip(){
+    public ThreeSeatedShip() {
         super();
     }
 
@@ -46,6 +46,6 @@ public class ThreeSeatedShip extends AShip {
 
     @Override
     protected void initShips() {
-        this.stones= new Stone[MAX_STONES_REQUIRED];
+        this.stones = new Stone[MAX_STONES_REQUIRED];
     }
 }

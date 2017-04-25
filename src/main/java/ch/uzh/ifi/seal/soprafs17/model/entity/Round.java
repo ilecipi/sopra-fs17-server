@@ -16,8 +16,7 @@ import java.util.List;
  * Created by erion on 20.03.17.
  */
 @Entity
-public class Round implements Serializable{
-
+public class Round implements Serializable {
 
 
     @Id
@@ -33,7 +32,7 @@ public class Round implements Serializable{
     }
 
     @OneToOne
-    @JoinColumn(name="GAME_ID")
+    @JoinColumn(name = "GAME_ID")
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private Game game;
 
@@ -76,7 +75,7 @@ public class Round implements Serializable{
 
     private boolean isActionCardHammer;
 
-    private  int isActionCardChisel;
+    private int isActionCardChisel;
 
     private int isActionCardSail;
 
@@ -168,5 +167,6 @@ public class Round implements Serializable{
         this.immediateCard = immediateCard;
     }
 
-    public Round(){}
+    public Round() {
+    }
 }

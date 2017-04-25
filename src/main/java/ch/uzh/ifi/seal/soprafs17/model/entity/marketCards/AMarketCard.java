@@ -9,11 +9,12 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance
-@DiscriminatorColumn(name ="market_card_type")
+@DiscriminatorColumn(name = "market_card_type")
 public abstract class AMarketCard {
-    public AMarketCard(){
+    public AMarketCard() {
 
     }
+
     @Id
     @GeneratedValue
     private Long id;

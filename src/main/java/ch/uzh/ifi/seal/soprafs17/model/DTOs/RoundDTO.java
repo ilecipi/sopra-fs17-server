@@ -6,7 +6,8 @@ import java.util.List;
  * Created by ilecipi on 01.04.17.
  */
 public class RoundDTO {
-    RoundDTO(){}
+    RoundDTO() {
+    }
 
     public RoundDTO(Long id, Long game, List<Long> moves, List<Long> ships, List<Long> marketCards, boolean immediateCard) {
         this.id = id;

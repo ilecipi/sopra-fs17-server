@@ -17,12 +17,14 @@ import java.util.Map;
 @DiscriminatorValue("temple")
 public class Temple extends StoneBoard implements Serializable {
 
-    public Temple(){}
+    public Temple() {
+    }
 
     @Transient
     public String getDiscriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
+
     @Id
     @GeneratedValue
     private Long id;
@@ -55,8 +57,8 @@ public class Temple extends StoneBoard implements Serializable {
     }
 
     //Constructor
-    public Temple(int users){
-        setStones(this.stones,users);
+    public Temple(int users) {
+        setStones(this.stones, users);
     }
 
 
@@ -74,11 +76,11 @@ public class Temple extends StoneBoard implements Serializable {
     }
 
 
-    public void setStones(Stone[] stones,int users) {
-        if(users == 2){
-            this.stones=new Stone[4];
-        }else if(users == 3 || users == 4){
-            this.stones=new Stone[5];
+    public void setStones(Stone[] stones, int users) {
+        if (users == 2) {
+            this.stones = new Stone[4];
+        } else if (users == 3 || users == 4) {
+            this.stones = new Stone[5];
         }
     }
 
@@ -91,10 +93,10 @@ public class Temple extends StoneBoard implements Serializable {
     @Override
     public Map<String, Integer> countEndOfRound() {
         Map<String, Integer> points = fillPoints();
-        for(Stone s : stones){
-            if(s!=null){
+        for (Stone s : stones) {
+            if (s != null) {
                 int previousPoints = points.get(s.getColor());
-                points.put(s.getColor(),previousPoints+1);
+                points.put(s.getColor(), previousPoints + 1);
             }
         }
         return points;
@@ -107,28 +109,30 @@ public class Temple extends StoneBoard implements Serializable {
 
     @Override
     public void addStone(Stone stone) {
-        if(insertIndex == stones.length-1){
-            stones[insertIndex++]=stone;
+        if (insertIndex == stones.length - 1) {
+            stones[insertIndex++] = stone;
             completedRows++;
-            insertIndex = insertIndex %stones.length;
+            insertIndex = insertIndex % stones.length;
             addedStones++;
-        }else {
+        } else {
             stones[insertIndex++] = stone;
             addedStones++;
         }
     }
 
     private HashMap<String, Integer> fillPoints() {
-        return new HashMap<String,Integer>(){{
-            put("black",0);
-            put("grey",0);
-            put("white",0);
-            put("brown",0);
+        return new HashMap<String, Integer>() {{
+            put("black", 0);
+            put("grey", 0);
+            put("white", 0);
+            put("brown", 0);
         }};
     }
+
     public int getCompletedRows() {
         return completedRows;
     }
+
     public int getAddedStones() {
         return addedStones;
     }

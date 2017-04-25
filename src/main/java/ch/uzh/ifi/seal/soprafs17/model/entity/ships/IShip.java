@@ -12,6 +12,8 @@ import java.io.Serializable;
 public interface IShip {
     void addStone(Stone stone, int i)
             throws ShipException;
+
     Stone removeStone(int i);
+
     boolean isReady();
 }

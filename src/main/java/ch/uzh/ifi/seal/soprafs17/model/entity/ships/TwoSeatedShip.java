@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("two_seated")
-public class TwoSeatedShip  extends AShip {
+public class TwoSeatedShip extends AShip {
     private static final int MIN_STONES_REQUIRED = 1;
     private static final int MAX_STONES_REQUIRED = 2;
 
@@ -30,7 +30,7 @@ public class TwoSeatedShip  extends AShip {
     @GeneratedValue
     private Long id;
 
-    public TwoSeatedShip(){
+    public TwoSeatedShip() {
         super();
     }
 
@@ -46,6 +46,6 @@ public class TwoSeatedShip  extends AShip {
 
     @Override
     protected void initShips() {
-        this.stones= new Stone[MAX_STONES_REQUIRED];
+        this.stones = new Stone[MAX_STONES_REQUIRED];
     }
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Created by ilecipi on 10.03.17.
  */
-public class Stone implements Serializable{
+public class Stone implements Serializable {
 
 
     private String color;
@@ -30,7 +30,8 @@ public class Stone implements Serializable{
         this.color = color;
     }
 
-    public Stone(){}
+    public Stone() {
+    }
 
     public boolean isCounted() {
         return counted;

@@ -13,68 +13,70 @@ import javax.persistence.*;
 @Entity
 @Inheritance
 public abstract class AMove implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue
-	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name="USER_ID")
-	private User user;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@OneToOne
-	@JoinColumn(name="ROUND_ID")
-	private Round round;
-	
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @ManyToOne
-    @JoinColumn(name="GAME_ID")
-	private Game game;
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-	AMove(){}
-	AMove(User user, Game game, Round round){
-		this.user=user;
-		this.game=game;
-		this.round=round;
-	}
+    @OneToOne
+    @JoinColumn(name = "ROUND_ID")
+    private Round round;
 
+    @ManyToOne
+    @JoinColumn(name = "GAME_ID")
+    private Game game;
 
-	public Long getId() {
-		return id;
-	}
+    AMove() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Game getGame() {
-		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Round getRound() {
-		return round;
-	}
-
-	public void setRound(Round round) {
-		this.round = round;
-	}
+    AMove(User user, Game game, Round round) {
+        this.user = user;
+        this.game = game;
+        this.round = round;
+    }
 
 
-	public abstract Game makeMove(Game game);
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
+    }
+
+
+    public abstract Game makeMove(Game game);
 }

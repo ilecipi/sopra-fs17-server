@@ -16,36 +16,36 @@ public class GetStoneValidator implements IValidator {
 
     @Override
     public void validate(Game game, AMove amove) throws ValidationException {
-        if(supports(amove)){
+        if (supports(amove)) {
             GetStoneMove castedMove = (GetStoneMove) amove;
-            if(!BasicValidation.checkCurrentUser(game,amove.getUser())){
+            if (!BasicValidation.checkCurrentUser(game, amove.getUser())) {
                 throw new NotCurrentPlayerException();
             }
-            if(!BasicValidation.checkCurrentRound(game,amove.getRound())){
+            if (!BasicValidation.checkCurrentRound(game, amove.getRound())) {
                 throw new NotCurrentRoundException();
             }
-            if(castedMove.getRound()==null){
+            if (castedMove.getRound() == null) {
                 throw new NotCurrentRoundException();
             }
-            if(castedMove.getUser().getSupplySled() == 5){
+            if (castedMove.getUser().getSupplySled() == 5) {
                 throw new MaxNumberOfStonesReachedException();
             }
-            if(castedMove.getGame().getMarket().getUserColor().size()!=0){
+            if (castedMove.getGame().getMarket().getUserColor().size() != 0) {
                 throw new MarketCardsNotTaken();
             }
-            if(castedMove.getRound().isImmediateCard()){
+            if (castedMove.getRound().isImmediateCard()) {
                 throw new ImmediateCardNotPlayedException();
             }
-            if(castedMove.getRound().isActionCardHammer()){
+            if (castedMove.getRound().isActionCardHammer()) {
                 throw new HammerCardIsBeingPlayedException();
             }
-            if(castedMove.getRound().getIsActionCardSail()!=0){
+            if (castedMove.getRound().getIsActionCardSail() != 0) {
                 throw new SailCardIsBeingPlayedException();
             }
-            if(castedMove.getRound().getIsActionCardChisel()!=0){
+            if (castedMove.getRound().getIsActionCardChisel() != 0) {
                 throw new ChiselCardIsBeingPlayedException();
             }
-            if(castedMove.getRound().isActionCardLever()){
+            if (castedMove.getRound().isActionCardLever()) {
                 throw new LeverCardIsBeingPlayedException();
             }
         }

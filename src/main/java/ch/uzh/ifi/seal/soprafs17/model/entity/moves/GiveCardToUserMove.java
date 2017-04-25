@@ -18,7 +18,9 @@ import java.util.List;
  */
 @Entity
 public class GiveCardToUserMove extends AMove {
-    public GiveCardToUserMove(){}
+    public GiveCardToUserMove() {
+    }
+
     @Override
     public Long getId() {
         return id;
@@ -40,8 +42,8 @@ public class GiveCardToUserMove extends AMove {
     @Column
     private int position;
 
-    public GiveCardToUserMove(User user, Round round, Game game, int position){
-        super(user,game,round);
+    public GiveCardToUserMove(User user, Round round, Game game, int position) {
+        super(user, game, round);
         this.position = position;
     }
 
@@ -59,7 +61,7 @@ public class GiveCardToUserMove extends AMove {
 
         market.getUserColor().remove(0);
         AMarketCard cardToTake = market.getMarketCards().get(position);
-        if(cardToTake instanceof MCImmediate) {
+        if (cardToTake instanceof MCImmediate) {
             super.getRound().setImmediateCard(true);
         }
         cardToTake.setTaken(true);

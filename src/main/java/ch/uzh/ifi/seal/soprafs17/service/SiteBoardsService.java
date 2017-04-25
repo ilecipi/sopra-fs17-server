@@ -35,24 +35,23 @@ public class SiteBoardsService {
     }
 
 
-
-    public String addTemple(Long gameId){
+    public String addTemple(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         StoneBoard temple = new Temple(game.getPlayers().size());
         game.getSiteBoards().add(temple);
         temple.setGame(game);
-        temple=siteBoardRepository.save(temple);
+        temple = siteBoardRepository.save(temple);
 
         gameRepository.save(game);
-        return "/game/"+gameId + "/" + temple.getId();
+        return "/game/" + gameId + "/" + temple.getId();
     }
 
-    public StoneBoard getTemple(Long templeId){
+    public StoneBoard getTemple(Long templeId) {
         StoneBoard temple = siteBoardRepository.findById(templeId);
         return temple;
     }
 
-    public String addPyramid(Long gameId){
+    public String addPyramid(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         StoneBoard pyramid = new Pyramid();
         game.getSiteBoards().add(pyramid);
@@ -62,7 +61,7 @@ public class SiteBoardsService {
         return "/game/+gameId" + "/" + pyramid.getId();
     }
 
-    public String addObelisk(Long gameId){
+    public String addObelisk(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         StoneBoard obelisk = new Obelisk(game.getPlayers().size());
         game.getSiteBoards().add(obelisk);
@@ -72,100 +71,96 @@ public class SiteBoardsService {
         return "/game/+gameId" + "/" + obelisk.getId();
     }
 
-    public String addBurialChamber(Long gameId){
+    public String addBurialChamber(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         StoneBoard burialChamber = new BurialChamber();
         game.getSiteBoards().add(burialChamber);
         burialChamber.setGame(game);
         burialChamber = siteBoardRepository.save(burialChamber);
-        game=gameRepository.save(game);
+        game = gameRepository.save(game);
         return "/game/+gameId" + "/" + burialChamber.getId();
     }
 
-    public StoneBoard getObelisk(Long obeliskId){
+    public StoneBoard getObelisk(Long obeliskId) {
         return siteBoardRepository.findById(obeliskId);
     }
 
-    public StoneBoard getPyramid(Long pyramidId){
+    public StoneBoard getPyramid(Long pyramidId) {
         return siteBoardRepository.findById(pyramidId);
     }
 
-    public Map<String,Integer> getPyramidPoints(long pyramidId){
-        SiteBoard pyramid =siteBoardRepository.findById(pyramidId);
-        if(pyramid instanceof Pyramid){
+    public Map<String, Integer> getPyramidPoints(long pyramidId) {
+        SiteBoard pyramid = siteBoardRepository.findById(pyramidId);
+        if (pyramid instanceof Pyramid) {
             return ((Pyramid) pyramid).countAfterMove();
-        }else{
+        } else {
             throw new NullException();
         }
     }
 
-    public Map<String,Integer> getObeliskPoints(long obeliskId){
-        SiteBoard obelisk =siteBoardRepository.findById(obeliskId);
-        if(obelisk instanceof Obelisk){
+    public Map<String, Integer> getObeliskPoints(long obeliskId) {
+        SiteBoard obelisk = siteBoardRepository.findById(obeliskId);
+        if (obelisk instanceof Obelisk) {
             return ((Obelisk) obelisk).countEndOfGame();
-        }else{
+        } else {
             throw new NullException();
         }
     }
 
-    public Map<String,Integer> getTemplePoints(long templeId){
-        SiteBoard temple =siteBoardRepository.findById(templeId);
-        if(temple instanceof Temple){
+    public Map<String, Integer> getTemplePoints(long templeId) {
+        SiteBoard temple = siteBoardRepository.findById(templeId);
+        if (temple instanceof Temple) {
             return ((Temple) temple).countEndOfRound();
-        }else{
+        } else {
             throw new NullException();
         }
     }
 
-    public Map<String,Integer> getBurialChamberPoints(long burialChamberId){
-        SiteBoard burialChamber =siteBoardRepository.findById(burialChamberId);
-        if(burialChamber instanceof BurialChamber){
+    public Map<String, Integer> getBurialChamberPoints(long burialChamberId) {
+        SiteBoard burialChamber = siteBoardRepository.findById(burialChamberId);
+        if (burialChamber instanceof BurialChamber) {
             return ((BurialChamber) burialChamber).countEndOfGame();
-        }else{
+        } else {
             throw new NullException();
         }
     }
 
-    public String addMarket(Long gameId){
+    public String addMarket(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         SiteBoard market = new Market();
         game.getSiteBoards().add(market);
         market.setGame(game);
         market = siteBoardRepository.save(market);
-        game=gameRepository.save(game);
+        game = gameRepository.save(game);
         return "/game/+gameId" + "/" + market.getId();
     }
 
-    public List<AMarketCard> getMarketCards(Long gameId){
+    public List<AMarketCard> getMarketCards(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         List<SiteBoard> siteBoards = game.getSiteBoards();
         Market market = new Market();
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {
                 if (s.getDiscriminatorValue().equals("market")) {
-                    market= (Market) s;
+                    market = (Market) s;
                 }
             }
         }
         return market.getMarketCards();
     }
 
-    public Market getMarket(Game game){
+    public Market getMarket(Game game) {
         List<SiteBoard> siteBoards = game.getSiteBoards();
         Market market = null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {
                 if (s.getDiscriminatorValue().equals("market")) {
-                    market= (Market) s;
+                    market = (Market) s;
                 }
             }
         }
         return market;
     }
-
-
-
-
 
 
 }

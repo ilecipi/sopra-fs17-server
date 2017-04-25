@@ -6,7 +6,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
  * Created by ilecipi on 01.04.17.
  */
 public class ShipDTO {
-    ShipDTO(){}
+    ShipDTO() {
+    }
 
     public ShipDTO(Long id, Stone[] stones, boolean isReady, int addedStones, boolean docked, String siteBoard) {
         this.id = id;

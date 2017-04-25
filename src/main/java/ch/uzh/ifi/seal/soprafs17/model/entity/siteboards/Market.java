@@ -7,13 +7,14 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("market")
-public class Market extends SiteBoard{
+public class Market extends SiteBoard {
 
     @Id
     @GeneratedValue
@@ -39,12 +40,12 @@ public class Market extends SiteBoard{
     private List<String> userColor = new ArrayList<>();
 
     //default constructor
-    public Market(){
+    public Market() {
 
     }
 
     //constructor
-    public Market(Game game){
+    public Market(Game game) {
         this.game = game;
     }
 
@@ -73,7 +74,6 @@ public class Market extends SiteBoard{
     }
 
 
-
     public List<AMarketCard> getMarketCards() {
         return marketCards;
     }
@@ -82,7 +82,7 @@ public class Market extends SiteBoard{
         this.marketCards = marketCards;
     }
 
-    public void addUser(String color){
+    public void addUser(String color) {
         this.userColor.add(color);
     }
 }

@@ -61,7 +61,6 @@ public class User implements Serializable {
     }
 
 
-
     @Column(nullable = true)
     private String color;
 
@@ -139,11 +138,11 @@ public class User implements Serializable {
         SupplySled = supplySled;
     }
 
-    public int getStoneQuarry(){
+    public int getStoneQuarry() {
         return stoneQuarry;
     }
 
-    public void setStoneQuarry(int stoneQuarry){
+    public void setStoneQuarry(int stoneQuarry) {
         this.stoneQuarry = stoneQuarry;
     }
 }

@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddStoneToShipRule implements IRule {
 
-    
-    public boolean supports(AMove move){
+
+    public boolean supports(AMove move) {
         return move instanceof AddStoneToShipMove;
     }
 
     @Override
     public void apply(Game game, AMove move) {
-        if(supports(move)) {
+        if (supports(move)) {
             Round round = move.getRound();
             AddStoneToShipMove castedMove = (AddStoneToShipMove) move;
             castedMove.makeMove(game);

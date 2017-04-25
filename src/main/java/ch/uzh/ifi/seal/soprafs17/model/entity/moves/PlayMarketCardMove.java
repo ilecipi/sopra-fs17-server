@@ -93,17 +93,17 @@ public class PlayMarketCardMove extends AMove {
         } else if (this.getaMarketCard() instanceof Sail) {
             super.getRound().setIsActionCardSail(2);
             aMarketCard.setUser(null);
-        } else if (this.getaMarketCard() instanceof Chisel){
+        } else if (this.getaMarketCard() instanceof Chisel) {
             super.getRound().setIsActionCardChisel(2);
             aMarketCard.setUser(null);
-        } else if (this.getaMarketCard() instanceof Lever){
+        } else if (this.getaMarketCard() instanceof Lever) {
             super.getRound().setActionCardLever(true);
             List<String> tmp = new ArrayList<>();
             tmp.add("played");
             super.getRound().setListActionCardLever(tmp);
             aMarketCard.setUser(null);
         }
-        game.setDiscardedCardsCounter(game.getDiscardedCardsCounter()+1);
+        game.setDiscardedCardsCounter(game.getDiscardedCardsCounter() + 1);
         return game;
     }
 }

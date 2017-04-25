@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class SailShipRule implements IRule {
 
-    public boolean supports(AMove move){
+    public boolean supports(AMove move) {
         return move instanceof SailShipMove;
     }
 
     @Override
     public void apply(Game game, AMove move) {
-        if(supports(move)){
+        if (supports(move)) {
             Round round = move.getRound();
-            SailShipMove castedMove = (SailShipMove)move;
+            SailShipMove castedMove = (SailShipMove) move;
             castedMove.makeMove(game);
             round.getAMoves().add(move);
         }

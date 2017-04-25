@@ -16,12 +16,13 @@ import java.util.List;
 @Component
 public class RuleManager {
 
-    private List<IRule> rules=new ArrayList<>();
+    private List<IRule> rules = new ArrayList<>();
 
-    public RuleManager(){}
+    public RuleManager() {
+    }
 
     @PostConstruct
-    public void addRule(){
+    public void addRule() {
         this.rules.add(new AddStoneToShipRule());
         this.rules.add(new SailShipRule());
         this.rules.add(new GetStoneRule());
@@ -31,15 +32,15 @@ public class RuleManager {
     }
 
     public synchronized void apply(Game game, AMove move) {
-        for(IRule rule:rules){
-            if(rule.supports(move)){
-                    rule.apply(game, move);
+        for (IRule rule : rules) {
+            if (rule.supports(move)) {
+                rule.apply(game, move);
             }
         }
     }
 
-    public synchronized void applyRule(Game game, AMove move){
-        this.apply(game,move);
+    public synchronized void applyRule(Game game, AMove move) {
+        this.apply(game, move);
     }
 
     public List<IRule> getRules() {

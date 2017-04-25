@@ -104,7 +104,7 @@ public class RoundService {
             for (User u : game.getPlayers()) {
                 u.setStatus(UserStatus.ONLINE);
                 u.setSupplySled(0);
-                for(AMarketCard mc : u.getMarketCards()){
+                for (AMarketCard mc : u.getMarketCards()) {
                     mc.setUser(null);
                 }
                 u.setMarketCards(new ArrayList<>());

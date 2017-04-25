@@ -4,7 +4,8 @@ package ch.uzh.ifi.seal.soprafs17.model.DTOs;
  * Created by ilecipi on 01.04.17.
  */
 public class MoveDTO {
-    MoveDTO(){}
+    MoveDTO() {
+    }
 
     public MoveDTO(Long id, Long user, Long round, Long game) {
         this.id = id;

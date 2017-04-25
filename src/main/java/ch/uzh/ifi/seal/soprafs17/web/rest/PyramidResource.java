@@ -40,15 +40,15 @@ public class PyramidResource {
     @ResponseStatus(HttpStatus.OK)
     public PyramidDTO getPyramid(@PathVariable Long gameId) {
         Pyramid pyramid = gameRepo.findOne(gameId).getPyramid();
-        if(pyramid!=null) {
-            return new PyramidDTO(pyramid.getId(),pyramid.getAddedStones(), pyramid.isOccupied());
+        if (pyramid != null) {
+            return new PyramidDTO(pyramid.getId(), pyramid.getAddedStones(), pyramid.isOccupied());
         }
         return null;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid/points")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String,Integer> getPyramidPoints(@PathVariable Long gameId) {
+    public Map<String, Integer> getPyramidPoints(@PathVariable Long gameId) {
         Pyramid pyramid = gameRepo.findOne(gameId).getPyramid();
         return siteBoardsService.getPyramidPoints(pyramid.getId());
     }
