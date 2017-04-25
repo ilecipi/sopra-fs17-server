@@ -8,7 +8,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
-import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.ValidatorManager;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.ValidationException;
 import ch.uzh.ifi.seal.soprafs17.web.rest.GenericResource;
@@ -49,7 +49,8 @@ public class MoveService {
     @Autowired
     private MarketCardRepository marketCardRepository;
 
-    private RuleManager ruleManager;
+    @Autowired
+    private RuleBook ruleBook;
 
     @Autowired
     private ValidatorManager validatorManager;
@@ -69,7 +70,7 @@ public class MoveService {
     }
 
     public void addStoneToShip(Game game, AMove move) {
-        ruleManager.applyRule(game, move);
+        ruleBook.applyRule(game, move);
     }
 
 
@@ -81,7 +82,7 @@ public class MoveService {
         AddStoneToShipMove move = new AddStoneToShipMove(game, user, ship, position, round);
         validatorManager.validateSync(game, move);
         moveRepository.save(move);
-        ruleManager.applyRule(game, move);
+        ruleBook.applyRule(game, move);
         gameRepository.save(game);
         userRepository.save(user);
         shipRepository.save(ship);
@@ -151,7 +152,7 @@ public class MoveService {
         if (game != null && user != null && ship != null && siteBoard != null && round != null) {
             SailShipMove move = new SailShipMove(game, user, ship, round, siteBoard);
             validatorManager.validateSync(game, move);
-            ruleManager.applyRule(game, move);
+            ruleBook.applyRule(game, move);
 
             if (move.getSiteBoard() instanceof StoneBoard) {
                 this.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
@@ -206,7 +207,7 @@ public class MoveService {
             GetStoneMove move = new GetStoneMove(user, round, game);
             validatorManager.validateSync(game, move);
             moveRepository.save(move);
-            ruleManager.applyRule(game, move);
+            ruleBook.applyRule(game, move);
             gameRepository.save(game);
             roundRepository.save(round);
             userRepository.save(user);
@@ -285,7 +286,7 @@ public class MoveService {
             validatorManager.validateSync(game, move);
             moveRepository.save(move);
 
-            ruleManager.applyRule(game, move);
+            ruleBook.applyRule(game, move);
             Market market = game.getMarket();
             if (market.getUserColor().isEmpty() && market.isOccupied()) {
                 if (!round.isImmediateCard()) {
@@ -311,7 +312,7 @@ public class MoveService {
             PlayMarketCardMove move = new PlayMarketCardMove(user, round, game, marketCard);
             validatorManager.validateSync(game, move);
             moveRepository.save(move);
-            ruleManager.applyRule(game, move);
+            ruleBook.applyRule(game, move);
             Market market = game.getMarket();
             if (market.getUserColor().isEmpty() && market.isOccupied() && !round.isImmediateCard()) {
                 game.collectPoints();
@@ -339,13 +340,14 @@ public class MoveService {
             PlayLeverCardMove move = new PlayLeverCardMove(user, round, game, tmpStones);
             moveRepository.save(move);
             //VALIDATOR
-            ruleManager.applyRule(game, move);
+            ruleBook.applyRule(game, move);
             this.addLeverUser(game);
             round.setActionCardLever(false);
         }
         userRepository.save(user);
         gameRepository.save(game);
         roundRepository.save(round);
+
     }
 
     public void addLeverUser(Game game) {

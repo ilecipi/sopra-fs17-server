@@ -14,11 +14,11 @@ import java.util.List;
  */
 @Service
 @Component
-public class RuleManager {
+public class RuleBook {
 
     private List<IRule> rules=new ArrayList<>();
 
-    public RuleManager(){}
+    public RuleBook(){}
 
     @PostConstruct
     public void addRule(){

@@ -103,7 +103,7 @@ public class PlayMarketCardMove extends AMove {
             super.getRound().setListActionCardLever(tmp);
             aMarketCard.setUser(null);
         }
-        game.setDiscardedCardsCounter(game.getDiscardedCardsCounter()+1);
+
         return game;
     }
 }

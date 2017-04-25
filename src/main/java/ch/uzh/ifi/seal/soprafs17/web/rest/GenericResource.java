@@ -158,10 +158,11 @@ public abstract class GenericResource {
 
 
 
-	//LASTONE IN THE LIST
+	//LAST ONE IN THE LIST
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Unexpected error from the server")
 	public void validationExceptionHandler(ValidationException e) {
+
 		logger.error("",e);
 	}
 

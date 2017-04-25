@@ -52,8 +52,6 @@ public class Game implements Serializable {
     @JsonIgnore
     private List<Round> rounds = new ArrayList<>();
 
-    private int discardedCardsCounter;
-
     //Colors that are not chosen yet
     @ElementCollection
     private Map<String, Boolean> colors = new HashMap<String, Boolean>() {{
@@ -505,13 +503,5 @@ public class Game implements Serializable {
 
     public void setEntranceCardIsUsed() {
         this.entranceCardIsUsed = true;
-    }
-
-    public int getDiscardedCardsCounter() {
-        return discardedCardsCounter;
-    }
-
-    public void setDiscardedCardsCounter(int discardedCardsCounter) {
-        this.discardedCardsCounter = discardedCardsCounter;
     }
 }
