@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * Created by erion on 05.04.17.
  */
 @Service
-public class GetStoneRule implements IRule {
+public class GetStoneRule implements IRule{
 
 
     public boolean supports(AMove move) {
@@ -19,7 +19,7 @@ public class GetStoneRule implements IRule {
 
     @Override
     public void apply(Game game, AMove move) {
-        if (supports(move)) {
+        if(supports(move)){
             Round round = move.getRound();
             GetStoneMove castedMove = (GetStoneMove) move;
             castedMove.makeMove(game);

@@ -30,6 +30,7 @@ public class UserService {
     }
 
 
+
     public User createUser(String name, String username, String token, UserStatus status, List<Game> games) {
 
         User newUser = new User();
@@ -52,15 +53,15 @@ public class UserService {
         }
     }
 
-    public Iterable<User> listUsers() {
+    public Iterable<User> listUsers(){
         return userRepository.findAll();
     }
 
-    public User getUser(long userId) {
+    public User getUser(long userId){
         return userRepository.findById(userId);
     }
 
-    public User login(long userId) {
+    public User login(long userId){
         User user = userRepository.findOne(userId);
         if (user != null) {
             user.setStatus(UserStatus.ONLINE);
@@ -70,7 +71,7 @@ public class UserService {
         return null;
     }
 
-    public User logout(long userId, String userToken) {
+    public User logout(long userId, String userToken){
         User user = userRepository.findOne(userId);
         if (user != null && user.getToken().equals(userToken)) {
             user.setStatus(UserStatus.OFFLINE);

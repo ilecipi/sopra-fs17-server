@@ -10,12 +10,11 @@ import java.util.List;
  * Created by ilecipi on 01.04.17.
  */
 public class UserDTO {
-    UserDTO() {
-    }
+    UserDTO(){}
 
 
-    public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color, int supplySled,
-                   List<AMarketCard> cards, int stoneQuarry) {
+    public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color,int supplySled,
+                    List<AMarketCard> cards,int stoneQuarry) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -24,15 +23,15 @@ public class UserDTO {
         this.games = games;
         this.moves = moves;
         this.color = color;
-        this.supplySled = supplySled;
+        this.supplySled=supplySled;
         this.stoneQuarry = stoneQuarry;
         List<String> playerCardsDTO = new ArrayList<>();
-        for (AMarketCard aMarketCard : cards) {
-            playerCardsDTO.add(aMarketCard.getCardType() + "-" + aMarketCard.getId());
+        for(AMarketCard aMarketCard: cards){
+            playerCardsDTO.add(aMarketCard.getCardType() +"-"+aMarketCard.getId());
         }
-        this.cards = playerCardsDTO;
+        this.cards=playerCardsDTO;
 
-    }
+        }
 
     public Long id;
     public String name;

@@ -10,7 +10,7 @@ import javax.persistence.Id;
  */
 @Entity
 @DiscriminatorValue("hammer")
-public class Hammer extends AMarketCard implements MCAction {
+public class Hammer extends AMarketCard implements MCAction{
     @Id
     @GeneratedValue
     private Long id;

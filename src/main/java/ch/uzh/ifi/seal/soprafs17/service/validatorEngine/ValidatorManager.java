@@ -14,30 +14,28 @@ import java.util.List;
 @Service
 public class ValidatorManager {
 
-    private List<IValidator> validators = new ArrayList<>();
+    private List<IValidator> validators=new ArrayList<>();
 
     @PostConstruct
-    public void addValidator() {
+    public void addValidator(){
         this.validators.add(new AddStoneToShipValidator());
         this.validators.add(new GetStoneValidator());
         this.validators.add(new SailShipValidator());
         this.validators.add(new GiveCardToUserValidator());
         this.validators.add(new PlayMarketCardValidator());
     }
+    public ValidatorManager(){}
 
-    public ValidatorManager() {
+    public void validate(Game game, AMove amove){
+            this.validateSync(game,amove);
     }
 
-    public void validate(Game game, AMove amove) {
-        this.validateSync(game, amove);
-    }
-
-    public synchronized void validateSync(Game game, AMove amove) {
-        for (IValidator validator : validators) {
-            if (validator.supports(amove)) {
-                validator.validate(game, amove);
+    public synchronized void validateSync(Game game, AMove amove){
+            for(IValidator validator : validators){
+                if(validator.supports(amove)){
+                    validator.validate(game,amove);
+                }
             }
-        }
     }
 
     public List<IValidator> getValidators() {

@@ -44,17 +44,17 @@ public class MarketResource {
     @ResponseStatus(HttpStatus.OK)
     public MarketDTO getMarket(@PathVariable Long gameId) {
         Game game = gameRepo.findOne(gameId);
-        int currentRound = game.getRounds().size() - 1;
+        int currentRound = game.getRounds().size()-1;
         Market market = siteBoardsService.getMarket(game);
         List<String> currentMarketCards = new ArrayList<>();
-        for (AMarketCard mc : market.getMarketCards()) {
-            if (mc.isTaken()) {
-                currentMarketCards.add("IS_TAKEN-" + mc.getId());
-            } else {
-                currentMarketCards.add(mc.getCardType() + "-" + mc.getId());
+        for (AMarketCard mc : market.getMarketCards()){
+            if(mc.isTaken()){
+                currentMarketCards.add("IS_TAKEN-"+mc.getId());
+            }else {
+                currentMarketCards.add(mc.getCardType()+"-"+mc.getId());
             }
         }
-        return new MarketDTO(market.getId(), market.isOccupied(), currentMarketCards, market.getUserColor());
+        return new MarketDTO(market.getId(),market.isOccupied(),currentMarketCards, market.getUserColor());
     }
 
 

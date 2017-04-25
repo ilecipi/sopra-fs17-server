@@ -53,56 +53,57 @@ public class GameResource extends GenericResource {
         logger.debug("listGames");
         List<Game> games = gameService.listGames();
         List<GameDTO> gamesDTO = new ArrayList<>();
-        for (Game g : games) {
-            List<Long> roundsId = new ArrayList<>();
-            List<Long> siteBoardsId = new ArrayList<>();
-            List<UserDTO> playersDTO = new ArrayList<>();
-            for (Round r : g.getRounds()) {
-                roundsId.add(r.getId());
-            }
-            for (User u : g.getPlayers()) {
+            for (Game g : games) {
+                List<Long> roundsId = new ArrayList<>();
+                List<Long> siteBoardsId = new ArrayList<>();
+                List<UserDTO> playersDTO = new ArrayList<>();
+                for (Round r : g.getRounds()) {
+                    roundsId.add(r.getId());
+                }
+                for (User u : g.getPlayers()) {
 
-                List<Long> playerGamesDTO = new ArrayList<>();
-                if (u.getGames() != null) {
-                    for (Game pg : u.getGames()) {
-                        playerGamesDTO.add(pg.getId());
+                    List<Long> playerGamesDTO = new ArrayList<>();
+                    if(u.getGames()!=null) {
+                        for (Game pg : u.getGames()) {
+                            playerGamesDTO.add(pg.getId());
+                        }
+                    }
+
+                    List<Long> playerMovesDTO = new ArrayList<>();
+                    if(u.getAMoves()!=null) {
+                        for (AMove pm : u.getAMoves()) {
+                            playerMovesDTO.add(pm.getId());
+                        }
+                    }
+                    playersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),playerGamesDTO,playerMovesDTO,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
+                }
+                if(g.getSiteBoards()!=null) {
+                    for (SiteBoard s : g.getSiteBoards()) {
+                        siteBoardsId.add(s.getId());
                     }
                 }
-
-                List<Long> playerMovesDTO = new ArrayList<>();
-                if (u.getAMoves() != null) {
-                    for (AMove pm : u.getAMoves()) {
-                        playerMovesDTO.add(pm.getId());
+                if(g.getNextPlayer()!=null) {
+                    if(g.getCurrentRound()!=null) {
+                        gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),g.getCurrentRound().isActionCardHammer()
+                        ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter()));
+                    }else{
+                        gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter()));
                     }
                 }
-                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(), u.getMarketCards(), u.getStoneQuarry()));
-            }
-            if (g.getSiteBoards() != null) {
-                for (SiteBoard s : g.getSiteBoards()) {
-                    siteBoardsId.add(s.getId());
+                else{
+                    if(g.getCurrentRound()!=null) {
+                        gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(),g.getCurrentRound().isActionCardHammer()
+                                ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter()));
+                    }else{
+                        gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter()));
+                    }
                 }
             }
-            if (g.getNextPlayer() != null) {
-                if (g.getCurrentRound() != null) {
-                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getCurrentRound().isActionCardHammer()
-                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(), g.getDiscardedCardsCounter()));
-                } else {
-                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), false, null, 0, 0, g.getDiscardedCardsCounter()));
-                }
-            } else {
-                if (g.getCurrentRound() != null) {
-                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getCurrentRound().isActionCardHammer()
-                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(), g.getDiscardedCardsCounter()));
-                } else {
-                    gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), false, null, 0, 0, g.getDiscardedCardsCounter()));
-                }
-            }
-        }
-        return gamesDTO;
+            return gamesDTO;
     }
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
@@ -121,8 +122,8 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable Long gameId) {
         logger.debug("getGame: " + gameId);
-        Game g = gameService.getGame(gameId);
-        if (g != null) {
+        Game g  = gameService.getGame(gameId);
+        if(g!=null) {
             List<Long> roundsId = new ArrayList<>();
             List<Long> playersId = new ArrayList<>();
             List<Long> siteBoardsId = new ArrayList<>();
@@ -139,28 +140,28 @@ public class GameResource extends GenericResource {
                 for (AMove pm : u.getAMoves()) {
                     playerMovesDTO.add(pm.getId());
                 }
-                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(), u.getMarketCards(), u.getStoneQuarry()));
+                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
             }
             for (SiteBoard s : g.getSiteBoards()) {
                 siteBoardsId.add(s.getId());
             }
             if (g.getNextPlayer() != null) {
-                if (g.getCurrentRound() != null) {
+                if (g.getCurrentRound()!=null) {
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
                             g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getCurrentRound().isActionCardHammer()
-                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(), g.getDiscardedCardsCounter());
-                } else {
+                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter());
+                }else{
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), false, null, 0, 0, g.getDiscardedCardsCounter());
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter());
                 }
             } else {
-                if (g.getCurrentRound() != null) {
+                if (g.getCurrentRound()!=null) {
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
                             null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getCurrentRound().isActionCardHammer()
-                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(), g.getDiscardedCardsCounter());
-                } else {
+                            ,g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter());
+                }else{
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), false, null, 0, 0, g.getDiscardedCardsCounter());
+                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(),false,null,0,0,g.getDiscardedCardsCounter());
                 }
             }
         }
@@ -180,16 +181,16 @@ public class GameResource extends GenericResource {
         logger.debug("listPlayers");
         List<User> users = gameService.listPlayers(gameId);
         List<UserDTO> usersDTO = new ArrayList<>();
-        for (User u : users) {
+        for (User u : users){
             List<Long> gamesId = new ArrayList<>();
             List<Long> movesId = new ArrayList<>();
-            for (Game g : u.getGames()) {
+            for(Game g : u.getGames()){
                 gamesId.add(g.getId());
             }
-            for (AMove m : u.getAMoves()) {
+            for(AMove m : u.getAMoves()){
                 movesId.add(m.getId());
             }
-            usersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), gamesId, movesId, u.getColor(), u.getSupplySled(), u.getMarketCards(), u.getStoneQuarry()));
+            usersDTO.add(new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
         }
         return usersDTO;
     }
@@ -209,15 +210,14 @@ public class GameResource extends GenericResource {
         User u = gameService.getPlayer(gameId, playerId);
         List<Long> gamesId = new ArrayList<>();
         List<Long> movesId = new ArrayList<>();
-        for (Game g : u.getGames()) {
+        for(Game g : u.getGames()){
             gamesId.add(g.getId());
         }
-        for (AMove m : u.getAMoves()) {
+        for(AMove m : u.getAMoves()){
             movesId.add(m.getId());
         }
-        return new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), gamesId, movesId, u.getColor(), u.getSupplySled(), u.getMarketCards(), u.getStoneQuarry());
+        return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
     }
-
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)

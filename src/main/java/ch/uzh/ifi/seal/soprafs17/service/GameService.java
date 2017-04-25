@@ -85,15 +85,15 @@ public class GameService {
         return shipService;
     }
 
-    public List<Game> listGames() {
+    public List<Game> listGames(){
         List<Game> result = new ArrayList<>();
         gameRepository.findAll().forEach(result::add);
         return result;
     }
 
-    public Game addGame(Game game, String userToken) {
+    public Game addGame(Game game, String userToken){
         User owner = userRepository.findByToken(userToken);
-        if (owner != null && owner.getStatus() == UserStatus.ONLINE) {
+        if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
             game.setName("Game " + counter++);
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
@@ -108,28 +108,28 @@ public class GameService {
         return null;
     }
 
-    public Game getGame(Long gameId) {
+    public Game getGame(Long gameId){
         return gameRepository.findOne(gameId);
     }
 
-    public void startGame(Long gameId, String userToken) {
+    public void startGame(Long gameId, String userToken){
 
         Game game = gameRepository.findOne(gameId);
         User owner = userRepository.findByToken(userToken);
 
         //the game can be started only from the owner
         if (owner != null && game != null && game.getOwner().equals(owner.getUsername())
-                && game.getPlayers().size() >= GameConstants.MIN_PLAYERS && game.getPlayers().size() <= GameConstants.MAX_PLAYERS
-                && game.getStatus() == GameStatus.PENDING) {
+                && game.getPlayers().size()>= GameConstants.MIN_PLAYERS&&game.getPlayers().size()<=GameConstants.MAX_PLAYERS
+                && game.getStatus() == GameStatus.PENDING){
 
             //The game cannot start if not every player is ready
             boolean allPlayersReady = true;
-            for (User u : game.getPlayers()) {
-                if (u.getStatus() != UserStatus.IS_READY) {
-                    allPlayersReady = false;
+            for(User u : game.getPlayers()){
+                if(u.getStatus()!=UserStatus.IS_READY){
+                    allPlayersReady=false;
                 }
             }
-            if (allPlayersReady) {
+            if(allPlayersReady) {
                 siteBoardsService.addTemple(game.getId());
                 siteBoardsService.addPyramid(game.getId());
                 siteBoardsService.addObelisk(game.getId());
@@ -141,16 +141,16 @@ public class GameService {
                 //TODO: DELETE TESTING BEFORE DEADLINE
                 //for testing
                 Random rn = new Random();
-                game = gameRepository.save(game);
+                game=gameRepository.save(game);
                 roundService.addRound(game.getId());
                 //add a round to the game
                 game.setCurrentPlayer(owner);
                 // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
-                int initStones = 2;
-                int initStoneQuarry = 28;
+                int initStones=2;
+                int initStoneQuarry=28;
                 for (User u : game.getPlayers()) {
-                    game.getPoints().put(u.getColor(), 0);
+                    game.getPoints().put(u.getColor(),0 );
                     u.setStatus(UserStatus.IS_PLAYING);
                     u.setSupplySled(initStones++);
                     u.setStoneQuarry(initStoneQuarry--);
@@ -162,7 +162,7 @@ public class GameService {
         }
     }
 
-    public List<User> listPlayers(Long gameId) {
+    public List<User> listPlayers(Long gameId){
         Game game = gameRepository.findOne(gameId);
         if (game != null) {
             return game.getPlayers();
@@ -171,15 +171,15 @@ public class GameService {
         return null;
     }
 
-    public String addUser(Long gameId, String userToken) {
+    public String addUser(Long gameId,String userToken){
         Game game = gameRepository.findOne(gameId);
         User player = userRepository.findByToken(userToken);
 
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS
-                && player.getStatus() == UserStatus.ONLINE && GameStatus.PENDING == game.getStatus()) {
+                &&player.getStatus()==UserStatus.ONLINE&&GameStatus.PENDING==game.getStatus()) {
             player.getGames().add(game);
             player.setStatus(UserStatus.IN_A_LOBBY);
-            if (game.getPlayers().size() == 1) {                //Set the second player as the nextPlayer
+            if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
                 game.setNextPlayer(player);
             }
             game.getPlayers().add(player);
@@ -194,13 +194,13 @@ public class GameService {
         return null;
     }
 
-    public User getPlayer(Long gameId, Integer playerId) {
+    public User getPlayer(Long gameId,Integer playerId){
         Game game = gameRepository.findOne(gameId);
 
         return game.getPlayers().get(playerId);
     }
 
-    public void createPlayer(Long gameId, String userToken) {
+    public void createPlayer(Long gameId, String userToken){
 
         User user = userRepository.findByToken(userToken);
         Game game = gameRepository.findOne(gameId);
@@ -234,11 +234,11 @@ public class GameService {
         userRepository.save(user);
     }
 
-    public Game setNextPlayer(Game game) {
-        int indexOfCurrentPlayer = game.getPlayers().indexOf(game.getCurrentPlayer());
-        int indexOfNextPlayer = (indexOfCurrentPlayer + 1) % game.getPlayers().size();
+    public Game setNextPlayer(Game game){
+        int indexOfCurrentPlayer= game.getPlayers().indexOf(game.getCurrentPlayer());
+        int indexOfNextPlayer=(indexOfCurrentPlayer+1)%game.getPlayers().size();
         game.setCurrentPlayer(game.getPlayers().get(indexOfNextPlayer));
-        game.setNextPlayer(game.getPlayers().get(indexOfNextPlayer % game.getPlayers().size()));
+        game.setNextPlayer(game.getPlayers().get(indexOfNextPlayer%game.getPlayers().size()));
         gameRepository.save(game);
 
         return game;
@@ -246,13 +246,13 @@ public class GameService {
 
     public void fastForward(Long gameId) {
         Game game = gameRepository.findOne(gameId);
-        if (game.getRounds().size() > 5) {
+        if(game.getRounds().size()>5){
             return;
         }
         //First Round
         List<Round> rounds = game.getRounds();
         List<User> users = game.getPlayers();
-        int currentRound = rounds.size() - 1;
+        int currentRound = rounds.size()-1;
         List<AShip> ships = rounds.get(currentRound).getShips();
 
         for (AShip s : ships) {
@@ -260,30 +260,30 @@ public class GameService {
             int counter = 0;
             for (User u : users) {
 
-                if (!s.isReady()) {
-                    s.addStone(new Stone(u.getColor()), counter++);
+                if(!s.isReady()){
+                    s.addStone(new Stone(u.getColor()),counter++);
                     shipRepository.save(s);
 
                 }
-                if (s.getMaxStones() == 4 && !s.isReady()) {
-                    s.addStone(new Stone(u.getColor()), counter++);
+                if(s.getMaxStones()==4&&!s.isReady()){
+                    s.addStone(new Stone(u.getColor()),counter++);
                     shipRepository.save(s);
                 }
             }
         }
         List<SiteBoard> siteBoards = game.getSiteBoards();
-        int counterShips = 0;
-        for (SiteBoard s : siteBoards) {
-            if (!(s instanceof Market)) {
+        int counterShips=0;
+        for(SiteBoard s : siteBoards){
+            if(!(s instanceof Market)){
                 AShip ship = rounds.get(currentRound).getShips().get(counterShips);
                 counterShips++;
                 s.setOccupied(true);
                 s.setDockedShip(ship);
                 ship.setSiteBoard(s);
                 ship.setDocked(true);
-                for (int i = 0; i < ship.getMaxStones(); i++) {
-                    if (ship.getStones()[i] != null) {
-                        ((StoneBoard) s).addStone(ship.getStones()[i]);
+                for(int i=0; i<ship.getMaxStones();i++){
+                    if(ship.getStones()[i]!=null){
+                        ((StoneBoard)s).addStone(ship.getStones()[i]);
                     }
                 }
                 shipRepository.save(ship);

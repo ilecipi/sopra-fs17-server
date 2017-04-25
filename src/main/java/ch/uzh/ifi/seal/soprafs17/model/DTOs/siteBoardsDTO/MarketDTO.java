@@ -6,18 +6,17 @@ import java.util.List;
  * Created by tonio99tv on 08/04/17.
  */
 public class MarketDTO {
-    public MarketDTO() {
-    }
+    public MarketDTO(){}
 
     public Long id;
     public boolean isOccupied;
     public List<String> currentCards;
     public List<String> userColors;
 
-    public MarketDTO(Long id, boolean isOccupied, List<String> currentCards, List<String> userColors) {
+    public MarketDTO(Long id, boolean isOccupied, List<String> currentCards, List<String> userColors ){
         this.id = id;
         this.isOccupied = isOccupied;
-        this.currentCards = currentCards;
+        this.currentCards=currentCards;
         this.userColors = userColors;
 
     }

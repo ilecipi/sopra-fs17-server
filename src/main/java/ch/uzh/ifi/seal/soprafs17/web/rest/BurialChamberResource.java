@@ -32,15 +32,15 @@ public class BurialChamberResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber")
     @ResponseStatus(HttpStatus.OK)
-    public BurialChamberDTO getBurialChamber(@PathVariable Long gameId) {
-        BurialChamber burialChamber = gameRepo.findOne(gameId).getBurialChamber();
-        return new BurialChamberDTO(burialChamber.getId(), burialChamber.getFirstRow(),
-                burialChamber.getSecondRow(), burialChamber.getThirdRow(), burialChamber.isOccupied());
+    public BurialChamberDTO getBurialChamber(@PathVariable Long gameId){
+        BurialChamber burialChamber=gameRepo.findOne(gameId).getBurialChamber();
+        return new BurialChamberDTO(burialChamber.getId(),burialChamber.getFirstRow(),
+                                burialChamber.getSecondRow(),burialChamber.getThirdRow(),burialChamber.isOccupied());
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber/points")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Integer> getObeliskPoints(@PathVariable Long gameId) {
+    public Map<String,Integer> getObeliskPoints(@PathVariable Long gameId) {
         BurialChamber burialChamber = gameRepo.findOne(gameId).getBurialChamber();
         return siteBoardsService.getBurialChamberPoints(burialChamber.getId());
     }

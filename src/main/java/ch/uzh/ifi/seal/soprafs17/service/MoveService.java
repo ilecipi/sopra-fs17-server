@@ -326,7 +326,7 @@ public class MoveService {
         }
     }
 
-    public void playLeverCard(Long gameId, Long roundId, String playerToken, List<String> userColors) {
+    public void playLeverCard(Long gameId,Long roundId,String playerToken, List<String> userColors) {
         Game game = gameRepository.findOne(gameId);
         User user = userRepository.findByToken(playerToken);
         Round round = roundRepository.findById(roundId);

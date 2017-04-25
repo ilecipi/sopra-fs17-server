@@ -8,6 +8,5 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
  */
 public interface IValidator {
     boolean supports(AMove amove);
-
     void validate(Game game, AMove amove);
 }

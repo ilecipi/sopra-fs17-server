@@ -11,11 +11,10 @@ import javax.persistence.*;
  * Created by erion on 20.03.17.
  */
 @Entity
-@DiscriminatorColumn(name = "siteBoard_type")
+@DiscriminatorColumn(name="siteBoard_type")
 public abstract class SiteBoard {
 
     public abstract String getDiscriminatorValue();
-
     public Long getId() {
         return id;
     }
@@ -31,8 +30,7 @@ public abstract class SiteBoard {
     @Column
     private boolean isOccupied;
 
-    public SiteBoard() {
-    }
+    public SiteBoard(){}
 
     public AShip getDockedShip() {
         return dockedShip;

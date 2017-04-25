@@ -10,6 +10,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IRule {
     boolean supports(AMove move);
-
-    void apply(Game game, AMove move);
+    void apply (Game game, AMove move);
 }

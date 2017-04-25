@@ -51,35 +51,32 @@ public class AddStoneToShipMove extends AMove {
         this.position = position;
     }
 
-    public AddStoneToShipMove() {
+    public AddStoneToShipMove(){}
+    public AddStoneToShipMove(Game game, User user, AShip ship, int position, Round round){
+            super(user,game,round);
+            this.ship = ship;
+            this.position=position;
     }
-
-    public AddStoneToShipMove(Game game, User user, AShip ship, int position, Round round) {
-        super(user, game, round);
-        this.ship = ship;
-        this.position = position;
-    }
-
     @Override
     public Game makeMove(Game game) {
         return addStone(game);
     }
 
-    public Game addStone(Game game) {
+    public Game addStone(Game game){
         Stone stone = new Stone(super.getUser().getColor());
-        super.getUser().setSupplySled(super.getUser().getSupplySled() - 1);
-        ship.addStone(stone, this.position);
-        if (super.getRound().getIsActionCardSail() != 2 && super.getRound().getIsActionCardChisel() != 2) {
+        super.getUser().setSupplySled(super.getUser().getSupplySled()-1);
+        ship.addStone(stone,this.position);
+        if(super.getRound().getIsActionCardSail()!=2&&super.getRound().getIsActionCardChisel()!=2){
             game.findNextPlayer();
         }
-        if (super.getRound().isActionCardHammer()) {
+        if(super.getRound().isActionCardHammer()){
             super.getRound().setActionCardHammer(false);
         }
-        if (super.getRound().getIsActionCardSail() == 2) {
+        if(super.getRound().getIsActionCardSail()==2){
             super.getRound().setIsActionCardSail(1);
         }
-        if (super.getRound().getIsActionCardChisel() != 0) {
-            super.getRound().setIsActionCardChisel(super.getRound().getIsActionCardChisel() - 1);
+        if(super.getRound().getIsActionCardChisel()!=0){
+            super.getRound().setIsActionCardChisel(super.getRound().getIsActionCardChisel()-1);
         }
         return game;
     }

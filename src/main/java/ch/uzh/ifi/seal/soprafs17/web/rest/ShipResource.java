@@ -19,48 +19,49 @@ import java.util.List;
 @RestController
 public class ShipResource {
 
-    @Autowired
-    ShipService shipService;
+        @Autowired
+        ShipService shipService;
 
-    @Autowired
-    ShipRepository shipRepository;
+        @Autowired
+        ShipRepository shipRepository;
 
 
-    Logger logger = LoggerFactory.getLogger(ShipResource.class);
+        Logger logger = LoggerFactory.getLogger(ShipResource.class);
 
-    static final String CONTEXT = "/games";
+        static final String CONTEXT = "/games";
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ShipDTO> getShips(@PathVariable Long roundId) {
-        logger.debug("getShips: " + roundId);
+        @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships")
+        @ResponseStatus(HttpStatus.OK)
+        public List<ShipDTO> getShips(@PathVariable Long roundId) {
+                logger.debug("getShips: " + roundId);
 
-        List<AShip> ships = shipService.getShips(roundId);
-        List<ShipDTO> shipsDTO = new ArrayList<>();
-        for (AShip s : ships) {
-            if (s.getStones() != null && s.getSiteBoard() != null) {
-                shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getDiscriminatorValue()));
-            } else if (s.getStones() != null && s.getSiteBoard() == null) {
-                shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), null));
-            } else {
-                shipsDTO.add(new ShipDTO(s.getId(), null, s.isReady(), s.getAddedStones(), s.isDocked(), null));
-            }
+                List<AShip> ships =  shipService.getShips(roundId);
+                List<ShipDTO> shipsDTO = new ArrayList<>();
+                for(AShip s : ships){
+                        if(s.getStones()!=null&& s.getSiteBoard()!=null) {
+                                shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getDiscriminatorValue()));
+                        }else if(s.getStones()!=null&&s.getSiteBoard()==null) {
+                                shipsDTO.add(new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), null));
+                        }
+                        else{
+                                shipsDTO.add(new ShipDTO(s.getId(),  null, s.isReady(), s.getAddedStones(), s.isDocked(), null));
+                        }
+                }
+                return shipsDTO;
         }
-        return shipsDTO;
-    }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ShipDTO getShip(@PathVariable Long roundId, @PathVariable Long shipId) {
-        logger.debug("getShip: " + shipId);
-        AShip s = shipService.getShip(roundId, shipId);
-        if (s.getStones() != null && s.getSiteBoard() != null) {
-            return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getDiscriminatorValue());
-        } else if (s.getStones() != null && s.getSiteBoard() == null) {
-            return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), null);
-        } else {
-            return new ShipDTO(s.getId(), null, s.isReady(), s.getAddedStones(), s.isDocked(), null);
+        @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}")
+        @ResponseStatus(HttpStatus.OK)
+        public ShipDTO getShip(@PathVariable Long roundId,@PathVariable Long shipId) {
+                logger.debug("getShip: " + shipId);
+                AShip s = shipService.getShip(roundId,shipId);
+                if(s.getStones()!=null&&s.getSiteBoard()!=null) {
+                        return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), s.getSiteBoard().getDiscriminatorValue());
+                }else if(s.getStones()!=null&&s.getSiteBoard()==null){
+                        return new ShipDTO(s.getId(), s.getStones(), s.isReady(), s.getAddedStones(), s.isDocked(), null);
+                }else{
+                        return new ShipDTO(s.getId(), null, s.isReady(), s.getAddedStones(), s.isDocked(), null);
+                }
         }
-    }
 }
 

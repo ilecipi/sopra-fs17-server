@@ -16,33 +16,33 @@ import java.util.List;
 @Transactional
 public class ShipService {
 
-    @Autowired
-    private ShipRepository shipRepository;
+        @Autowired
+        private ShipRepository shipRepository;
 
-    @Autowired
-    private GameRepository gameRepository;
+        @Autowired
+        private GameRepository gameRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Autowired
-    private RoundRepository roundRepository;
+        @Autowired
+        private RoundRepository roundRepository;
 
-    @Autowired
-    public ShipService(ShipRepository shipRepository) {
-        this.shipRepository = shipRepository;
-    }
-
-    public List<AShip> getShips(Long roundId) {
-        List<AShip> shipsInRound = roundRepository.findById(roundId).getShips();
-        return shipsInRound;
-    }
-
-    public AShip getShip(Long roundId, Long shipId) {
-        if (roundRepository.findById(roundId).getShips().contains(shipRepository.findById(shipId))) {
-            return shipRepository.findById(shipId);
+        @Autowired
+        public ShipService(ShipRepository shipRepository) {
+                this.shipRepository = shipRepository;
         }
-        return null;
-    }
+
+        public List<AShip> getShips(Long roundId){
+               List<AShip> shipsInRound = roundRepository.findById(roundId).getShips();
+               return shipsInRound;
+        }
+
+        public AShip getShip(Long roundId,Long shipId){
+                if(roundRepository.findById(roundId).getShips().contains(shipRepository.findById(shipId))){
+                        return shipRepository.findById(shipId);
+                }
+                        return null;
+        }
 }
 

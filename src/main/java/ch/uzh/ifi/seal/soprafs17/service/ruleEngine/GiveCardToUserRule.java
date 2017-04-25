@@ -10,13 +10,13 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GiveCardToUserMove;
  */
 public class GiveCardToUserRule implements IRule {
 
-    public boolean supports(AMove move) {
+    public boolean supports(AMove move){
         return move instanceof GiveCardToUserMove;
     }
 
     @Override
     public void apply(Game game, AMove move) {
-        if (supports(move)) {
+        if(supports(move)){
             Round round = move.getRound();
             GiveCardToUserMove castedMove = (GiveCardToUserMove) move;
             castedMove.makeMove(game);

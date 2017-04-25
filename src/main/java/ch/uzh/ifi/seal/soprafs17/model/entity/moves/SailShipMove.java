@@ -53,17 +53,15 @@ public class SailShipMove extends AMove {
         this.siteBoard = siteBoard;
     }
 
-    public SailShipMove() {
-    }
-
-    public SailShipMove(Game game, User user, AShip ship, Round round, SiteBoard siteBoard) {
-        super(user, game, round);
+    public SailShipMove(){}
+    public SailShipMove(Game game, User user, AShip ship, Round round, SiteBoard siteBoard){
+        super(user,game,round);
         this.ship = ship;
         this.siteBoard = siteBoard;
     }
 
     @Override
-    public Game makeMove(Game game) {
+    public Game makeMove(Game game){
         return sailShip(game);
     }
 
@@ -71,12 +69,12 @@ public class SailShipMove extends AMove {
     * -check ship is in roundList (Not yet removed)
     * -check Siteboard available (No shipped docked)
     * */
-    private Game sailShip(Game game) {
+    private Game sailShip(Game game){
         this.ship.setDocked(true);
         ship.setSiteBoard(this.siteBoard);
         this.siteBoard.setOccupied(true);
         siteBoard.setDockedShip(this.ship);
-        if (super.getRound().getIsActionCardSail() == 1) {
+        if(super.getRound().getIsActionCardSail()==1){
             super.getRound().setIsActionCardSail(0);
         }
         return game;

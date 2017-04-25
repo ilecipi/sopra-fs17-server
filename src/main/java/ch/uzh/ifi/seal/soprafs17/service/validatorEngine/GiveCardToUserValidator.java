@@ -16,21 +16,21 @@ public class GiveCardToUserValidator implements IValidator {
 
     @Override
     public void validate(Game game, AMove amove) throws ValidationException {
-        if (supports(amove)) {
-            GiveCardToUserMove castedMove = (GiveCardToUserMove) amove;
-            if (castedMove.getGame().getMarket().getUserColor().size() == 0) {
+        if(supports(amove)){
+            GiveCardToUserMove castedMove = (GiveCardToUserMove)amove;
+            if(castedMove.getGame().getMarket().getUserColor().size()==0){
                 throw new NotMoreUsersAvailableException();
             }
-            if (!castedMove.getGame().getMarket().getUserColor().get(0).equals(castedMove.getUser().getColor())) {
+            if (!castedMove.getGame().getMarket().getUserColor().get(0).equals(castedMove.getUser().getColor())){
                 throw new NotCurrentPlayerException();
             }
-            if (castedMove.getGame().getMarket().getMarketCards().get(castedMove.getPosition()).isTaken()) {
+            if(castedMove.getGame().getMarket().getMarketCards().get(castedMove.getPosition()).isTaken()){
                 throw new MarketCardAlreadyTaken();
             }
-            if (castedMove.getRound().isImmediateCard()) {
+            if(castedMove.getRound().isImmediateCard()){
                 throw new ImmediateCardNotPlayedException();
             }
-            if (castedMove.getRound().isActionCardLever()) {
+            if(castedMove.getRound().isActionCardLever()){
                 throw new LeverCardIsBeingPlayedException();
             }
         }

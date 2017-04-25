@@ -37,17 +37,17 @@ public class TempleResource extends GenericResource {
     public TempleDTO getTemple(@PathVariable Long gameId) {
         Game game = gameRepo.findOne(gameId);
         Temple temple = gameRepo.findOne(gameId).getTemple();
-        if (temple != null) {
+        if(temple!=null) {
             TempleDTO templeDTO = new TempleDTO(temple.getId(), temple.getStones(), gameId, temple.isOccupied(), temple.getInsertIndex(), temple.getCompletedRows());
             return templeDTO;
-        } else {
+        }else{
             return null;
         }
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/temple/points")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Integer> getTemplePoints(@PathVariable Long gameId) {
+    public Map<String,Integer> getTemplePoints(@PathVariable Long gameId) {
         List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
         Temple temple = null;
         if (!siteBoards.isEmpty()) {

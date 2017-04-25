@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Entity
 @Inheritance
-@DiscriminatorColumn(name = "ship_type")
+@DiscriminatorColumn(name="ship_type")
 public abstract class AShip implements IShip, Serializable {
 
     @Id
@@ -75,23 +75,23 @@ public abstract class AShip implements IShip, Serializable {
 
     @Override
     public Stone removeStone(int position) {
-        if (this.addedStones == 0) {
+        if(this.addedStones==0){
             throw new ShipIsEmptyException();
         }
-        if (stones[position] == null) {
+        if(stones[position]==null){
             throw new RemoveUnavailableException();
         }
-        Stone tmp = stones[position];
-        stones[position] = null;
-        addedStones--;
-        return tmp;
+            Stone tmp = stones[position];
+            stones[position] = null;
+            addedStones--;
+            return tmp;
     }
 
     @Override
     public boolean isReady() {
-        if (this.addedStones == this.getMinStones() || this.addedStones == this.getMaxStones()) {
+        if(this.addedStones==this.getMinStones()||this.addedStones==this.getMaxStones()){
             return true;
-        } else {
+        }else{
             return false;
         }
     }
@@ -105,7 +105,6 @@ public abstract class AShip implements IShip, Serializable {
     }
 
     public abstract int getMaxStones();
-
     public abstract int getMinStones();
 
     protected abstract void initShips();
@@ -113,11 +112,9 @@ public abstract class AShip implements IShip, Serializable {
     public Stone[] getStones() {
         return stones;
     }
-
     public int getAddedStones() {
         return addedStones;
     }
-
     public void setReady(boolean ready) {
         this.isReady = ready;
     }

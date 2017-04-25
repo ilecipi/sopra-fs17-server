@@ -8,10 +8,10 @@ import java.util.Map;
 public interface Countable {
 
     Map<String, Integer> countAfterMove();
+    Map<String,Integer> countEndOfRound();
+    Map<String,Integer> countEndOfGame();
 
-    Map<String, Integer> countEndOfRound();
 
-    Map<String, Integer> countEndOfGame();
 
 
 }
