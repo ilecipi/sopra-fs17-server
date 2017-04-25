@@ -27,7 +27,7 @@ public abstract class GenericResource {
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public void handleException(RuntimeException exception, HttpServletRequest request) {
-
+		logger.error("", exception);
 	}
 
 	@ExceptionHandler(CardAlreadyPlayedException.class)

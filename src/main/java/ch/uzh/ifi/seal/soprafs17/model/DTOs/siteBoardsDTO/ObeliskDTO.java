@@ -12,7 +12,7 @@ public class ObeliskDTO {
     public ObeliskDTO(){}
     public Long id;
     public Map<String,Integer> obelisks;
-    boolean isOccupied;
+    public boolean isOccupied;
 
     public ObeliskDTO(Long id, Map<String, Integer> obelisks, boolean isOccupied) {
         this.id = id;

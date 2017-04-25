@@ -68,13 +68,13 @@ public class MoveResource extends GenericResource {
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/marketcard", method = RequestMethod.PUT)
-    public synchronized void playMarketCard(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
+    public void playMarketCard(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
     @RequestParam("marketCardId") Long marketCardId) {
             moveService.playMarketCard(gameId,roundId,playerToken,marketCardId);
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/lever", method = RequestMethod.PUT)
-    public synchronized void playLeverCard(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
+    public void playLeverCard(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
                                  @RequestParam("userColors") List<String> userColors) {
             moveService.playLeverCard(gameId,roundId,playerToken,userColors);
     }
