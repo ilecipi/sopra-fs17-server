@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="UserCanNotPlayThisCardException")
-public class UserCanNotPlayThisCardException extends ValidationException{
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "UserCanNotPlayThisCardException")
+public class UserCanNotPlayThisCardException extends ValidationException {
 
     private Logger logger;
 

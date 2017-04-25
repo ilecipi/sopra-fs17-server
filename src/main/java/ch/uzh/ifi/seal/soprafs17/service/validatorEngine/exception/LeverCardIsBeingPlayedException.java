@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="LeverCardIsBeingPlayedException")
-public class LeverCardIsBeingPlayedException extends ValidationException{
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "LeverCardIsBeingPlayedException")
+public class LeverCardIsBeingPlayedException extends ValidationException {
 
     private Logger logger;
 

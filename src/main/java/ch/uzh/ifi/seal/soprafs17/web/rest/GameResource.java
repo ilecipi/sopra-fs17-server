@@ -1,11 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.GameDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -15,16 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
-import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import java.util.ArrayList;
+import java.util.List;
 
 // For this controlles the correspndant service is missing
 // Todo create a GameService in which you implement the logic of the game
@@ -34,18 +27,14 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 @RestController
 public class GameResource extends GenericResource {
 
+    private final String CONTEXT = "/games";
     Logger logger = LoggerFactory.getLogger(GameResource.class);
-
     @Autowired
     GameService gameService;
-
     @Autowired
     RuleManager ruleManager;
-
     @Autowired
     ValidatorManager validatorBook;
-
-    private final String CONTEXT = "/games";
 
     @RequestMapping(value = CONTEXT)
     @ResponseStatus(HttpStatus.OK)

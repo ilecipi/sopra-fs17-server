@@ -10,7 +10,6 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
-import ch.uzh.ifi.seal.soprafs17.service.RoundService;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +22,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -79,7 +77,7 @@ public class RoundResourceTest {
     }
 
     @Test
-    public void roundResourceTestForAll() throws Exception{
+    public void roundResourceTestForAll() throws Exception {
         this.getSpecificRoundBeforeInstaniating();
         this.listRoundsBeforeInstantiating();
         this.instantiateGame();
@@ -89,20 +87,20 @@ public class RoundResourceTest {
     }
 
 
-    public void getSpecificRoundBeforeInstaniating() throws Exception{
-        RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1",RoundDTO.class);
+    public void getSpecificRoundBeforeInstaniating() throws Exception {
+        RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1", RoundDTO.class);
         assertNotNull(round);
         assertEquals(null, round.id);
 
     }
 
-    public void listRoundsBeforeInstantiating() throws Exception{
-        List<RoundDTO> roundsAfter = template.getForObject(base + "games"+"/1"+"/rounds", List.class);
+    public void listRoundsBeforeInstantiating() throws Exception {
+        List<RoundDTO> roundsAfter = template.getForObject(base + "games" + "/1" + "/rounds", List.class);
         assertNotNull(roundsAfter);
         Assert.assertEquals(0, roundsAfter.size());
     }
 
-    public void instantiateGame() throws  Exception {
+    public void instantiateGame() throws Exception {
         //create game
         Game gameRequest = new Game();
         gameRequest.setName("testGame");
@@ -142,19 +140,19 @@ public class RoundResourceTest {
         //Make the second player join the game
         userRequest2.setToken("2");
         HttpEntity<User> httpUserEntity = new HttpEntity<User>(userRequest2);
-        responseGame = template.exchange(base + "games" +"/1" +"/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity2, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity2, String.class);
         assertEquals(UserStatus.IN_A_LOBBY, userRepository.findByName("Test2").getStatus());
 
         //Owner is ready
         User owner = userRepository.findByToken(user1.getToken());
         HttpEntity<User> HttpOwnerEntity = new HttpEntity<>(owner);
-        responseGame = template.exchange(base + "games" +"/1" +"?token=" + owner.getToken(), HttpMethod.PUT, HttpOwnerEntity, String.class);
-        assertEquals(UserStatus.IS_READY,userRepository.findByToken(owner.getToken()).getStatus());
+        responseGame = template.exchange(base + "games" + "/1" + "?token=" + owner.getToken(), HttpMethod.PUT, HttpOwnerEntity, String.class);
+        assertEquals(UserStatus.IS_READY, userRepository.findByToken(owner.getToken()).getStatus());
 
         //Second player is ready
-        responseGame = template.exchange(base + "games" +"/1" +"?token=" + userRequest2.getToken(), HttpMethod.PUT, httpUserEntity, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "?token=" + userRequest2.getToken(), HttpMethod.PUT, httpUserEntity, String.class);
 
-        assertEquals(UserStatus.IS_READY,userRepository.findByToken(userRequest2.getToken()).getStatus());
+        assertEquals(UserStatus.IS_READY, userRepository.findByToken(userRequest2.getToken()).getStatus());
 
         //Start the game
         game = gameRepository.findOne(1L);
@@ -177,15 +175,15 @@ public class RoundResourceTest {
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
     }
 
-    public void getSpecificRound() throws Exception{
-        RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1",RoundDTO.class);
+    public void getSpecificRound() throws Exception {
+        RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1", RoundDTO.class);
         assertNotNull(round);
-        assertEquals(""+1L, ""+round.id);
+        assertEquals("" + 1L, "" + round.id);
 
     }
 
-    public void listRounds() throws Exception{
-        List<RoundDTO> roundsAfter = template.getForObject(base + "games"+"/1"+"/rounds", List.class);
+    public void listRounds() throws Exception {
+        List<RoundDTO> roundsAfter = template.getForObject(base + "games" + "/1" + "/rounds", List.class);
         assertNotNull(roundsAfter);
         Assert.assertEquals(1, roundsAfter.size());
     }

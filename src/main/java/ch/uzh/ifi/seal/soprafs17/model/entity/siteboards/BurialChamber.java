@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,11 +16,7 @@ import java.util.Map;
 @DiscriminatorValue("burialchamber")
 public class BurialChamber extends StoneBoard implements Serializable {
 
-    @Transient
-    public String getDiscriminatorValue() {
-        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
-    }
-
+    private final String Type = "endOfGame";
     @Id
     @GeneratedValue
     private Long id;
@@ -37,10 +32,21 @@ public class BurialChamber extends StoneBoard implements Serializable {
     private int columnCounter = 0;
 
     private int addedStones = 0;
-
-    private final String Type = "endOfGame";
+    @ElementCollection
+    private Map<String, Integer> pointsOfBurialChamber = new HashMap<String, Integer>() {{
+        put("black", 0);
+        put("white", 0);
+        put("brown", 0);
+        put("grey", 0);
+    }};
+    private String[] colors = {"black", "white", "brown", "grey"};
 
     public BurialChamber() {
+    }
+
+    @Transient
+    public String getDiscriminatorValue() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
     @Override
@@ -57,16 +63,6 @@ public class BurialChamber extends StoneBoard implements Serializable {
             addedStones++;
         }
     }
-
-    @ElementCollection
-    private Map<String, Integer> pointsOfBurialChamber = new HashMap<String, Integer>() {{
-        put("black", 0);
-        put("white", 0);
-        put("brown", 0);
-        put("grey", 0);
-    }};
-
-    private String[] colors = {"black", "white", "brown", "grey"};
 
     @Override
     public Map<String, Integer> countAfterMove() {

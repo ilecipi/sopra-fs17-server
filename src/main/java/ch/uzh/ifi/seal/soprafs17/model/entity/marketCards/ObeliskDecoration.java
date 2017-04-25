@@ -12,6 +12,7 @@ import javax.persistence.Id;
 @DiscriminatorValue("obelisk_decoration")
 public class ObeliskDecoration extends AMarketCard implements MCDecoration {
 
+    public String cardType = "OBELISK_DECORATION";
     @Id
     @GeneratedValue
     private Long id;
@@ -25,8 +26,6 @@ public class ObeliskDecoration extends AMarketCard implements MCDecoration {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String cardType = "OBELISK_DECORATION";
 
     @Override
     public String getCardType() {

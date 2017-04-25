@@ -7,7 +7,8 @@ import java.util.logging.Logger;
  */
 public class OutOfRangeShipPositionException extends ValidationException {
     public Logger logger;
-    public OutOfRangeShipPositionException(){
+
+    public OutOfRangeShipPositionException() {
         super("UnavailableShipPlaceException");
         this.logger = Logger.getLogger(getClass().getName());
     }

@@ -5,12 +5,13 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCImmediate;
-import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Sarcophagus;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.List;
 
 /**
@@ -18,7 +19,18 @@ import java.util.List;
  */
 @Entity
 public class GiveCardToUserMove extends AMove {
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column
+    private int position;
+
     public GiveCardToUserMove() {
+    }
+
+    public GiveCardToUserMove(User user, Round round, Game game, int position) {
+        super(user, game, round);
+        this.position = position;
     }
 
     @Override
@@ -31,20 +43,8 @@ public class GiveCardToUserMove extends AMove {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     public int getPosition() {
         return position;
-    }
-
-    @Column
-    private int position;
-
-    public GiveCardToUserMove(User user, Round round, Game game, int position) {
-        super(user, game, round);
-        this.position = position;
     }
 
     @Override

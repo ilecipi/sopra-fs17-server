@@ -3,12 +3,9 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.moves;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import java.io.Serializable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Inheritance

@@ -1,10 +1,11 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.ShipException;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * Created by ilecipi on 10.03.17.
@@ -15,6 +16,13 @@ import java.io.Serializable;
 public class TwoSeatedShip extends AShip {
     private static final int MIN_STONES_REQUIRED = 1;
     private static final int MAX_STONES_REQUIRED = 2;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public TwoSeatedShip() {
+        super();
+    }
 
     @Override
     public Long getId() {
@@ -24,14 +32,6 @@ public class TwoSeatedShip extends AShip {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    public TwoSeatedShip() {
-        super();
     }
 
     @Override

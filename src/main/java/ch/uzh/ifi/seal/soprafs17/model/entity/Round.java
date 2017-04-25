@@ -19,9 +19,40 @@ import java.util.List;
 public class Round implements Serializable {
 
 
+    @Column
+    Stone[] stonesLeverCard;
     @Id
     @GeneratedValue
     private Long id;
+    @OneToOne
+    @JoinColumn(name = "GAME_ID")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private Game game;
+    @OneToMany(mappedBy = "round")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<AMove> AMoves;
+    //TODO: REVISE WHETHER WE NEED mappedBy or JoinColumn
+    @OneToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<AShip> ships;
+    @OneToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<AMarketCard> marketCards;
+    private boolean isActionCardHammer;
+    private int isActionCardChisel;
+    private int isActionCardSail;
+    @ElementCollection
+    private List<String> userColorsLeverCard = new ArrayList<>();
+    @JsonIgnore
+    private boolean isActionCardLever = false;
+    @ElementCollection
+    private List<String> ListActionCardLever = new ArrayList<>();
+    @JsonIgnore
+    @Column
+    private boolean immediateCard;
+
+    public Round() {
+    }
 
     public Game getGame() {
         return game;
@@ -31,11 +62,6 @@ public class Round implements Serializable {
         this.game = game;
     }
 
-    @OneToOne
-    @JoinColumn(name = "GAME_ID")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private Game game;
-
     public List<AMove> getAMoves() {
         return AMoves;
     }
@@ -43,10 +69,6 @@ public class Round implements Serializable {
     public void setAMoves(List<AMove> AMoves) {
         this.AMoves = AMoves;
     }
-
-    @OneToMany(mappedBy = "round")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<AMove> AMoves;
 
     public List<AShip> getShips() {
         return ships;
@@ -56,11 +78,6 @@ public class Round implements Serializable {
         this.ships = ships;
     }
 
-    //TODO: REVISE WHETHER WE NEED mappedBy or JoinColumn
-    @OneToMany
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<AShip> ships;
-
     public List<AMarketCard> getMarketCards() {
         return marketCards;
     }
@@ -68,16 +85,6 @@ public class Round implements Serializable {
     public void setMarketCards(List<AMarketCard> marketCards) {
         this.marketCards = marketCards;
     }
-
-    @OneToMany
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<AMarketCard> marketCards;
-
-    private boolean isActionCardHammer;
-
-    private int isActionCardChisel;
-
-    private int isActionCardSail;
 
     public boolean isActionCardLever() {
         return isActionCardLever;
@@ -103,15 +110,6 @@ public class Round implements Serializable {
         this.stonesLeverCard = stonesLeverCard;
     }
 
-    @Column
-    Stone[] stonesLeverCard;
-
-    @ElementCollection
-    private List<String> userColorsLeverCard = new ArrayList<>();
-
-    @JsonIgnore
-    private boolean isActionCardLever = false;
-
     public List<String> getListActionCardLever() {
         return ListActionCardLever;
     }
@@ -119,13 +117,6 @@ public class Round implements Serializable {
     public void setListActionCardLever(List<String> listActionCardLever) {
         ListActionCardLever = listActionCardLever;
     }
-
-    @ElementCollection
-    private List<String> ListActionCardLever = new ArrayList<>();
-
-    @JsonIgnore
-    @Column
-    private boolean immediateCard;
 
     public Long getId() {
         return id;
@@ -137,6 +128,10 @@ public class Round implements Serializable {
 
     public boolean isImmediateCard() {
         return immediateCard;
+    }
+
+    public void setImmediateCard(boolean immediateCard) {
+        this.immediateCard = immediateCard;
     }
 
     public boolean isActionCardHammer() {
@@ -161,12 +156,5 @@ public class Round implements Serializable {
 
     public void setIsActionCardSail(int isActionCardSail) {
         this.isActionCardSail = isActionCardSail;
-    }
-
-    public void setImmediateCard(boolean immediateCard) {
-        this.immediateCard = immediateCard;
-    }
-
-    public Round() {
     }
 }

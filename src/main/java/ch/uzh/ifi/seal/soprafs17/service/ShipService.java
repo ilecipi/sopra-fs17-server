@@ -1,7 +1,10 @@
 package ch.uzh.ifi.seal.soprafs17.service;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.repository.*;
+import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.RoundRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.ShipRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

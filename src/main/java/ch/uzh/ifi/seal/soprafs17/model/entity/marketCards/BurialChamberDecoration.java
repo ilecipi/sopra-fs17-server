@@ -11,6 +11,7 @@ import javax.persistence.Id;
 @Entity
 @DiscriminatorValue("burial_chamber_decoration")
 public class BurialChamberDecoration extends AMarketCard implements MCDecoration {
+    public String cardType = "BURIAL_CHAMBER_DECORATION";
     @Id
     @GeneratedValue
     private Long id;
@@ -24,8 +25,6 @@ public class BurialChamberDecoration extends AMarketCard implements MCDecoration
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String cardType = "BURIAL_CHAMBER_DECORATION";
 
     @Override
     public String getCardType() {

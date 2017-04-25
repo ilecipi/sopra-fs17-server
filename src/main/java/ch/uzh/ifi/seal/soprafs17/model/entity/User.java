@@ -1,16 +1,16 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
-import com.fasterxml.jackson.annotation.*;
-import org.hibernate.annotations.Proxy;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User implements Serializable {
@@ -51,6 +51,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<AMove> AMoves;
+    @Column(nullable = true)
+    private String color;
 
     public List<AMarketCard> getMarketCards() {
         return marketCards;
@@ -59,10 +61,6 @@ public class User implements Serializable {
     public void setMarketCards(List<AMarketCard> marketCards) {
         this.marketCards = marketCards;
     }
-
-
-    @Column(nullable = true)
-    private String color;
 
     public String getColor() {
         return color;

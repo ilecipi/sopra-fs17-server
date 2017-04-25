@@ -3,10 +3,9 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by ilecipi on 12.04.17.
@@ -16,34 +15,34 @@ public class ObeliskTest {
     @Test
     public void addStone() throws Exception {
         Obelisk obeliskFourPlayers = new Obelisk(4);
-        assertEquals(4,  obeliskFourPlayers.getNumberOfPlayers());
-        assertEquals(new Integer(0),  obeliskFourPlayers.getObelisks().get("white"));
-         obeliskFourPlayers.addStone(new Stone("white"));
-        assertEquals(new Integer(1),  obeliskFourPlayers.getObelisks().get("white"));
-         obeliskFourPlayers.addStone(new Stone("black"));
-        assertEquals(new Integer(1),  obeliskFourPlayers.getObelisks().get("black"));
-         obeliskFourPlayers.addStone(new Stone("brown"));
-        assertEquals(new Integer(1),  obeliskFourPlayers.getObelisks().get("brown"));
-         obeliskFourPlayers.addStone(new Stone("grey"));
-        assertEquals(new Integer(1),  obeliskFourPlayers.getObelisks().get("grey"));
+        assertEquals(4, obeliskFourPlayers.getNumberOfPlayers());
+        assertEquals(new Integer(0), obeliskFourPlayers.getObelisks().get("white"));
+        obeliskFourPlayers.addStone(new Stone("white"));
+        assertEquals(new Integer(1), obeliskFourPlayers.getObelisks().get("white"));
+        obeliskFourPlayers.addStone(new Stone("black"));
+        assertEquals(new Integer(1), obeliskFourPlayers.getObelisks().get("black"));
+        obeliskFourPlayers.addStone(new Stone("brown"));
+        assertEquals(new Integer(1), obeliskFourPlayers.getObelisks().get("brown"));
+        obeliskFourPlayers.addStone(new Stone("grey"));
+        assertEquals(new Integer(1), obeliskFourPlayers.getObelisks().get("grey"));
 
         Obelisk obeliskThreePlayers = new Obelisk(3);
-        assertEquals(3,  obeliskThreePlayers.getNumberOfPlayers());
-        assertEquals(new Integer(0),  obeliskThreePlayers.getObelisks().get("white"));
+        assertEquals(3, obeliskThreePlayers.getNumberOfPlayers());
+        assertEquals(new Integer(0), obeliskThreePlayers.getObelisks().get("white"));
         obeliskThreePlayers.addStone(new Stone("white"));
-        assertEquals(new Integer(1),  obeliskThreePlayers.getObelisks().get("white"));
+        assertEquals(new Integer(1), obeliskThreePlayers.getObelisks().get("white"));
         obeliskThreePlayers.addStone(new Stone("black"));
-        assertEquals(new Integer(1),  obeliskThreePlayers.getObelisks().get("black"));
+        assertEquals(new Integer(1), obeliskThreePlayers.getObelisks().get("black"));
         obeliskThreePlayers.addStone(new Stone("brown"));
-        assertEquals(new Integer(1),  obeliskThreePlayers.getObelisks().get("brown"));
+        assertEquals(new Integer(1), obeliskThreePlayers.getObelisks().get("brown"));
 
         Obelisk obeliskTwoPlayers = new Obelisk(2);
-        assertEquals(2,  obeliskTwoPlayers.getNumberOfPlayers());
-        assertEquals(new Integer(0),  obeliskTwoPlayers.getObelisks().get("white"));
+        assertEquals(2, obeliskTwoPlayers.getNumberOfPlayers());
+        assertEquals(new Integer(0), obeliskTwoPlayers.getObelisks().get("white"));
         obeliskTwoPlayers.addStone(new Stone("white"));
-        assertEquals(new Integer(1),  obeliskTwoPlayers.getObelisks().get("white"));
+        assertEquals(new Integer(1), obeliskTwoPlayers.getObelisks().get("white"));
         obeliskTwoPlayers.addStone(new Stone("black"));
-        assertEquals(new Integer(1),  obeliskTwoPlayers.getObelisks().get("black"));
+        assertEquals(new Integer(1), obeliskTwoPlayers.getObelisks().get("black"));
 
     }
 
@@ -168,7 +167,7 @@ public class ObeliskTest {
         assertEquals(new Integer(3), pointsFourPlayers.get("grey"));
 
         //black first, white second, brown third, grey last
-        obeliskFourPlayers.getObelisks().replace("grey",1);
+        obeliskFourPlayers.getObelisks().replace("grey", 1);
         pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
         assertEquals(new Integer(15), pointsFourPlayers.get("black"));
         assertEquals(new Integer(10), pointsFourPlayers.get("white"));

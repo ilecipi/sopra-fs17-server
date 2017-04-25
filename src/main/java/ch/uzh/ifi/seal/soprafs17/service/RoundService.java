@@ -30,43 +30,26 @@ import java.util.Random;
 @Transactional
 public class RoundService {
 
+    public static final int MAX_ROUNDS_POSSIBLE = 6;
     private final Logger log = LoggerFactory.getLogger(ch.uzh.ifi.seal.soprafs17.service.RoundService.class);
-
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private GameRepository gameRepository;
-
     @Autowired
     private SiteBoardRepository siteBoardsRepository;
-
-
-    @Autowired
-    private SiteBoardsService siteBoardsService;
-
-    @Autowired
-    private ShipService shipService;
-
-    @Autowired
-    private GameService gameService;
-
     @Autowired
     private ShipRepository shipRepository;
-
     @Autowired
     private RoundRepository roundRepository;
-
     @Autowired
     private MarketCardRepository marketCardRepository;
+    private boolean allShipsSailed;
 
     @Autowired
     public RoundService(RoundRepository roundRepository) {
         this.roundRepository = roundRepository;
     }
-
-    public static final int MAX_ROUNDS_POSSIBLE = 6;
 
     public boolean isAllShipsSailed() {
         return allShipsSailed;
@@ -75,8 +58,6 @@ public class RoundService {
     public void setAllShipsSailed(boolean allShipsSailed) {
         this.allShipsSailed = allShipsSailed;
     }
-
-    private boolean allShipsSailed;
 
     public List<Round> listRounds() {
         List<Round> result = new ArrayList<>();

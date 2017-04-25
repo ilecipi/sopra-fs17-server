@@ -14,16 +14,6 @@ import javax.persistence.Id;
 @Entity
 public class GetStoneMove extends AMove {
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Id
     @GeneratedValue
     private Long id;
@@ -33,6 +23,16 @@ public class GetStoneMove extends AMove {
 
     public GetStoneMove(User user, Round round, Game game) {
         super(user, game, round);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Game getStones(Game game) {

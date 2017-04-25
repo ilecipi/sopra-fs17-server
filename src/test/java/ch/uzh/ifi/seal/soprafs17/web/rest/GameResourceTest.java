@@ -8,56 +8,36 @@ import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.BurialChamber;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Pyramid;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
-import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.hamcrest.CoreMatchers.is;
-
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-import static sun.audio.AudioPlayer.player;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by ilecipi on 13.04.17.
@@ -159,19 +139,19 @@ public class GameResourceTest {
         //Add second user to the game
         ResponseEntity<User> responseUser = template.exchange(base + "users", HttpMethod.POST, httpUserEntity, User.class);
         //http://localhost:8080/games/1/player?token=2
-        ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity, String.class);
+        ResponseEntity<String> responseGame = template.exchange(base + "games" + "/1" + "/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity, String.class);
         assertEquals(UserStatus.IN_A_LOBBY, userRepository.findByName("Test2").getStatus());
-        String ownerUsername= gameRepository.findOne(1L).getOwner();
+        String ownerUsername = gameRepository.findOne(1L).getOwner();
         String ownerToken = userRepository.findByUsername(ownerUsername).getToken();
         assertNotNull(ownerToken);
         User owner = userRepository.findByToken(ownerToken);
         HttpEntity<User> HttpOwnerEntity = new HttpEntity<>(owner);
-        responseGame = template.exchange(base + "games" +"/1" +"?token=" + ownerToken, HttpMethod.PUT, HttpOwnerEntity, String.class);
-        assertEquals(UserStatus.IS_READY,userRepository.findByToken(ownerToken).getStatus());
+        responseGame = template.exchange(base + "games" + "/1" + "?token=" + ownerToken, HttpMethod.PUT, HttpOwnerEntity, String.class);
+        assertEquals(UserStatus.IS_READY, userRepository.findByToken(ownerToken).getStatus());
 
-        responseGame = template.exchange(base + "games" +"/1" +"?token=" + userRequest2.getToken(), HttpMethod.PUT, httpUserEntity, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "?token=" + userRequest2.getToken(), HttpMethod.PUT, httpUserEntity, String.class);
 
-        assertEquals(UserStatus.IS_READY,userRepository.findByToken(userRequest2.getToken()).getStatus());
+        assertEquals(UserStatus.IS_READY, userRepository.findByToken(userRequest2.getToken()).getStatus());
     }
 
     public void startGame() throws Exception {
@@ -196,60 +176,58 @@ public class GameResourceTest {
         int responseCode = con.getResponseCode();
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
 
-        ResponseEntity<MarketDTO> responseMarket = template.exchange(base + "games" +"/1"+"/market", HttpMethod.GET, null, MarketDTO.class);
+        ResponseEntity<MarketDTO> responseMarket = template.exchange(base + "games" + "/1" + "/market", HttpMethod.GET, null, MarketDTO.class);
         assertNotNull(responseMarket.getBody());
 
-        ResponseEntity<PyramidDTO> responsePyramid = template.exchange(base + "games" +"/1"+"/pyramid", HttpMethod.GET, null, PyramidDTO.class);
+        ResponseEntity<PyramidDTO> responsePyramid = template.exchange(base + "games" + "/1" + "/pyramid", HttpMethod.GET, null, PyramidDTO.class);
         assertNotNull(responsePyramid.getBody());
 
-        ResponseEntity<ObeliskDTO> responseObelisk = template.exchange(base + "games" +"/1"+"/obelisk", HttpMethod.GET, null, ObeliskDTO.class);
+        ResponseEntity<ObeliskDTO> responseObelisk = template.exchange(base + "games" + "/1" + "/obelisk", HttpMethod.GET, null, ObeliskDTO.class);
         assertNotNull(responseObelisk.getBody());
 
-        ResponseEntity<BurialChamberDTO> responseBurialChamber = template.exchange(base + "games" +"/1"+"/burialChamber", HttpMethod.GET, null, BurialChamberDTO.class);
+        ResponseEntity<BurialChamberDTO> responseBurialChamber = template.exchange(base + "games" + "/1" + "/burialChamber", HttpMethod.GET, null, BurialChamberDTO.class);
         assertNotNull(responseBurialChamber.getBody());
 
-        ResponseEntity<TempleDTO> responseTemple = template.exchange(base + "games" +"/1"+"/temple", HttpMethod.GET, null, TempleDTO.class);
+        ResponseEntity<TempleDTO> responseTemple = template.exchange(base + "games" + "/1" + "/temple", HttpMethod.GET, null, TempleDTO.class);
         assertNotNull(responseTemple.getBody());
-
 
 
     }
 
     public void getPlayer() throws Exception {
-        UserDTO player = template.getForObject(base + "games" + "/1" + "/players" + "/1",UserDTO.class);
+        UserDTO player = template.getForObject(base + "games" + "/1" + "/players" + "/1", UserDTO.class);
         assertNotNull(player);
     }
 
     public void fastForward() throws Exception {
         //TODO: check the size round everytime and at the end the status of the game
-        ResponseEntity<GameDTO> responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
-        assertEquals(1,responseGameDTO.getBody().rounds.size());
+        ResponseEntity<GameDTO> responseGameDTO = template.exchange(base + "games" + "/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(1, responseGameDTO.getBody().rounds.size());
 
-        ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        ResponseEntity<String> responseGame = template.exchange(base + "games" + "/1" + "/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
-        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
-        assertEquals(2,responseGameDTO.getBody().rounds.size());
+        responseGameDTO = template.exchange(base + "games" + "/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(2, responseGameDTO.getBody().rounds.size());
 
-        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
-        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
-        assertEquals(3,responseGameDTO.getBody().rounds.size());
+        responseGameDTO = template.exchange(base + "games" + "/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(3, responseGameDTO.getBody().rounds.size());
 
-        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
-        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
-        assertEquals(4,responseGameDTO.getBody().rounds.size());
+        responseGameDTO = template.exchange(base + "games" + "/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(4, responseGameDTO.getBody().rounds.size());
 
-        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
-        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
-        assertEquals(5,responseGameDTO.getBody().rounds.size());
+        responseGameDTO = template.exchange(base + "games" + "/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(5, responseGameDTO.getBody().rounds.size());
 
-        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        responseGame = template.exchange(base + "games" + "/1" + "/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
-        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
-        assertEquals(6,responseGameDTO.getBody().rounds.size());
-
+        responseGameDTO = template.exchange(base + "games" + "/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(6, responseGameDTO.getBody().rounds.size());
 
 
     }

@@ -5,10 +5,11 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,18 @@ import java.util.List;
 @Entity
 public class PlayMarketCardMove extends AMove {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+    @OneToOne
+    private AMarketCard aMarketCard;
+
     public PlayMarketCardMove() {
+    }
+
+    public PlayMarketCardMove(User user, Round round, Game game, AMarketCard aMarketCard) {
+        super(user, game, round);
+        this.aMarketCard = aMarketCard;
     }
 
     @Override
@@ -31,24 +43,11 @@ public class PlayMarketCardMove extends AMove {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     public AMarketCard getaMarketCard() {
         return aMarketCard;
     }
 
     public void setaMarketCard(AMarketCard aMarketCard) {
-        this.aMarketCard = aMarketCard;
-    }
-
-    @OneToOne
-    private AMarketCard aMarketCard;
-
-
-    public PlayMarketCardMove(User user, Round round, Game game, AMarketCard aMarketCard) {
-        super(user, game, round);
         this.aMarketCard = aMarketCard;
     }
 

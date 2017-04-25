@@ -9,9 +9,23 @@ import java.util.Map;
  * Created by ilecipi on 01.04.17.
  */
 public class GameDTO {
+    public Long id;
+    public String name;
+    public String owner;
+    public GameStatus status;
+    public Long currentPlayer;
+    public Long nextPlayer;
+    public List<Long> rounds;
+    public List<UserDTO> players;
+    public List<Long> siteBoards;
+    public Map<String, Integer> points;
+    public boolean isActionCardHammer;
+    public List<String> isActionCardLever;
+    public int isActionCardChisel;
+    public int isActionCardSail;
+    public int discardedCardsCounter;
     GameDTO() {
     }
-
     public GameDTO(Long id, String name, String owner, GameStatus status, Long currentPlayer, Long nextPlayer,
                    List<Long> rounds, List<UserDTO> players, List<Long> siteBoards, Map<String, Integer> points, boolean isActionCardHammer,
                    List<String> isActionCardLever, int isActionCardChisel, int isActionCardSail, int discardedCardsCounter) {
@@ -31,21 +45,5 @@ public class GameDTO {
         this.isActionCardSail = isActionCardSail;
         this.discardedCardsCounter = discardedCardsCounter;
     }
-
-    public Long id;
-    public String name;
-    public String owner;
-    public GameStatus status;
-    public Long currentPlayer;
-    public Long nextPlayer;
-    public List<Long> rounds;
-    public List<UserDTO> players;
-    public List<Long> siteBoards;
-    public Map<String, Integer> points;
-    public boolean isActionCardHammer;
-    public List<String> isActionCardLever;
-    public int isActionCardChisel;
-    public int isActionCardSail;
-    public int discardedCardsCounter;
 
 }

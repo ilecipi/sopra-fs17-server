@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 @Entity
 public abstract class StoneBoard extends SiteBoard implements Countable {
 
+    private boolean counted = false;
+
     public void addStone(Stone stone) {
     }
 
@@ -20,6 +22,4 @@ public abstract class StoneBoard extends SiteBoard implements Countable {
     public void setCounted(boolean counted) {
         this.counted = counted;
     }
-
-    private boolean counted = false;
 }

@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Market cards is already taken")
-public class MarketCardAlreadyTaken extends ValidationException{
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Market cards is already taken")
+public class MarketCardAlreadyTaken extends ValidationException {
 
     private Logger logger;
 

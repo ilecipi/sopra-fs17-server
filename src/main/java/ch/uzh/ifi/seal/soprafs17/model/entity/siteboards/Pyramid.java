@@ -5,7 +5,10 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by erion on 20.03.17.
@@ -13,30 +16,24 @@ import java.util.*;
 @Entity
 @DiscriminatorValue("pyramid")
 public class Pyramid extends StoneBoard {
-    public Pyramid() {
-    }
-
+    final int[] points = {2, 1, 3, 2, 4, 3, 2, 1, 3, 2, 3, 1, 3, 4};
+    private final String type = "immediately";
+    @ElementCollection
+    public List<Stone> addedStones = new ArrayList<>();
+    int counter = 0;
     @Id
     @GeneratedValue
     private Long id;
-
     @JsonIgnore
     @OneToOne
     private Game game;
 
-    int counter = 0;
-
-    final int[] points = {2, 1, 3, 2, 4, 3, 2, 1, 3, 2, 3, 1, 3, 4};
-
-
-    @ElementCollection
-    public List<Stone> addedStones = new ArrayList<>();
+    public Pyramid() {
+    }
 
     public String getType() {
         return type;
     }
-
-    private final String type = "immediately";
 
     @Override
     public void addStone(Stone stone) {

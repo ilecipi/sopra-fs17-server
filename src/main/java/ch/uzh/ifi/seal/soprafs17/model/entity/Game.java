@@ -17,28 +17,53 @@ import static ch.uzh.ifi.seal.soprafs17.service.RoundService.MAX_ROUNDS_POSSIBLE
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    @ElementCollection
+    Map<String, Integer> PyramidPointsOddRounds;
+    @ElementCollection
+    Map<String, Integer> PyramidPointsEvenRounds;
+    @ElementCollection
+    Map<String, Integer> TemplePoints;
     @Id
     @GeneratedValue
     private Long id;
-
     @Column(nullable = false)
     private String name;
-
     @Column(nullable = false)
     private String owner;
-
     @Column
     private GameStatus status;
-
     @OneToOne
     private User currentPlayer;
-
     @OneToOne
     private User nextPlayer;
-
     @JsonIgnore
     private boolean entranceCardIsUsed = false;
+    @OneToMany
+    @JsonIgnore
+    private List<Round> rounds = new ArrayList<>();
+    private int discardedCardsCounter;
+    //Colors that are not chosen yet
+    @ElementCollection
+    private Map<String, Boolean> colors = new HashMap<String, Boolean>() {{
+        put("black", false);
+        put("white", false);
+        put("brown", false);
+        put("grey", false);
+    }};
+    @ElementCollection
+    private Map<String, Integer> points = new HashMap<String, Integer>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "games")
+    private List<User> players = new ArrayList<>();
+    @OneToMany
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private List<SiteBoard> siteBoards;
+    @JsonIgnore
+    @ElementCollection
+    private Map<Integer, Integer[]> shipsCards = new HashMap<>();
+    @ElementCollection
+    private Map<Integer, String> marketCards = new HashMap<>();
+    @Column
+    private Long tmpSiteBoardId;
 
     public List<Round> getRounds() {
         return rounds;
@@ -48,21 +73,6 @@ public class Game implements Serializable {
         this.rounds = rounds;
     }
 
-    @OneToMany
-    @JsonIgnore
-    private List<Round> rounds = new ArrayList<>();
-
-    private int discardedCardsCounter;
-
-    //Colors that are not chosen yet
-    @ElementCollection
-    private Map<String, Boolean> colors = new HashMap<String, Boolean>() {{
-        put("black", false);
-        put("white", false);
-        put("brown", false);
-        put("grey", false);
-    }};
-
     public Map<String, Integer> getPoints() {
         return points;
     }
@@ -71,24 +81,9 @@ public class Game implements Serializable {
         this.points = points;
     }
 
-    @ElementCollection
-    private Map<String, Integer> points = new HashMap<String, Integer>();
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "games")
-    private List<User> players = new ArrayList<>();
-
-    @OneToMany
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private List<SiteBoard> siteBoards;
-
-
     public Map<Integer, Integer[]> getShipsCards() {
         return shipsCards;
     }
-
-    @JsonIgnore
-    @ElementCollection
-    private Map<Integer, Integer[]> shipsCards = new HashMap<>();
 
     public Map<Integer, String> getMarketCards() {
         return marketCards;
@@ -97,10 +92,6 @@ public class Game implements Serializable {
     public void setMarketCards(Map<Integer, String> marketCards) {
         this.marketCards = marketCards;
     }
-
-    @ElementCollection
-    private Map<Integer, String> marketCards = new HashMap<>();
-
 
     public List<SiteBoard> getSiteBoards() {
         return siteBoards;
@@ -158,13 +149,13 @@ public class Game implements Serializable {
         this.currentPlayer = currentPlayer;
     }
 
-    public void setNextPlayer(User nextPlayer) {
-        this.nextPlayer = nextPlayer;
-    }
-
     public User getNextPlayer() {
         return this.nextPlayer;
 
+    }
+
+    public void setNextPlayer(User nextPlayer) {
+        this.nextPlayer = nextPlayer;
     }
 
     public User findNextPlayer() {
@@ -233,9 +224,6 @@ public class Game implements Serializable {
         this.tmpSiteBoardId = tmpSiteBoardId;
     }
 
-    @Column
-    private Long tmpSiteBoardId;
-
     public void initMarketCards() {
         Map<Integer, String> ordered = new HashMap<Integer, String>() {{
             //For testing cards
@@ -280,13 +268,6 @@ public class Game implements Serializable {
             this.marketCards.put(counter++, ordered.get(o));
         }
     }
-
-    @ElementCollection
-    Map<String, Integer> PyramidPointsOddRounds;
-    @ElementCollection
-    Map<String, Integer> PyramidPointsEvenRounds;
-    @ElementCollection
-    Map<String, Integer> TemplePoints;
 
     public void collectPoints() {
         List<SiteBoard> siteBoards = this.getSiteBoards();

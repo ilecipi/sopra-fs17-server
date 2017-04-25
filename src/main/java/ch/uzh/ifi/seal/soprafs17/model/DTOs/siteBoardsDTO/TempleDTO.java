@@ -1,11 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO;
 
-import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
-import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
-import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
-
-import java.util.List;
 
 /**
  * Created by erion on 04.04.17.

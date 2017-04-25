@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 public class UnavailableShipPlaceException extends ValidationException {
 
     public Logger logger;
-    public UnavailableShipPlaceException(){
+
+    public UnavailableShipPlaceException() {
         super("UnavailableShipPlaceException");
         this.logger = Logger.getLogger(getClass().getName());
     }

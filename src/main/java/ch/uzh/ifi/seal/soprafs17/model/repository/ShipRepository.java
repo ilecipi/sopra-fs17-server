@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("shipRepository")
-public interface ShipRepository extends CrudRepository<AShip,Long>{
-        AShip findById(Long id);
+public interface ShipRepository extends CrudRepository<AShip, Long> {
+    AShip findById(Long id);
 }

@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Siteboard is already occupied")
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Siteboard is already occupied")
 public class SiteBoardIsOccupiedException extends ValidationException {
 
     private Logger logger;

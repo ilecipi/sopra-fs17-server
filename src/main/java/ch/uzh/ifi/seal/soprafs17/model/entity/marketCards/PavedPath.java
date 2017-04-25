@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 @DiscriminatorValue("paved_path")
 public class PavedPath extends AMarketCard implements MCImmediate {
 
+    public String cardType = "PAVED_PATH";
     @Id
     @GeneratedValue
     private Long id;
@@ -26,8 +27,6 @@ public class PavedPath extends AMarketCard implements MCImmediate {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String cardType = "PAVED_PATH";
 
     @Override
     public String getCardType() {

@@ -27,15 +27,6 @@ public class Market extends SiteBoard {
 
     @ElementCollection
     private List<AMarketCard> marketCards = new ArrayList<>();
-
-    public List<String> getUserColor() {
-        return userColor;
-    }
-
-    public void setUserColor(List<String> userColor) {
-        this.userColor = userColor;
-    }
-
     @ElementCollection
     private List<String> userColor = new ArrayList<>();
 
@@ -47,6 +38,14 @@ public class Market extends SiteBoard {
     //constructor
     public Market(Game game) {
         this.game = game;
+    }
+
+    public List<String> getUserColor() {
+        return userColor;
+    }
+
+    public void setUserColor(List<String> userColor) {
+        this.userColor = userColor;
     }
 
     @Transient

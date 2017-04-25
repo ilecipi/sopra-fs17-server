@@ -3,7 +3,6 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.siteboards;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +16,25 @@ import java.util.Map;
 @DiscriminatorValue("temple")
 public class Temple extends StoneBoard implements Serializable {
 
+    private final String type = "endOfRound";
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column
+    private Stone[] stones;
+    @Column
+    private int insertIndex = 0;
+    @Column
+    private int completedRows = 0;
+    @JsonIgnore
+    private int addedStones = 0;
+
     public Temple() {
+    }
+
+    //Constructor
+    public Temple(int users) {
+        setStones(this.stones, users);
     }
 
     @Transient
@@ -25,28 +42,9 @@ public class Temple extends StoneBoard implements Serializable {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column
-    private Stone[] stones;
-
     public int getInsertIndex() {
         return insertIndex;
     }
-
-    @Column
-    private int insertIndex = 0;
-
-    @Column
-    private int completedRows = 0;
-
-    @JsonIgnore
-    private int addedStones = 0;
-
-    private final String type = "endOfRound";
-
 
     public Game getGame() {
         return game;
@@ -55,12 +53,6 @@ public class Temple extends StoneBoard implements Serializable {
     public void setGame(Game game) {
         this.game = game;
     }
-
-    //Constructor
-    public Temple(int users) {
-        setStones(this.stones, users);
-    }
-
 
     public Stone[] getStones() {
         return stones;
