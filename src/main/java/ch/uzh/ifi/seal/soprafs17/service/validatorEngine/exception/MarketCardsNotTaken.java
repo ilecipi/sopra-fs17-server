@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Market cards are not taken")
-public class MarketCardsNotTaken extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Market cards are not taken")
+public class MarketCardsNotTaken extends ValidationException{
 
     private Logger logger;
 

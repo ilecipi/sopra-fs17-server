@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "NotYourCardException")
-public class NotYourCardException extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="NotYourCardException")
+public class NotYourCardException extends ValidationException{
 
     private Logger logger;
 

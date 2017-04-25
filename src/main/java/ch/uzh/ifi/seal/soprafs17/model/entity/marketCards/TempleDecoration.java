@@ -10,9 +10,8 @@ import javax.persistence.Id;
  */
 @Entity
 @DiscriminatorValue("temple_decoration")
-public class TempleDecoration extends AMarketCard implements MCDecoration {
+public class TempleDecoration extends AMarketCard implements MCDecoration{
 
-    public String cardType = "TEMPLE_DECORATION";
     @Id
     @GeneratedValue
     private Long id;
@@ -26,6 +25,8 @@ public class TempleDecoration extends AMarketCard implements MCDecoration {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "TEMPLE_DECORATION";
 
     @Override
     public String getCardType() {

@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "SailCardIsBeingPlayedException")
-public class SailCardIsBeingPlayedException extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="SailCardIsBeingPlayedException")
+public class SailCardIsBeingPlayedException extends ValidationException{
 
     private Logger logger;
 

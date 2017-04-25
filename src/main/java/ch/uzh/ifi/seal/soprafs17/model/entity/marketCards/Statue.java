@@ -12,7 +12,6 @@ import javax.persistence.Id;
 @DiscriminatorValue("statue")
 public class Statue extends AMarketCard {
 
-    public String cardType = "STATUE";
     @Id
     @GeneratedValue
     private Long id;
@@ -26,6 +25,8 @@ public class Statue extends AMarketCard {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "STATUE";
 
     @Override
     public String getCardType() {

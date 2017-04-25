@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity.marketCards;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by tonio99tv on 10/04/17.
@@ -11,7 +8,6 @@ import javax.persistence.Id;
 @Entity
 @DiscriminatorValue("lever")
 public class Lever extends AMarketCard implements MCAction {
-    public String cardType = "LEVER";
     @Id
     @GeneratedValue
     private Long id;
@@ -25,6 +21,8 @@ public class Lever extends AMarketCard implements MCAction {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "LEVER";
 
     @Override
     public String getCardType() {

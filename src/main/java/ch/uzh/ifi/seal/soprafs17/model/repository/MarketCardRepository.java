@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Created by tonio99tv on 10/04/17.
  */
-public interface MarketCardRepository extends CrudRepository<AMarketCard, Long> {
+public interface MarketCardRepository extends CrudRepository<AMarketCard,Long>{
     AMarketCard findById(Long id);
 }

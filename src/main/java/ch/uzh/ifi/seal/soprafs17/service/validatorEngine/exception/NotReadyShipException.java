@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Ship is not ready to be sailed")
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Ship is not ready to be sailed")
 public class NotReadyShipException extends ValidationException {
 
     public NotReadyShipException() {

@@ -22,12 +22,15 @@ import java.util.List;
 @RestController
 public class RoundResource {
 
-    static final String CONTEXT = "/games";
     Logger logger = LoggerFactory.getLogger(ch.uzh.ifi.seal.soprafs17.web.rest.RoundResource.class);
-    @Autowired
-    GameService gameService;
+
+    static final String CONTEXT = "/games";
+
     @Autowired
     private RoundService RoundService;
+
+    @Autowired
+    GameService gameService;
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

@@ -1,14 +1,18 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
+import javax.servlet.UnavailableException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Null;
+
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Chisel;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.*;
+import javafx.scene.CacheHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
 
 public abstract class GenericResource {
 

@@ -11,20 +11,13 @@ import javax.persistence.*;
 @Inheritance
 @DiscriminatorColumn(name = "market_card_type")
 public abstract class AMarketCard {
-    @Column
-    public boolean taken;
-    @Column
-    public boolean played;
-    public String cardType;
-    @Id
-    @GeneratedValue
-    private Long id;
-    @OneToOne
-    private User user;
-
     public AMarketCard() {
 
     }
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     public User getUser() {
         return user;
@@ -34,6 +27,9 @@ public abstract class AMarketCard {
         this.user = user;
     }
 
+    @OneToOne
+    private User user;
+
     public boolean isTaken() {
         return taken;
     }
@@ -41,6 +37,9 @@ public abstract class AMarketCard {
     public void setTaken(boolean taken) {
         this.taken = taken;
     }
+
+    @Column
+    public boolean taken;
 
     public boolean isPlayed() {
         return played;
@@ -50,6 +49,9 @@ public abstract class AMarketCard {
         this.played = played;
     }
 
+    @Column
+    public boolean played;
+
     public Long getId() {
         return id;
     }
@@ -57,6 +59,8 @@ public abstract class AMarketCard {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType;
 
     public abstract String getCardType();
 }

@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 @Entity
 @DiscriminatorValue("chisel")
 public class Chisel extends AMarketCard implements MCAction {
-    public String cardType = "CHISEL";
     @Id
     @GeneratedValue
     private Long id;
@@ -26,6 +25,8 @@ public class Chisel extends AMarketCard implements MCAction {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "CHISEL";
 
     @Override
     public String getCardType() {

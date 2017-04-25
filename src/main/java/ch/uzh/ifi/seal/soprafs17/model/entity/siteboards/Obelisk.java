@@ -14,28 +14,6 @@ import java.util.*;
 @DiscriminatorValue("obelisk")
 public class Obelisk extends StoneBoard {
 
-    private final String Type = "endOfGame";
-    @Id
-    @GeneratedValue
-    private Long id;
-    private int addedStones = 0;
-    private int numberOfPlayers;
-    @JsonIgnore
-    @OneToOne
-    private Game game;
-    private String[] firstPlayer = null;
-    private String[] secondPlayer = null;
-    private String[] thirdPlayer = null;
-    private String[] fourthPlayer = null;
-    private int maxPoints;
-    @ElementCollection
-    private Map<String, Integer> obelisks = new HashMap<String, Integer>() {{
-        put("black", 0);
-        put("white", 0);
-        put("brown", 0);
-        put("grey", 0);
-    }};
-
     public Obelisk() {
     }
 
@@ -54,6 +32,37 @@ public class Obelisk extends StoneBoard {
     public String getDiscriminatorValue() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private int addedStones = 0;
+
+    private int numberOfPlayers;
+
+
+    @JsonIgnore
+    @OneToOne
+    private Game game;
+
+    private String[] firstPlayer = null;
+    private String[] secondPlayer = null;
+    private String[] thirdPlayer = null;
+    private String[] fourthPlayer = null;
+
+    private int maxPoints;
+
+    private final String Type = "endOfGame";
+
+    @ElementCollection
+    private Map<String, Integer> obelisks = new HashMap<String, Integer>() {{
+        put("black", 0);
+        put("white", 0);
+        put("brown", 0);
+        put("grey", 0);
+    }};
+
 
     public void addStone(Stone stone) {
         if (stone != null) {

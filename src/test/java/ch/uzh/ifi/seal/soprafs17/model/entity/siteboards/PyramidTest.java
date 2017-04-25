@@ -18,7 +18,7 @@ public class PyramidTest {
         Stone stone1 = new Stone();
         stone1.setColor("black");
         pyramid.addStone(stone1);
-        assertEquals(pyramid.getCounter(), 1);
+        assertEquals(pyramid.getCounter(),1);
         assertNotNull(pyramid.getAddedStones());
     }
 
@@ -31,12 +31,12 @@ public class PyramidTest {
         pyramid.addStone(new Stone("white"));
         pyramid.addStone(new Stone("grey"));
 
-        Map<String, Integer> points = pyramid.countAfterMove();
+        Map<String,Integer> points = pyramid.countAfterMove();
         assertNotNull(points);
-        assertEquals(new Integer(5), points.get("black"));
-        assertEquals(new Integer(2), points.get("white"));
-        assertEquals(new Integer(1), points.get("brown"));
-        assertEquals(new Integer(4), points.get("grey"));
+        assertEquals(new Integer(5),points.get("black"));
+        assertEquals(new Integer(2),points.get("white"));
+        assertEquals(new Integer(1),points.get("brown"));
+        assertEquals(new Integer(4),points.get("grey"));
 
         pyramid.addStone(new Stone("black"));
         pyramid.addStone(new Stone("brown"));
@@ -50,10 +50,10 @@ public class PyramidTest {
         pyramid.addStone(new Stone("grey"));
         points = pyramid.countAfterMove();
 
-        assertEquals(new Integer(15), points.get("black"));
-        assertEquals(new Integer(9), points.get("white"));
-        assertEquals(new Integer(4), points.get("brown"));
-        assertEquals(new Integer(7), points.get("grey"));
+        assertEquals(new Integer(15),points.get("black"));
+        assertEquals(new Integer(9),points.get("white"));
+        assertEquals(new Integer(4),points.get("brown"));
+        assertEquals(new Integer(7),points.get("grey"));
     }
 
     @Test

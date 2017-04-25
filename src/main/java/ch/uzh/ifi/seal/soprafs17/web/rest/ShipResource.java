@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +19,16 @@ import java.util.List;
 @RestController
 public class ShipResource {
 
-    static final String CONTEXT = "/games";
     @Autowired
     ShipService shipService;
+
     @Autowired
     ShipRepository shipRepository;
+
+
     Logger logger = LoggerFactory.getLogger(ShipResource.class);
+
+    static final String CONTEXT = "/games";
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships")
     @ResponseStatus(HttpStatus.OK)

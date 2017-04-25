@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.exception.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,11 +17,14 @@ import java.io.Serializable;
 @DiscriminatorColumn(name = "ship_type")
 public abstract class AShip implements IShip, Serializable {
 
-    @Column
-    Stone[] stones;
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column
+    Stone[] stones;
+
+
     @Column
     private boolean isReady;
 
@@ -30,12 +34,6 @@ public abstract class AShip implements IShip, Serializable {
 
     @Column
     private boolean docked;
-    @OneToOne
-    private SiteBoard siteBoard;
-
-    AShip() {
-        this.initShips();
-    }
 
     public SiteBoard getSiteBoard() {
         return siteBoard;
@@ -45,12 +43,20 @@ public abstract class AShip implements IShip, Serializable {
         this.siteBoard = siteBoard;
     }
 
+    @OneToOne
+    private SiteBoard siteBoard;
+
     public boolean isDocked() {
         return docked;
     }
 
     public void setDocked(boolean docked) {
         this.docked = docked;
+    }
+
+
+    AShip() {
+        this.initShips();
     }
 
     @Override
@@ -90,10 +96,6 @@ public abstract class AShip implements IShip, Serializable {
         }
     }
 
-    public void setReady(boolean ready) {
-        this.isReady = ready;
-    }
-
     public Long getId() {
         return id;
     }
@@ -114,6 +116,10 @@ public abstract class AShip implements IShip, Serializable {
 
     public int getAddedStones() {
         return addedStones;
+    }
+
+    public void setReady(boolean ready) {
+        this.isReady = ready;
     }
 
 }

@@ -8,10 +8,12 @@ import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +44,10 @@ public class UserServiceTest {
     public void createUser() {
         User user = userService.createUser("testName", "testUsername", "t123", UserStatus.OFFLINE, games);
         assertNotNull(userRepository.findByToken(user.getToken()));
-        assertEquals(user.getName(), "testName");
-        assertEquals(user.getUsername(), "testUsername");
-        assertEquals(user.getToken(), "t123");
-        assertEquals(user.getStatus(), UserStatus.OFFLINE);
+        assertEquals(user.getName(),"testName");
+        assertEquals(user.getUsername(),"testUsername");
+        assertEquals(user.getToken(),"t123");
+        assertEquals(user.getStatus(),UserStatus.OFFLINE);
         assertNotNull(user.getGames());
     }
 
@@ -60,13 +62,13 @@ public class UserServiceTest {
     public void login() throws Exception {
         User user = userService.createUser("testName1", "testUsername1", "t1231", UserStatus.OFFLINE, games);
         user = userService.login(user.getId());
-        assertEquals(user.getStatus(), UserStatus.ONLINE);
+        assertEquals(user.getStatus(),UserStatus.ONLINE);
     }
 
     @Test
     public void logout() throws Exception {
         User user = userService.createUser("testName2", "testUsername2", "t1232", UserStatus.ONLINE, games);
-        user = userService.logout(user.getId(), user.getToken());
+        user = userService.logout(user.getId(),user.getToken());
         assertEquals(user.getStatus(), UserStatus.OFFLINE);
     }
 

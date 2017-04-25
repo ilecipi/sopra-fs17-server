@@ -2,23 +2,15 @@ package ch.uzh.ifi.seal.soprafs17.model.entity.ships;
 
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("one_seated")
 public class OneSeatedShip extends AShip {
     private static final int MIN_STONES_REQUIRED = 1;
     private static final int MAX_STONES_POSSIBLE = 1;
-    @Id
-    @GeneratedValue
-    private Long id;
 
-    public OneSeatedShip() {
-        super();
-    }
 
     @Override
     public Long getId() {
@@ -29,6 +21,15 @@ public class OneSeatedShip extends AShip {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public OneSeatedShip() {
+        super();
+    }
+
 
     public int getMaxStones() {
         return this.MAX_STONES_POSSIBLE;

@@ -14,20 +14,6 @@ import javax.persistence.*;
 @DiscriminatorColumn(name = "siteBoard_type")
 public abstract class SiteBoard {
 
-    @OneToOne
-    Game game;
-    @Id
-    @GeneratedValue
-    private Long id;
-    @Column
-    private boolean isOccupied;
-    @OneToOne
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-    private AShip dockedShip;
-
-    public SiteBoard() {
-    }
-
     public abstract String getDiscriminatorValue();
 
     public Long getId() {
@@ -38,6 +24,16 @@ public abstract class SiteBoard {
         this.id = id;
     }
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column
+    private boolean isOccupied;
+
+    public SiteBoard() {
+    }
+
     public AShip getDockedShip() {
         return dockedShip;
     }
@@ -45,6 +41,10 @@ public abstract class SiteBoard {
     public void setDockedShip(AShip dockedShip) {
         this.dockedShip = dockedShip;
     }
+
+    @OneToOne
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    private AShip dockedShip;
 
     public boolean isOccupied() {
         return isOccupied;
@@ -57,6 +57,9 @@ public abstract class SiteBoard {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    @OneToOne
+    Game game;
 
 
 }

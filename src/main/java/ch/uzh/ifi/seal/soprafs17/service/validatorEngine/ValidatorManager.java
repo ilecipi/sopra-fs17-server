@@ -16,9 +16,6 @@ public class ValidatorManager {
 
     private List<IValidator> validators = new ArrayList<>();
 
-    public ValidatorManager() {
-    }
-
     @PostConstruct
     public void addValidator() {
         this.validators.add(new AddStoneToShipValidator());
@@ -26,6 +23,9 @@ public class ValidatorManager {
         this.validators.add(new SailShipValidator());
         this.validators.add(new GiveCardToUserValidator());
         this.validators.add(new PlayMarketCardValidator());
+    }
+
+    public ValidatorManager() {
     }
 
     public void validate(Game game, AMove amove) {

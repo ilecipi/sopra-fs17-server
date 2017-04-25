@@ -5,10 +5,10 @@ import java.util.logging.Logger;
 /**
  * Created by erion on 17.04.17.
  */
-public class NotEnoughStoneException extends ValidationException {
+public class NotEnoughStoneException extends ValidationException{
     private Logger logger;
 
-    public NotEnoughStoneException() {
+    public  NotEnoughStoneException() {
         super("NotEnoughStoneException");
         this.logger = Logger.getLogger(getClass().getName());
     }

@@ -1,12 +1,31 @@
 package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
-import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
+import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.MCDecoration;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Statue;
+import ch.uzh.ifi.seal.soprafs17.model.entity.moves.*;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
+import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
+import ch.uzh.ifi.seal.soprafs17.service.RoundService;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleManager;
+import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
+import ch.uzh.ifi.seal.soprafs17.service.SiteBoardsService;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.ValidatorManager;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

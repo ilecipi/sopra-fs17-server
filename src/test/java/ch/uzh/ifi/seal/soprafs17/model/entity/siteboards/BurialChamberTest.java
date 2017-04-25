@@ -94,7 +94,7 @@ public class BurialChamberTest {
         assertEquals(8, burialChamber.getFirstRow().size());
         assertEquals(8, burialChamber.getSecondRow().size());
         assertEquals(8, burialChamber.getThirdRow().size());
-        Map<String, Integer> points = burialChamber.countEndOfGame();
+        Map<String,Integer> points = burialChamber.countEndOfGame();
         assertNotNull(points);
         assertEquals(new Integer(21), points.get("white"));
         assertEquals(new Integer(23), points.get("black"));

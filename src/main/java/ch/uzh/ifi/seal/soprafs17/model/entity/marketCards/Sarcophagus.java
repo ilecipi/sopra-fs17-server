@@ -10,8 +10,7 @@ import javax.persistence.Id;
  */
 @Entity
 @DiscriminatorValue("sarcophagus")
-public class Sarcophagus extends AMarketCard implements MCImmediate {
-    public String cardType = "SARCOPHAGUS";
+public class Sarcophagus  extends AMarketCard implements MCImmediate{
     @Id
     @GeneratedValue
     private Long id;
@@ -25,6 +24,8 @@ public class Sarcophagus extends AMarketCard implements MCImmediate {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "SARCOPHAGUS";
 
     @Override
     public String getCardType() {

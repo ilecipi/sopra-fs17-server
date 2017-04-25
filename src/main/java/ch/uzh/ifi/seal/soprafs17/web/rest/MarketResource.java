@@ -2,8 +2,10 @@ package ch.uzh.ifi.seal.soprafs17.web.rest;
 
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.MarketDTO;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.AMarketCard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
+import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.RoundRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.SiteBoardRepository;
@@ -24,15 +26,19 @@ import java.util.List;
 
 @RestController
 public class MarketResource {
-    static final String CONTEXT = "/games";
     @Autowired
     SiteBoardsService siteBoardsService;
+
     @Autowired
     GameRepository gameRepo;
+
     @Autowired
     SiteBoardRepository siteBoardRepo;
+
     @Autowired
     RoundRepository roundRepository;
+
+    static final String CONTEXT = "/games";
 
     @RequestMapping(value = CONTEXT + "/{gameId}/market")
     @ResponseStatus(HttpStatus.OK)

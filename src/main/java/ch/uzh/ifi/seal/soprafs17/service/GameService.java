@@ -31,35 +31,47 @@ import java.util.Random;
 @Transactional
 public class GameService {
 
-    private static int counter = 1;
     private final Logger logger = LoggerFactory.getLogger(GameService.class);
     private final String CONTEXT = "/games";
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private GameRepository gameRepository;
+
     @Autowired
     private SiteBoardRepository siteboardRepository;
+
     @Autowired
     private MoveRepository moveRepository;
+
     @Autowired
     private ShipRepository shipRepository;
+
     @Autowired
     private RoundRepository roundRepository;
+
     @Autowired
     private SiteBoardsService siteBoardsService;
+
     @Autowired
     private GameService gameService;
+
     @Autowired
     private ShipService shipService;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private RoundService roundService;
     @Autowired
     private RuleManager ruleManager;
     @Autowired
     private ValidatorManager validatorManager;
+
+    private static int counter = 1;
 
     public UserRepository getUserRepo() {
         return userRepository;

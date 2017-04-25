@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "ShipWontBeReadyException")
-public class ShipWontBeReadyException extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="ShipWontBeReadyException")
+public class ShipWontBeReadyException extends ValidationException{
 
     private Logger logger;
 

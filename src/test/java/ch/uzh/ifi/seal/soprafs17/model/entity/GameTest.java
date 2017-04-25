@@ -1,5 +1,7 @@
 package ch.uzh.ifi.seal.soprafs17.model.entity;
 
+import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +49,9 @@ public class GameTest {
     @Test
     public void setMarketCards() throws Exception {
         Game game = new Game();
-        Map<Integer, String> marketCardsTest = new HashMap<>();
+        Map<Integer,String> marketCardsTest= new HashMap<>();
         game.setMarketCards(marketCardsTest);
-        assertSame(game.getMarketCards(), marketCardsTest);
+        assertSame(game.getMarketCards(),marketCardsTest);
     }
 
     @Test
@@ -59,7 +61,7 @@ public class GameTest {
 
     @Test
     public void setSiteBoards() throws Exception {
-        Game game = new Game();
+        Game game= new Game();
         game.setSiteBoards(new ArrayList<>());
         assertNotNull(game.getSiteBoards());
     }
@@ -85,7 +87,7 @@ public class GameTest {
     public void setName() throws Exception {
         Game game = new Game();
         game.setName("test");
-        assertEquals("test", game.getName());
+        assertEquals("test",game.getName());
     }
 
     @Test
@@ -97,7 +99,7 @@ public class GameTest {
     public void setOwner() throws Exception {
         Game game = new Game();
         game.setOwner("testOwner");
-        assertEquals("testOwner", game.getOwner()
+        assertEquals("testOwner",game.getOwner()
         );
     }
 
@@ -154,9 +156,9 @@ public class GameTest {
 
     @Test
     public void getRounds() throws Exception {
-        Game game = new Game();
-        Round firstRound = new Round();
-        List<Round> rounds = new ArrayList<>();
+        Game game=new Game();
+        Round firstRound=new Round();
+        List<Round> rounds=new ArrayList<>();
         rounds.add(firstRound);
         game.setRounds(rounds);
         assertNotNull(game.getRounds());
@@ -168,7 +170,7 @@ public class GameTest {
         Round round = new Round();
         List<Round> rounds = new ArrayList<>();
         game.setRounds(rounds);
-        assertEquals(rounds, game.getRounds());
+        assertEquals(rounds,game.getRounds());
     }
 
 
@@ -208,7 +210,6 @@ public class GameTest {
         game.initMarketCards();
         assertNotNull(game.getMarketCards());
     }
-
     @Test
     public void findNextPlayer() throws Exception {
 
@@ -222,7 +223,7 @@ public class GameTest {
         User firstPlayer = game.getPlayers().get(0);
         game.setCurrentPlayer(firstPlayer);
         User nextPlayer = game.findNextPlayer();
-        assertEquals(game.getPlayers().indexOf(nextPlayer), game.getPlayers().indexOf(firstPlayer) + 1);
+        assertEquals(game.getPlayers().indexOf(nextPlayer), game.getPlayers().indexOf(firstPlayer)+1);
     }
 
 }

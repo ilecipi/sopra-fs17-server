@@ -14,23 +14,6 @@ import javax.persistence.*;
 @Entity
 public class AddStoneToShipMove extends AMove {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-    @OneToOne
-    private AShip ship;
-    @Column
-    private int position;
-
-    public AddStoneToShipMove() {
-    }
-
-    public AddStoneToShipMove(Game game, User user, AShip ship, int position, Round round) {
-        super(user, game, round);
-        this.ship = ship;
-        this.position = position;
-    }
-
     @Override
     public Long getId() {
         return id;
@@ -40,6 +23,16 @@ public class AddStoneToShipMove extends AMove {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @OneToOne
+    private AShip ship;
+
+    @Column
+    private int position;
 
     public AShip getShip() {
         return ship;
@@ -55,6 +48,15 @@ public class AddStoneToShipMove extends AMove {
     }
 
     public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public AddStoneToShipMove() {
+    }
+
+    public AddStoneToShipMove(Game game, User user, AShip ship, int position, Round round) {
+        super(user, game, round);
+        this.ship = ship;
         this.position = position;
     }
 

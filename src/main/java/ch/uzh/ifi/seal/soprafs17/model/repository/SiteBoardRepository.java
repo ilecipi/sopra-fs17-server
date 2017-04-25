@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Created by erion on 03.04.17.
  */
 @Repository("siteBoardRepository")
-public interface SiteBoardRepository extends CrudRepository<SiteBoard, Long> {
+public interface SiteBoardRepository extends CrudRepository<SiteBoard,Long> {
     StoneBoard findById(Long id);
 //    SiteBoard findMarket(Long id);
 }

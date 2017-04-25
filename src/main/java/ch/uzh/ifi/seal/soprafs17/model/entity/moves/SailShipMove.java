@@ -17,23 +17,6 @@ import javax.persistence.OneToOne;
 @Entity
 public class SailShipMove extends AMove {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-    @OneToOne
-    private AShip ship;
-    @OneToOne
-    private SiteBoard siteBoard;
-
-    public SailShipMove() {
-    }
-
-    public SailShipMove(Game game, User user, AShip ship, Round round, SiteBoard siteBoard) {
-        super(user, game, round);
-        this.ship = ship;
-        this.siteBoard = siteBoard;
-    }
-
     @Override
     public Long getId() {
         return id;
@@ -44,6 +27,13 @@ public class SailShipMove extends AMove {
         this.id = id;
     }
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @OneToOne
+    private AShip ship;
+
     public AShip getShip() {
         return ship;
     }
@@ -52,11 +42,23 @@ public class SailShipMove extends AMove {
         this.ship = ship;
     }
 
+    @OneToOne
+    private SiteBoard siteBoard;
+
     public SiteBoard getSiteBoard() {
         return siteBoard;
     }
 
     public void setSiteBoard(SiteBoard siteBoard) {
+        this.siteBoard = siteBoard;
+    }
+
+    public SailShipMove() {
+    }
+
+    public SailShipMove(Game game, User user, AShip ship, Round round, SiteBoard siteBoard) {
+        super(user, game, round);
+        this.ship = ship;
         this.siteBoard = siteBoard;
     }
 

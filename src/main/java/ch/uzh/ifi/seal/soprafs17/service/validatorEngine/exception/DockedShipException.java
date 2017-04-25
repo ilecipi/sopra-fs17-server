@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Ship is already docked")
-public class DockedShipException extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Ship is already docked")
+public class DockedShipException extends ValidationException{
 
     private Logger logger;
 

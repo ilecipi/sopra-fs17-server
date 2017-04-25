@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "HammerCardIsBeingPlayedException")
-public class HammerCardIsBeingPlayedException extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="HammerCardIsBeingPlayedException")
+public class HammerCardIsBeingPlayedException extends ValidationException{
 
     private Logger logger;
 

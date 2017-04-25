@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 
 @EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "ImmediateCardNotPlayedException")
-public class ImmediateCardNotPlayedException extends ValidationException {
+@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="ImmediateCardNotPlayedException")
+public class ImmediateCardNotPlayedException extends ValidationException{
 
     private Logger logger;
 

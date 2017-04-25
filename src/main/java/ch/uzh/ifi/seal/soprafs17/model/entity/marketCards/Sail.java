@@ -11,7 +11,6 @@ import javax.persistence.Id;
 @Entity
 @DiscriminatorValue("sail")
 public class Sail extends AMarketCard implements MCAction {
-    public String cardType = "SAIL";
     @Id
     @GeneratedValue
     private Long id;
@@ -25,6 +24,8 @@ public class Sail extends AMarketCard implements MCAction {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String cardType = "SAIL";
 
     @Override
     public String getCardType() {
