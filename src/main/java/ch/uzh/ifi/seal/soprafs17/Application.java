@@ -1,4 +1,5 @@
 package ch.uzh.ifi.seal.soprafs17;
+import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,6 @@ public class Application {
     public static void main(String[] args) {
 
         SpringApplication.run(Application.class, args);
-
     }
 
 

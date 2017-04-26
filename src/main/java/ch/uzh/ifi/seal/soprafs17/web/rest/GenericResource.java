@@ -54,6 +54,13 @@ public abstract class GenericResource {
 		logger.error(e.getMessage());
 	}
 
+
+	@ExceptionHandler(ImmediateCardNotPlayedException.class)
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Immediate card hasn't been played yet")
+	public void validationExceptionHandler(ImmediateCardNotPlayedException e) {
+		logger.error(e.getMessage());
+	}
+
 	@ExceptionHandler(LeverCardIsBeingPlayedException.class)
 	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Lever card in use")
 	public void validationExceptionHandler(LeverCardIsBeingPlayedException e) {

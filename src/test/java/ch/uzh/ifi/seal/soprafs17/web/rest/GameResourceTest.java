@@ -216,6 +216,8 @@ public class GameResourceTest {
     }
 
     public void getPlayer() throws Exception {
+        List<UserDTO> list = template.getForObject(base + "games" + "/1" + "/players",List.class);
+        assertNotNull(list);
         UserDTO player = template.getForObject(base + "games" + "/1" + "/players" + "/1",UserDTO.class);
         assertNotNull(player);
     }
@@ -249,6 +251,8 @@ public class GameResourceTest {
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
         assertEquals(6,responseGameDTO.getBody().rounds.size());
+
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
 
 
 

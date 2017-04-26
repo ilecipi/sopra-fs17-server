@@ -290,6 +290,8 @@ public class MoveService {
             Market market = game.getMarket();
             if (market.getUserColor().isEmpty() && market.isOccupied()) {
                 if (!round.isImmediateCard()) {
+                    int counterCard = user.getMarketCards().size() - 1;
+                    marketCardRepository.save(user.getMarketCards().get(counterCard));
                     game.collectPoints();
                     roundService.addRound(game.getId());
                 }
@@ -297,8 +299,7 @@ public class MoveService {
             user = userRepository.save(user);
             gameRepository.save(game);
             roundRepository.save(round);
-            int counterCard = user.getMarketCards().size() - 1;
-            marketCardRepository.save(user.getMarketCards().get(counterCard));
+
         }
     }
 

@@ -94,7 +94,7 @@ public class GameService {
     public Game addGame(Game game, String userToken){
         User owner = userRepository.findByToken(userToken);
         if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
-            game.setName("Game " + counter++);
+            game.setName(game.getName());
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
             game.setStatus(GameStatus.PENDING);

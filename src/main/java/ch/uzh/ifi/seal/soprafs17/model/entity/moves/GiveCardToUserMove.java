@@ -47,7 +47,9 @@ public class GiveCardToUserMove extends AMove {
 
     @Override
     public Game makeMove(Game game) {
+        System.out.println("begin");
         List<SiteBoard> siteBoards = game.getSiteBoards();
+        System.out.println("after getting siteboards");
         Market market = null;
         if (!siteBoards.isEmpty()) {
             for (SiteBoard s : siteBoards) {
@@ -56,16 +58,19 @@ public class GiveCardToUserMove extends AMove {
                 }
             }
         }
-
+        System.out.println("after findin market");
         market.getUserColor().remove(0);
         AMarketCard cardToTake = market.getMarketCards().get(position);
+        System.out.println("after cardTotake");
         if(cardToTake instanceof MCImmediate) {
             super.getRound().setImmediateCard(true);
         }
         cardToTake.setTaken(true);
+        System.out.println("Before adding marketcard");
         super.getUser().getMarketCards().add(cardToTake);
+        System.out.println("after adding marketcard");
         cardToTake.setUser(super.getUser());
-
+        System.out.println("before end");
         return game;
     }
 }

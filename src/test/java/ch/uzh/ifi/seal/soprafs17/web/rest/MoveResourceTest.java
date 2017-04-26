@@ -4,10 +4,12 @@ import ch.uzh.ifi.seal.soprafs17.Application;
 import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.MoveDTO;
+import ch.uzh.ifi.seal.soprafs17.model.DTOs.ShipDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Sarcophagus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
@@ -17,6 +19,7 @@ import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
+import org.hibernate.Hibernate;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,6 +39,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.DataOutputStream;
@@ -47,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.data.repository.init.ResourceReader.Type.JSON;
 
@@ -146,7 +151,7 @@ public class MoveResourceTest {
         this.owner = userRepository.findByToken(userToken1);
         //Start the game
         game = gameRepository.findOne(1L);
-        Assert.assertNotNull(game);
+        assertNotNull(game);
         owner = userRepository.findByUsername(game.getOwner());
 
 
@@ -212,8 +217,13 @@ public class MoveResourceTest {
     }
     @Test
     public void sailShip() throws Exception {
+        ShipDTO shipDTO = template.getForObject(base + "games/1/rounds/1/ships/1",ShipDTO.class);
+        assertNotNull(shipDTO);
+
+        List<ShipDTO> shipDTOList = template.getForObject(base + "games/1/rounds/1/ships",List.class);
+        assertEquals(4,shipDTOList.size());
         this.addStoneToShip();
-        ResponseEntity<String> response = template.exchange(base + "/games/1/rounds/1/ships/1/?siteBoardsType=temple&playerToken=1", HttpMethod.PUT, null, String.class);
+        ResponseEntity<String> response = template.exchange(base + "/games/1/rounds/1/ships/"+shipDTO.id+"/?siteBoardsType=temple&playerToken=1", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 //        ResponseEntity<TempleDTO> responseDTO = template.exchange(base + "games" +"/1/market", HttpMethod.GET, null, TempleDTO.class);
 //        assertTrue(responseDTO.getBody().isOccupied);
@@ -277,18 +287,16 @@ public class MoveResourceTest {
     @Test
     public void giveCardToUser() throws Exception {
         this.sailShipToMarket();
-        System.out.println(port);
         ResponseEntity<String> response = template.exchange(base + "/games/1/rounds/1/market?playerToken=1&position=0", HttpMethod.POST, null, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        response = template.exchange(base + "/games/1/rounds/1/market?playerToken=2&position=1", HttpMethod.POST, null, String.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        response = template.exchange(base + "/games/1/rounds/1/market?playerToken=2&position=1", HttpMethod.POST, null, String.class);
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
 
     }
 
     @Test
     public void playMarketCard() throws Exception {
-
     }
 
     @Test
