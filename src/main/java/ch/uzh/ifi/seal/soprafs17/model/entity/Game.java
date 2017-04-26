@@ -40,6 +40,8 @@ public class Game implements Serializable {
     @JsonIgnore
     private boolean entranceCardIsUsed = false;
 
+    private int discardedCardsCounter;
+
     public List<Round> getRounds() {
         return rounds;
     }
@@ -503,5 +505,13 @@ public class Game implements Serializable {
 
     public void setEntranceCardIsUsed() {
         this.entranceCardIsUsed = true;
+    }
+
+    public int getDiscardedCardsCounter() {
+        return discardedCardsCounter;
+    }
+
+    public void setDiscardedCardsCounter(int discardedCardsCounter) {
+        this.discardedCardsCounter = discardedCardsCounter;
     }
 }

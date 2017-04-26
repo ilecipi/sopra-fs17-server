@@ -314,6 +314,7 @@ public class MoveService {
             validatorManager.validateSync(game, move);
             moveRepository.save(move);
             ruleBook.applyRule(game, move);
+            game.setDiscardedCardsCounter(game.getDiscardedCardsCounter()+1);
             Market market = game.getMarket();
             if (market.getUserColor().isEmpty() && market.isOccupied() && !round.isImmediateCard()) {
                 game.collectPoints();

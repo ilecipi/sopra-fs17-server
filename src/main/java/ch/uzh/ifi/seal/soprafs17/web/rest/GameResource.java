@@ -86,20 +86,20 @@ public class GameResource extends GenericResource {
                     if(g.getCurrentRound()!=null) {
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
                                 g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),g.getCurrentRound().isActionCardHammer()
-                        ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail()));
+                        ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter(),g.getCurrentRound().isImmediateCard()));
                     }else{
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0));
+                                g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,0,false));
                     }
                 }
                 else{
                     if(g.getCurrentRound()!=null) {
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
                                 null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),g.getCurrentRound().isActionCardHammer()
-                                ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail()));
+                                ,g.getCurrentRound().getListActionCardLever(),g.getCurrentRound().getIsActionCardChisel(),g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter(),g.getCurrentRound().isImmediateCard()));
                     }else{
                         gamesDTO.add(new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0));
+                                null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,0,false));
                     }
                 }
             }
@@ -149,19 +149,19 @@ public class GameResource extends GenericResource {
                 if (g.getCurrentRound()!=null) {
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
                             g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(), g.getCurrentRound().isActionCardHammer()
-                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail());
+                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter(),g.getCurrentRound().isImmediateCard());
                 }else{
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0);
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,0,false);
                 }
             } else {
                 if (g.getCurrentRound()!=null) {
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
                             null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(), g.getCurrentRound().isActionCardHammer()
-                            ,g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail());
+                            ,g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter(),g.getCurrentRound().isImmediateCard());
                 }else{
                     return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
-                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0);
+                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,0, false);
                 }
             }
         }
