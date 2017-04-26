@@ -48,7 +48,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(HammerCardIsBeingPlayedException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Hammere card in user")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Hammer card in user")
 	public void validationExceptionHandler(HammerCardIsBeingPlayedException e) {
 		logger.error(e.getMessage());
 	}
@@ -73,7 +73,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(MarketCardsNotTaken.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Marketcard have not been picked up")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Marketcards have not been picked up")
 	public void validationExceptionHandler(MarketCardsNotTaken e) {
 		logger.error(e.getMessage());
 	}
@@ -91,7 +91,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(NotCurrentRoundException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Not in the current round")
+	@ResponseStatus(value= HttpStatus.UNAUTHORIZED,reason="Not in the current round")
 	public void validationExceptionHandler(NotCurrentRoundException e) {
 		logger.error(e.getMessage());
 	}
@@ -103,7 +103,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(NotMoreUsersAvailableException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Cards cannot be taken form the Market")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Cards cannot be taken from the Market")
 	public void validationExceptionHandler(NotMoreUsersAvailableException e) {
 		logger.error(e.getMessage());
 	}
@@ -139,7 +139,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(ShipWontBeReadyException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="You cannot play this card, a ship will not be ready to be sailed")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="You can not play this card, a ship will not be ready to be sailed")
 	public void validationExceptionHandler(ShipWontBeReadyException e) {
 		logger.error(e.getMessage());
 	}
@@ -162,13 +162,18 @@ public abstract class GenericResource {
 		logger.error(e.getMessage());
 	}
 
+	@ExceptionHandler(CardNotPlayableException.class)
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="This card can not be played")
+	public void validationExceptionHandler(CardNotPlayableException e) {
+		logger.error(e.getMessage());
+	}
 
 
-	//LAST ONE IN THE LIST
+
+	//LASTONE IN THE LIST
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Unexpected error from the server")
 	public void validationExceptionHandler(ValidationException e) {
-
 		logger.error("",e);
 	}
 

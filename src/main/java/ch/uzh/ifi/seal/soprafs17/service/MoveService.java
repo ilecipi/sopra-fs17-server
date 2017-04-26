@@ -70,7 +70,7 @@ public class MoveService {
     }
 
     public void addStoneToShip(Game game, AMove move) {
-        ruleBook.applyRule(game, move);
+        ruleBook.apply(game, move);
     }
 
 
@@ -80,9 +80,9 @@ public class MoveService {
         AShip ship = shipRepository.findById(shipId);
         Round round = roundRepository.findById(roundId);
         AddStoneToShipMove move = new AddStoneToShipMove(game, user, ship, position, round);
-        validatorManager.validateSync(game, move);
+        validatorManager.validate(game, move);
         moveRepository.save(move);
-        ruleBook.applyRule(game, move);
+        ruleBook.apply(game, move);
         gameRepository.save(game);
         userRepository.save(user);
         shipRepository.save(ship);
@@ -151,8 +151,8 @@ public class MoveService {
         Round round = roundRepository.findById(roundId);
         if (game != null && user != null && ship != null && siteBoard != null && round != null) {
             SailShipMove move = new SailShipMove(game, user, ship, round, siteBoard);
-            validatorManager.validateSync(game, move);
-            ruleBook.applyRule(game, move);
+            validatorManager.validate(game, move);
+            ruleBook.apply(game, move);
 
             if (move.getSiteBoard() instanceof StoneBoard) {
                 this.addStoneToSiteBoard(siteBoard.getId(), playerToken, gameId, shipId);
@@ -205,9 +205,9 @@ public class MoveService {
         Round round = roundRepository.findById(roundId);
         if (game != null && user != null && round != null) {
             GetStoneMove move = new GetStoneMove(user, round, game);
-            validatorManager.validateSync(game, move);
+            validatorManager.validate(game, move);
             moveRepository.save(move);
-            ruleBook.applyRule(game, move);
+            ruleBook.apply(game, move);
             gameRepository.save(game);
             roundRepository.save(round);
             userRepository.save(user);
@@ -283,10 +283,10 @@ public class MoveService {
         Round round = roundRepository.findById(roundId);
         if (game != null && user != null && round != null) {
             GiveCardToUserMove move = moveRepository.save(new GiveCardToUserMove(user, round, game, position));
-            validatorManager.validateSync(game, move);
+            validatorManager.validate(game, move);
             moveRepository.save(move);
 
-            ruleBook.applyRule(game, move);
+            ruleBook.apply(game, move);
             Market market = game.getMarket();
             if (market.getUserColor().isEmpty() && market.isOccupied()) {
                 if (!round.isImmediateCard()) {
@@ -311,9 +311,9 @@ public class MoveService {
 
         if (game != null && user != null && round != null) {
             PlayMarketCardMove move = new PlayMarketCardMove(user, round, game, marketCard);
-            validatorManager.validateSync(game, move);
+            validatorManager.validate(game, move);
             moveRepository.save(move);
-            ruleBook.applyRule(game, move);
+            ruleBook.apply(game, move);
             game.setDiscardedCardsCounter(game.getDiscardedCardsCounter()+1);
             Market market = game.getMarket();
             if (market.getUserColor().isEmpty() && market.isOccupied() && !round.isImmediateCard()) {
@@ -342,7 +342,7 @@ public class MoveService {
             PlayLeverCardMove move = new PlayLeverCardMove(user, round, game, tmpStones);
             moveRepository.save(move);
             //VALIDATOR
-            ruleBook.applyRule(game, move);
+            ruleBook.apply(game, move);
             this.addLeverUser(game);
             round.setActionCardLever(false);
         }

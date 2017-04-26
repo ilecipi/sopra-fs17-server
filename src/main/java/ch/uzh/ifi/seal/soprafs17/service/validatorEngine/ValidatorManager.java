@@ -26,11 +26,11 @@ public class ValidatorManager {
     }
     public ValidatorManager(){}
 
-    public void validate(Game game, AMove amove){
-            this.validateSync(game,amove);
-    }
+//    public void validate(Game game, AMove amove){
+//            this.validateSync(game,amove);
+//    }
 
-    public synchronized void validateSync(Game game, AMove amove){
+    public synchronized void validate(Game game, AMove amove){
             for(IValidator validator : validators){
                 if(validator.supports(amove)){
                     validator.validate(game,amove);

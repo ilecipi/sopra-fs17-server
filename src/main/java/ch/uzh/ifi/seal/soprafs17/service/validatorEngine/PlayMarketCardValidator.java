@@ -8,6 +8,8 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.*;
 import org.springframework.stereotype.Service;
 
+import javax.smartcardio.Card;
+
 
 @Service
 public class PlayMarketCardValidator implements IValidator {
@@ -37,7 +39,7 @@ public class PlayMarketCardValidator implements IValidator {
             }
             //If it is a Decoration card or a Statue it cannot be played
             if(castedMove.getaMarketCard() instanceof MCDecoration || castedMove.getaMarketCard() instanceof Statue){
-                throw new UserCanNotPlayThisCardException();
+                throw new CardNotPlayableException();
             }
             //Check conditions for Action cards
             if(castedMove.getaMarketCard() instanceof MCAction){
