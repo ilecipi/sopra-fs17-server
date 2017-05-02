@@ -170,9 +170,52 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public synchronized void startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
+    public synchronized GameDTO startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("startGame: " + gameId);
-        gameService.startGame(gameId, userToken);
+        Game g = gameService.startGame(gameId, userToken);
+        if(g!=null) {
+            List<Long> roundsId = new ArrayList<>();
+            List<Long> playersId = new ArrayList<>();
+            List<Long> siteBoardsId = new ArrayList<>();
+            List<UserDTO> playersDTO = new ArrayList<>();
+            for (Round r : g.getRounds()) {
+                roundsId.add(r.getId());
+            }
+            for (User u : g.getPlayers()) {
+                List<Long> playerGamesDTO = new ArrayList<>();
+                for (Game pg : u.getGames()) {
+                    playerGamesDTO.add(pg.getId());
+                }
+                List<Long> playerMovesDTO = new ArrayList<>();
+                for (AMove pm : u.getAMoves()) {
+                    playerMovesDTO.add(pm.getId());
+                }
+                playersDTO.add(new UserDTO(u.getId(), u.getName(), u.getUsername(), u.getToken(), u.getStatus(), playerGamesDTO, playerMovesDTO, u.getColor(), u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry()));
+            }
+            for (SiteBoard s : g.getSiteBoards()) {
+                siteBoardsId.add(s.getId());
+            }
+            if (g.getNextPlayer() != null) {
+                if (g.getCurrentRound()!=null) {
+                    return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(), g.getCurrentRound().isActionCardHammer()
+                            , g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter(),g.getCurrentRound().isImmediateCard());
+                }else{
+                    return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            g.getNextPlayer().getId(), roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,0,false);
+                }
+            } else {
+                if (g.getCurrentRound()!=null) {
+                    return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(), g.getCurrentRound().isActionCardHammer()
+                            ,g.getCurrentRound().getListActionCardLever(), g.getCurrentRound().getIsActionCardChisel(), g.getCurrentRound().getIsActionCardSail(),g.getDiscardedCardsCounter(),g.getCurrentRound().isImmediateCard());
+                }else{
+                    return new GameDTO(g.getId(), g.getName(), g.getOwner(), g.getStatus(), g.getCurrentPlayer().getId(),
+                            null, roundsId, playersDTO, siteBoardsId, g.getPoints(), g.getMarketCards(),false,null,0,0,0, false);
+                }
+            }
+        }
+        return null;
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
@@ -222,8 +265,8 @@ public class GameResource extends GenericResource {
     //when the user joins a game, he becomes a Player.
     @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        gameService.createPlayer(gameId, userToken);
+    public String createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+        return gameService.createPlayer(gameId, userToken);
     }
 
     //fastforward game to 6th round

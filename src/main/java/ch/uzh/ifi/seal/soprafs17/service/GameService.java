@@ -112,7 +112,7 @@ public class GameService {
         return gameRepository.findOne(gameId);
     }
 
-    public void startGame(Long gameId, String userToken){
+    public Game startGame(Long gameId, String userToken){
 
         Game game = gameRepository.findOne(gameId);
         User owner = userRepository.findByToken(userToken);
@@ -160,6 +160,7 @@ public class GameService {
                 gameRepository.save(game);
             }
         }
+        return game;
     }
 
     public List<User> listPlayers(Long gameId){
@@ -186,12 +187,11 @@ public class GameService {
             userRepository.save(player);
             gameRepository.save(game);
             logger.debug("Game: " + game.getName() + " - player added: " + player.getUsername());
-            return CONTEXT + "/" + gameId + "/player/" + (game.getPlayers().size());
+            return CONTEXT + "/" + gameId + "/player/" + player.getToken();
         } else {
             logger.error("Error adding player with token: " + userToken);
-
+            return  "Error adding player with token: " + userToken;
         }
-        return null;
     }
 
     public User getPlayer(Long gameId,Integer playerId){
@@ -200,7 +200,7 @@ public class GameService {
         return game.getPlayers().get(playerId);
     }
 
-    public void createPlayer(Long gameId, String userToken){
+    public String createPlayer(Long gameId, String userToken){
 
         User user = userRepository.findByToken(userToken);
         Game game = gameRepository.findOne(gameId);
@@ -232,6 +232,7 @@ public class GameService {
         }
         gameRepository.save(game);
         userRepository.save(user);
+        return game.getId()+"/"+user.getToken();
     }
 
     public Game setNextPlayer(Game game){
