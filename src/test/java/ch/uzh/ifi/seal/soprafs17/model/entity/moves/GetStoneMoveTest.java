@@ -52,50 +52,56 @@ public class GetStoneMoveTest {
 
     @Test
     public void setId() throws Exception{
-        GetStoneMove move = new GetStoneMove();
         move.setId(new Long(1));
-        assertNotNull(move.getId());
+        assertNotNull(this.move.getId());
     }
 
     @Test
-    public void getStones() throws Exception{
+    public void getStonesEmptySled() throws Exception {
         //supply shed without stones
         this.user.setStoneQuarry(3);
         this.user.setSupplySled(0);
         this.move.getStones(this.game);
-        assertEquals(3,this.user.getSupplySled());
-        assertEquals(0,this.user.getStoneQuarry());
+        assertEquals(3, this.user.getSupplySled());
+        assertEquals(0, this.user.getStoneQuarry());
 
         this.user.setStoneQuarry(2);
         this.user.setSupplySled(0);
         this.move.getStones(this.game);
-        assertEquals(2,this.user.getSupplySled());
-        assertEquals(0,this.user.getStoneQuarry());
+        assertEquals(2, this.user.getSupplySled());
+        assertEquals(0, this.user.getStoneQuarry());
 
         this.user.setStoneQuarry(1);
         this.user.setSupplySled(0);
         this.move.getStones(this.game);
-        assertEquals(1,this.user.getSupplySled());
-        assertEquals(0,this.user.getStoneQuarry());
+        assertEquals(1, this.user.getSupplySled());
+        assertEquals(0, this.user.getStoneQuarry());
+    }
 
+    @Test
+    public void getStonesOneSled() throws Exception {
         //supply shed with 1 stone
         this.user.setStoneQuarry(3);
         this.user.setSupplySled(1);
         this.move.getStones(this.game);
-        assertEquals(4,this.user.getSupplySled());
-        assertEquals(0,this.user.getStoneQuarry());
+        assertEquals(4, this.user.getSupplySled());
+        assertEquals(0, this.user.getStoneQuarry());
 
         this.user.setStoneQuarry(2);
         this.user.setSupplySled(1);
         this.move.getStones(this.game);
-        assertEquals(3,this.user.getSupplySled());
-        assertEquals(0,this.user.getStoneQuarry());
+        assertEquals(3, this.user.getSupplySled());
+        assertEquals(0, this.user.getStoneQuarry());
 
         this.user.setStoneQuarry(1);
         this.user.setSupplySled(1);
         this.move.getStones(this.game);
-        assertEquals(2,this.user.getSupplySled());
-        assertEquals(0,this.user.getStoneQuarry());
+        assertEquals(2, this.user.getSupplySled());
+        assertEquals(0, this.user.getStoneQuarry());
+    }
+
+    @Test
+    public void getStonesTwoSled() throws Exception{
 
         //supply shed with 2 stones
         this.user.setStoneQuarry(3);
@@ -115,7 +121,10 @@ public class GetStoneMoveTest {
         this.move.getStones(this.game);
         assertEquals(3,this.user.getSupplySled());
         assertEquals(0,this.user.getStoneQuarry());
+    }
 
+    @Test
+    public void getStonesThreeSled() throws Exception{
         //supply shed with 3 stones
         this.user.setStoneQuarry(3);
         this.user.setSupplySled(3);
@@ -134,6 +143,10 @@ public class GetStoneMoveTest {
         this.move.getStones(this.game);
         assertEquals(4,this.user.getSupplySled());
         assertEquals(0,this.user.getStoneQuarry());
+    }
+
+    @Test
+    public void getStonesFourSled() throws Exception{
 
         //supply shed with 4 stones
         this.user.setStoneQuarry(1);
@@ -145,5 +158,6 @@ public class GetStoneMoveTest {
 
 
     }
+
 
 }
