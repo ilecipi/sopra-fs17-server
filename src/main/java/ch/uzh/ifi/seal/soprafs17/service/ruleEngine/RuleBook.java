@@ -37,17 +37,4 @@ public class RuleBook {
             }
         }
     }
-
-//    public synchronized void applyRule(Game game, AMove move){
-//        this.apply(game,move);
-//    }
-
-    public List<IRule> getRules() {
-        return rules;
-    }
-
-    public void setRules(List<IRule> rules) {
-        this.rules = rules;
-    }
-
 }

@@ -68,14 +68,6 @@ public class RoundService {
 
     public static final int MAX_ROUNDS_POSSIBLE = 6;
 
-    public boolean isAllShipsSailed() {
-        return allShipsSailed;
-    }
-
-    public void setAllShipsSailed(boolean allShipsSailed) {
-        this.allShipsSailed = allShipsSailed;
-    }
-
     private boolean allShipsSailed;
 
     public List<Round> listRounds() {

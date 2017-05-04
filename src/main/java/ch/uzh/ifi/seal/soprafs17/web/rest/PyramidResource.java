@@ -45,12 +45,4 @@ public class PyramidResource {
         }
         return null;
     }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/pyramid/points")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String,Integer> getPyramidPoints(@PathVariable Long gameId) {
-        Pyramid pyramid = gameRepo.findOne(gameId).getPyramid();
-        return siteBoardsService.getPyramidPoints(pyramid.getId());
-    }
-
 }

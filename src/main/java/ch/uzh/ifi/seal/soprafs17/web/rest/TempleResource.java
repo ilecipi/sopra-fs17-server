@@ -45,18 +45,4 @@ public class TempleResource extends GenericResource {
         }
     }
 
-    @RequestMapping(value = CONTEXT + "/{gameId}/temple/points")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String,Integer> getTemplePoints(@PathVariable Long gameId) {
-        List<SiteBoard> siteBoards = gameRepo.findOne(gameId).getSiteBoards();
-        Temple temple = null;
-        if (!siteBoards.isEmpty()) {
-            for (SiteBoard s : siteBoards) {
-                if (s.getDiscriminatorValue().equals("temple")) {
-                    temple = (Temple) s;
-                }
-            }
-        }
-        return siteBoardsService.getTemplePoints(temple.getId());
-    }
 }

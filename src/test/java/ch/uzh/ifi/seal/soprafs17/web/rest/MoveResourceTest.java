@@ -8,24 +8,21 @@ import ch.uzh.ifi.seal.soprafs17.model.DTOs.ShipDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.UserDTO;
 import ch.uzh.ifi.seal.soprafs17.model.DTOs.siteBoardsDTO.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
+import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.Sarcophagus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
-import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.MarketCardRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.MoveRepository;
-import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.MoveService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.*;
 import org.hibernate.Hibernate;
 import org.json.JSONObject;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +77,8 @@ public class MoveResourceTest {
     MoveService moveService;
     @Autowired
     MarketCardRepository marketCardRepository;
+    @Autowired
+    RoundRepository roundRepository;
     private Game game;
     private User owner;
     private User player;
@@ -90,6 +89,9 @@ public class MoveResourceTest {
     private URL base;
     private RestTemplate template;
     private RestTemplate template2;
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void beforeEach() throws IOException {
@@ -217,6 +219,22 @@ public class MoveResourceTest {
 
 
     }
+
+    @Test
+    public void addStoneToShipNotEnoughStones() throws Exception {
+        this.addStoneToShip();
+        exception.expect(NotEnoughStoneException.class);
+        moveService.addStoneToShip(1L,owner.getToken(),1L,1L,0);
+    }
+
+    @Test
+    public void addStoneToShipUnavailableShipException() throws Exception {
+        this.addStoneToShip();
+        exception.expect(UnavailableShipPlaceException.class);
+        moveService.getStone(1L,1L,"1");
+        moveService.getStone(1L,1L,"2");
+        moveService.addStoneToShip(1L,owner.getToken(),1L,1L,0);
+    }
     @Test
     public void sailShip() throws Exception {
         ShipDTO shipDTO = template.getForObject(base + "games/1/rounds/1/ships/1",ShipDTO.class);
@@ -253,10 +271,19 @@ public class MoveResourceTest {
     @Test
     public void sailShipToBurialChamber() throws Exception{
         this.addStoneToShip();
+
         ResponseEntity<String> response = template.exchange(base + "/games/1/rounds/1/ships/1/?siteBoardsType=burialchamber&playerToken=1", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-//        ResponseEntity<BurialChamberDTO> responseDTO = template.exchange(base + "games" +"/1/market", HttpMethod.GET, null, BurialChamberDTO.class);
-//        assertTrue(responseDTO.getBody().isOccupied);
+    }
+
+    @Test
+    public void sailShipToBurialChamberExceptionOccupied() throws Exception{
+        gameService.refillShip(1L);
+        moveService.sailShip(1L,1L,1L,"1","burialchamber");
+
+        exception.expect(SiteBoardIsOccupiedException.class);
+        moveService.sailShip(1L,1L,2L,"2","burialchamber");
+
     }
 
     @Test
@@ -264,8 +291,9 @@ public class MoveResourceTest {
         this.addStoneToShip();
         ResponseEntity<String> response = template.exchange(base + "/games/1/rounds/1/ships/1/?siteBoardsType=obelisk&playerToken=1", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-//        ResponseEntity<ObeliskDTO> responseDTO = template.exchange(base + "games" +"/1/market", HttpMethod.GET, null, ObeliskDTO.class);
-//        assertTrue(responseDTO.getBody().isOccupied);
+
+        exception.expect(DockedShipException.class);
+        moveService.sailShip(1L,1L,1L,"2","obelisk");
     }
 
 
@@ -297,10 +325,23 @@ public class MoveResourceTest {
     public void playSarcophagusCard() throws Exception {
         ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        roundRepository.findById(1L).setImmediateCard(true);
 
-        assertTrue(!marketCardRepository.findById(5L).isPlayed());
+        assertFalse(marketCardRepository.findById(5L).isPlayed());
+
         moveService.playMarketCard(1L,1L,"1",5L);
         assertTrue(marketCardRepository.findById(5L).isPlayed());
+
+        exception.expect(NotCurrentPlayerException.class);
+        moveService.addStoneToShip(1L,"2",1L,1L,0);
+    }
+
+    @Test(expected = ImmediateCardNotPlayedException.class)
+    public void isImmediateCardPlayed() throws Exception{
+        Round round = roundRepository.findById(1L);
+        round.setImmediateCard(true);
+        roundRepository.save(round);
+        moveService.addStoneToShip(1L,"1",1L,1L,0);
     }
 
     @Test
@@ -308,7 +349,7 @@ public class MoveResourceTest {
         ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 
-        assertTrue(!marketCardRepository.findById(6L).isPlayed());
+        assertFalse(marketCardRepository.findById(6L).isPlayed());
         moveService.playMarketCard(1L,1L,"1",6L);
         assertTrue(marketCardRepository.findById(6L).isPlayed());
     }
@@ -328,7 +369,7 @@ public class MoveResourceTest {
         ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 
-        assertTrue(!marketCardRepository.findById(8L).isPlayed());
+        assertFalse(marketCardRepository.findById(8L).isPlayed());
         moveService.playMarketCard(1L,1L,"1",8L);
         moveService.addStoneToShip(1L,"1",1L,1L,0);
         moveService.addStoneToShip(1L,"1",2L,1L,0);
@@ -340,7 +381,7 @@ public class MoveResourceTest {
         ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 
-        assertTrue(!marketCardRepository.findById(9L).isPlayed());
+        assertFalse(marketCardRepository.findById(9L).isPlayed());
         int currentSupplySled = gameService.getPlayer(1L,1).getSupplySled();
         moveService.playMarketCard(1L,1L,"1",9L);
         moveService.addStoneToShip(1L,"1",1L,1L,0);
@@ -351,10 +392,27 @@ public class MoveResourceTest {
     public void playLeverCard() throws Exception {
         ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
         gameService.refillShip(1L);
-        assertTrue(!marketCardRepository.findById(10L).isPlayed());
+        assertFalse(marketCardRepository.findById(10L).isPlayed());
         moveService.playMarketCard(1L,1L,"1",10L);
         moveService.sailShip(1L,1L,2L,"1","pyramid");
+        List<String> colors = new ArrayList<>();
+        for(User u : gameService.getGame(1L).getPlayers()){
+            colors.add(u.getColor());
+        }
+        moveService.playLeverCard(1L,1L,"1",colors);
+        assertTrue(marketCardRepository.findById(10L).isPlayed());
+    }
+
+    @Test
+    public void playLeverCardToMarket() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        gameService.refillShip(1L);
+        assertFalse(marketCardRepository.findById(10L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",10L);
+        moveService.sailShip(1L,1L,2L,"1","market");
         List<String> colors = new ArrayList<>();
         for(User u : gameService.getGame(1L).getPlayers()){
             colors.add(u.getColor());
@@ -367,13 +425,12 @@ public class MoveResourceTest {
     public void playSailCard() throws Exception {
         ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-//        gameService.refillShip(1L);
 
-        assertTrue(!marketCardRepository.findById(11L).isPlayed());
+        assertFalse(marketCardRepository.findById(11L).isPlayed());
         moveService.playMarketCard(1L,1L,"1",11L);
         moveService.addStoneToShip(1L,"1",4L,1L,0);
         moveService.sailShip(1L,1L,4L,"1","pyramid");
         assertTrue(marketCardRepository.findById(11L).isPlayed());
+        System.out.println("ASD");
     }
-
 }

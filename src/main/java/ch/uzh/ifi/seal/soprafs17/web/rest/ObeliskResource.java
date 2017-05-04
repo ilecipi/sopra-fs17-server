@@ -40,11 +40,4 @@ public class ObeliskResource {
         Obelisk obelisk = gameRepo.findOne(gameId).getObelisk();
         return new ObeliskDTO(obelisk.getId(),obelisk.getObelisks(),obelisk.isOccupied());
     }
-
-    @RequestMapping(value = CONTEXT + "/{gameId}/obelisk/points")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String,Integer> getObeliskPoints(@PathVariable Long gameId) {
-        Obelisk obelisk = gameRepo.findOne(gameId).getObelisk();
-        return siteBoardsService.getObeliskPoints(obelisk.getId());
-    }
 }
