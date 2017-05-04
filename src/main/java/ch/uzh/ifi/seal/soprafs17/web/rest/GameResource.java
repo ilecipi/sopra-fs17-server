@@ -287,4 +287,17 @@ public class GameResource extends GenericResource {
     public void fastForwardOneRound(@PathVariable Long gameId) {
         gameService.fastForward(gameId);
     }
+
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/giveCardsTest", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void giveCardsTest(@PathVariable Long gameId) {
+        gameService.giveCardsTest(gameId);
+    }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/refillShips", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void refillShip(@PathVariable Long gameId) {
+        gameService.refillShip(gameId);
+    }
 }

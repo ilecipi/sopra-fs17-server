@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Round;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
+import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
@@ -51,6 +52,9 @@ public class GameService {
 
     @Autowired
     private RoundRepository roundRepository;
+
+    @Autowired
+    private MarketCardRepository marketCardRepository;
 
     @Autowired
     private SiteBoardsService siteBoardsService;
@@ -247,8 +251,9 @@ public class GameService {
 
     public void fastForward(Long gameId) {
         Game game = gameRepository.findOne(gameId);
-        if(game.getRounds().size()>5){
+        if(game.getRounds().size()>6){
             return;
+
         }
         //First Round
         List<Round> rounds = game.getRounds();
@@ -296,5 +301,85 @@ public class GameService {
         roundRepository.save(game.getCurrentRound());
         gameRepository.save(game);
 
+    }
+
+    public void giveCardsTest(Long gameId) {
+        Game game = gameRepository.findOne(gameId);
+        for (User u : game.getPlayers()) {
+            u.getMarketCards().add(marketCardRepository.save(new Sarcophagus()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+
+            u.getMarketCards().add(marketCardRepository.save(new PavedPath()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new Entrance()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new Chisel()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new Hammer()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new Lever()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new Sail()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new ObeliskDecoration()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+
+
+            u.getMarketCards().add(marketCardRepository.save(new PyramidDecoration()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+
+            u.getMarketCards().add(marketCardRepository.save(new Statue()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            u.getMarketCards().add(marketCardRepository.save(new TempleDecoration()));
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setTaken(true);
+            u.getMarketCards().get(u.getMarketCards().size() - 1).setUser(u);
+
+            userRepository.save(u);
+        }
+    }
+
+    public void refillShip(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        Round rounds = game.getCurrentRound();
+        List<AShip> ships = rounds.getShips();
+
+        for (AShip s : ships) {
+
+            int counter = 0;
+            for (User u : game.getPlayers()) {
+
+                if(!s.isReady()){
+                    s.addStone(new Stone(u.getColor()),counter++);
+                    shipRepository.save(s);
+
+                }
+                if(s.getMaxStones()==4&&!s.isReady()){
+                    s.addStone(new Stone(u.getColor()),counter++);
+                    shipRepository.save(s);
+                }
+                userRepository.save(u);
+            }
+        }
+        gameRepository.save(game);
     }
 }

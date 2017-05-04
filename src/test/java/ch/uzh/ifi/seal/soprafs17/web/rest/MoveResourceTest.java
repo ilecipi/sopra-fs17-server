@@ -14,6 +14,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Temple;
 import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs17.model.repository.MarketCardRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.MoveRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
@@ -49,10 +50,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.data.repository.init.ResourceReader.Type.JSON;
 
 /**
@@ -78,6 +78,8 @@ public class MoveResourceTest {
     GameService gameService;
     @Autowired
     MoveService moveService;
+    @Autowired
+    MarketCardRepository marketCardRepository;
     private Game game;
     private User owner;
     private User player;
@@ -289,19 +291,89 @@ public class MoveResourceTest {
         this.sailShipToMarket();
         ResponseEntity<String> response = template.exchange(base + "/games/1/rounds/1/market?playerToken=1&position=0", HttpMethod.POST, null, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-
-//        response = template.exchange(base + "/games/1/rounds/1/market?playerToken=2&position=1", HttpMethod.POST, null, String.class);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-
     }
 
     @Test
-    public void playMarketCard() throws Exception {
+    public void playSarcophagusCard() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
+        assertTrue(!marketCardRepository.findById(5L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",5L);
+        assertTrue(marketCardRepository.findById(5L).isPlayed());
+    }
+
+    @Test
+    public void playPavedPath() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
+        assertTrue(!marketCardRepository.findById(6L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",6L);
+        assertTrue(marketCardRepository.findById(6L).isPlayed());
+    }
+
+    @Test
+    public void playEntranceCard() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
+        assertTrue(!marketCardRepository.findById(7L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",7L);
+        assertTrue(marketCardRepository.findById(7L).isPlayed());
+    }
+
+    @Test
+    public void playChiselCard() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
+        assertTrue(!marketCardRepository.findById(8L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",8L);
+        moveService.addStoneToShip(1L,"1",1L,1L,0);
+        moveService.addStoneToShip(1L,"1",2L,1L,0);
+        assertTrue(marketCardRepository.findById(8L).isPlayed());
+    }
+
+    @Test
+    public void playHammerCard() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
+        assertTrue(!marketCardRepository.findById(9L).isPlayed());
+        int currentSupplySled = gameService.getPlayer(1L,1).getSupplySled();
+        moveService.playMarketCard(1L,1L,"1",9L);
+        moveService.addStoneToShip(1L,"1",1L,1L,0);
+        assertTrue(marketCardRepository.findById(9L).isPlayed());
     }
 
     @Test
     public void playLeverCard() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        gameService.refillShip(1L);
+        assertTrue(!marketCardRepository.findById(10L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",10L);
+        moveService.sailShip(1L,1L,2L,"1","pyramid");
+        List<String> colors = new ArrayList<>();
+        for(User u : gameService.getGame(1L).getPlayers()){
+            colors.add(u.getColor());
+        }
+        moveService.playLeverCard(1L,1L,"1",colors);
+        assertTrue(marketCardRepository.findById(10L).isPlayed());
+    }
 
+    @Test
+    public void playSailCard() throws Exception {
+        ResponseEntity<String> response = template.exchange(base + "/games/1/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+//        gameService.refillShip(1L);
+
+        assertTrue(!marketCardRepository.findById(11L).isPlayed());
+        moveService.playMarketCard(1L,1L,"1",11L);
+        moveService.addStoneToShip(1L,"1",4L,1L,0);
+        moveService.sailShip(1L,1L,4L,"1","pyramid");
+        assertTrue(marketCardRepository.findById(11L).isPlayed());
     }
 
 }

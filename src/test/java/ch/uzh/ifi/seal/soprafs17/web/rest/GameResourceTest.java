@@ -232,6 +232,9 @@ public class GameResourceTest {
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
         assertEquals(2,responseGameDTO.getBody().rounds.size());
 
+        responseGame = template.exchange(base + "games" +"/1"+"/giveCardsTest", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
+
         responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
@@ -254,7 +257,11 @@ public class GameResourceTest {
 
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
 
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
 
+        responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
+        assertEquals(GameStatus.FINISHED,responseGameDTO.getBody().status);
 
     }
 
