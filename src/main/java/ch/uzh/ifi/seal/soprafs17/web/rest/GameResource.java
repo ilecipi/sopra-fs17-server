@@ -274,18 +274,35 @@ public class GameResource extends GenericResource {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void fastForward(@PathVariable Long gameId) {
 
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
-        gameService.fastForward(gameId);
+        gameService.fastForward(gameId,5);
+        gameService.fastForward(gameId,5);
+        gameService.fastForward(gameId,5);
+        gameService.fastForward(gameId,5);
+        gameService.fastForward(gameId,5);
+    }
+
+    //endGame
+    @RequestMapping(value = CONTEXT + "/{gameId}/fastforwardEnd", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void fastForwardEnd(@PathVariable Long gameId) {
+
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
+        gameService.fastForward(gameId,6);
     }
 
     //fastforward only 1 round
     @RequestMapping(value = CONTEXT + "/{gameId}/fastforwardoneround", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void fastForwardOneRound(@PathVariable Long gameId) {
-        gameService.fastForward(gameId);
+        gameService.fastForward(gameId,5);
     }
 
 

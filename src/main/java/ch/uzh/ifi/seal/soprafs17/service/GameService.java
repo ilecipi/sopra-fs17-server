@@ -249,9 +249,9 @@ public class GameService {
         return game;
     }
 
-    public void fastForward(Long gameId) {
+    public void fastForward(Long gameId, int lastRound) {
         Game game = gameRepository.findOne(gameId);
-        if(game.getRounds().size()>6){
+        if(game.getRounds().size()>lastRound){
             return;
 
         }

@@ -257,7 +257,7 @@ public class GameResourceTest {
 
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
 
-        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardoneround", HttpMethod.PUT, null, String.class);
+        responseGame = template.exchange(base + "games" +"/1"+"/fastforwardEnd", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
 
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
