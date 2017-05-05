@@ -42,6 +42,8 @@ public class Game implements Serializable {
 
     private int discardedCardsCounter;
 
+    private String lastAddedStone = "none-none";
+
     public List<Round> getRounds() {
         return rounds;
     }
@@ -513,5 +515,13 @@ public class Game implements Serializable {
 
     public void setDiscardedCardsCounter(int discardedCardsCounter) {
         this.discardedCardsCounter = discardedCardsCounter;
+    }
+
+    public String getLastAddedStone() {
+        return lastAddedStone;
+    }
+
+    public void setLastAddedStone(String lastAddedStone) {
+        this.lastAddedStone = lastAddedStone;
     }
 }
