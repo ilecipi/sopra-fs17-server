@@ -141,6 +141,7 @@ public class GameService {
                 siteBoardsService.addMarket(game.getId());
                 game.initShipsCards();
                 game.initMarketCards();
+                game.updateCounterChanges();
 
                 //TODO: DELETE TESTING BEFORE DEADLINE
                 //for testing

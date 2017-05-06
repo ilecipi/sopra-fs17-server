@@ -77,6 +77,7 @@ public class SailShipMove extends AMove {
         if(super.getRound().getIsActionCardSail()==1){
             super.getRound().setIsActionCardSail(0);
         }
+        game.updateCounterChanges();
         return game;
     }
 }

@@ -44,6 +44,10 @@ public class Game implements Serializable {
 
     private String lastAddedStone = "none-none";
 
+
+
+    private int counterChanges;
+
     public List<Round> getRounds() {
         return rounds;
     }
@@ -523,5 +527,17 @@ public class Game implements Serializable {
 
     public void setLastAddedStone(String lastAddedStone) {
         this.lastAddedStone = lastAddedStone;
+    }
+
+    public int getCounterChanges() {
+        return counterChanges;
+    }
+
+    public void setCounterChanges(int counterChanges) {
+        this.counterChanges = counterChanges;
+    }
+
+    public void updateCounterChanges(){
+        this.counterChanges++;
     }
 }

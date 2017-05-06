@@ -95,6 +95,7 @@ public class GetStoneMove extends AMove{
                 super.getUser().setStoneQuarry(super.getUser().getStoneQuarry()-1);
             }
             game.findNextPlayer();
+            game.updateCounterChanges();
             return game;
     }
     @Override

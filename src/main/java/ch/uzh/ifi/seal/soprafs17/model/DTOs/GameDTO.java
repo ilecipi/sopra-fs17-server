@@ -12,7 +12,7 @@ public class GameDTO {
     GameDTO(){}
     public GameDTO(Long id, String name, String owner, GameStatus status, Long currentPlayer, Long nextPlayer,
                    List<Long> rounds, List<UserDTO> players, List<Long> siteBoards, Map<String, Integer> points, Map<Integer, String> marketCards, boolean isActionCardHammer,
-                   List<String> isActionCardLever, int isActionCardChisel, int isActionCardSail,int discardedCardsCounter,boolean isImmediateCard, String lastAddedStone) {
+                   List<String> isActionCardLever, int isActionCardChisel, int isActionCardSail,int discardedCardsCounter,boolean isImmediateCard, String lastAddedStone,int counterChanges) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -31,6 +31,7 @@ public class GameDTO {
         this.discardedCardsCounter = discardedCardsCounter;
         this.isImmediateCard = isImmediateCard;
         this.lastAddedStone = lastAddedStone;
+        this.counterChanges = counterChanges;
     }
 
     public Long id;
@@ -51,5 +52,6 @@ public class GameDTO {
     public int isActionCardSail;
     public int discardedCardsCounter;
     public String lastAddedStone;
+    public int counterChanges;
 
 }

@@ -64,6 +64,8 @@ public class GiveCardToUserMove extends AMove {
         cardToTake.setTaken(true);
         super.getUser().getMarketCards().add(cardToTake);
         cardToTake.setUser(super.getUser());
+        game.updateCounterChanges();
         return game;
+
     }
 }

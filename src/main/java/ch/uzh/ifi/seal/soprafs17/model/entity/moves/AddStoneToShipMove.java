@@ -79,6 +79,8 @@ public class AddStoneToShipMove extends AMove {
             super.getRound().setIsActionCardChisel(super.getRound().getIsActionCardChisel()-1);
         }
         game.setLastAddedStone(this.ship.getId()+"-"+this.position);
+        game.updateCounterChanges();
+
         return game;
     }
 }
