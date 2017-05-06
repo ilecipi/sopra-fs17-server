@@ -279,6 +279,12 @@ public class GameResource extends GenericResource {
         gameService.fastForward(gameId,5);
         gameService.fastForward(gameId,5);
         gameService.fastForward(gameId,5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        gameService.updateCounter(gameId);
     }
 
     //endGame
@@ -296,6 +302,12 @@ public class GameResource extends GenericResource {
         gameService.fastForward(gameId,6);
         gameService.fastForward(gameId,6);
         gameService.fastForward(gameId,6);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        gameService.updateCounter(gameId);
     }
 
     //fastforward only 1 round

@@ -253,6 +253,8 @@ public class GameService {
     public void fastForward(Long gameId, int lastRound) {
         Game game = gameRepository.findOne(gameId);
         if(game.getRounds().size()>lastRound){
+            game.updateCounterChanges();
+            gameRepository.save(game);
             return;
 
         }
@@ -358,6 +360,12 @@ public class GameService {
 
             userRepository.save(u);
         }
+        game.updateCounterChanges();
+        gameRepository.save(game);
+    }
+
+    public void updateCounter(Long gameId){
+        Game game = gameRepository.findOne(gameId);
         game.updateCounterChanges();
         gameRepository.save(game);
     }

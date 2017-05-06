@@ -91,13 +91,14 @@ public class RoundService {
                 }
             }
         }
-        if (game.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
+        if (game.getRounds().size() >= MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             game.setStatus(GameStatus.FINISHED);
             for (User u : game.getPlayers()) {
                 u.setStatus(UserStatus.ONLINE);
                 u.setSupplySled(0);
                 for(AMarketCard mc : u.getMarketCards()){
                     mc.setUser(null);
+                    game.updateCounterChanges();
                 }
                 u.setMarketCards(new ArrayList<>());
             }
