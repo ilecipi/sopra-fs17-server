@@ -317,4 +317,10 @@ public class GameResource extends GenericResource {
     public void refillShip(@PathVariable Long gameId) {
         gameService.refillShip(gameId);
     }
+
+    @RequestMapping(value = CONTEXT + "/{gameId}/counterChanges", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public int counterChanges(@PathVariable Long gameId) {
+        return gameService.getCounterChanges(gameId);
+    }
 }

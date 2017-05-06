@@ -83,6 +83,7 @@ public class MoveService {
         validatorManager.validate(game, move);
         moveRepository.save(move);
         ruleBook.apply(game, move);
+        game.updateCounterChanges();
         gameRepository.save(game);
         userRepository.save(user);
         shipRepository.save(ship);
@@ -121,6 +122,7 @@ public class MoveService {
             if (!game.getCurrentRound().isActionCardLever()) {
                 game.findNextPlayer();
             }
+            game.updateCounterChanges();
             gameRepository.save(game);
         }
     }
@@ -190,6 +192,7 @@ public class MoveService {
                     roundRepository.save(game.getCurrentRound());
                 }
             }
+            game.updateCounterChanges();
             siteBoardRepository.save(siteBoard);
             gameRepository.save(game);
             userRepository.save(user);
@@ -208,6 +211,7 @@ public class MoveService {
             validatorManager.validate(game, move);
             moveRepository.save(move);
             ruleBook.apply(game, move);
+            game.updateCounterChanges();
             gameRepository.save(game);
             roundRepository.save(round);
             userRepository.save(user);
@@ -259,6 +263,7 @@ public class MoveService {
             }
             Market market = game.getMarket();
             market.setUserColor(userColors);
+            game.updateCounterChanges();
             siteBoardRepository.save(market);
         }
     }
@@ -274,6 +279,7 @@ public class MoveService {
         game.getCurrentRound().setActionCardLever(false);
         game.getCurrentRound().setListActionCardLever(new ArrayList<>());
         market.setOccupied(true);
+        game.updateCounterChanges();
         siteBoardRepository.save(market);
     }
 
@@ -296,6 +302,7 @@ public class MoveService {
                     roundService.addRound(game.getId());
                 }
             }
+            game.updateCounterChanges();
             user = userRepository.save(user);
             gameRepository.save(game);
             roundRepository.save(round);
@@ -324,6 +331,7 @@ public class MoveService {
             marketCard.setPlayed(true);
             marketCardRepository.save(marketCard);
             userRepository.save(user);
+            game.updateCounterChanges();
             gameRepository.save(game);
             roundRepository.save(round);
         }
@@ -346,6 +354,7 @@ public class MoveService {
             this.addLeverUser(game);
             round.setActionCardLever(false);
         }
+        game.updateCounterChanges();
         userRepository.save(user);
         gameRepository.save(game);
         roundRepository.save(round);
@@ -359,6 +368,7 @@ public class MoveService {
         } else {
             this.addStoneToSiteBoard(game);
         }
+        game.getCounterChanges();
         if (game.getMarket().getUserColor().size() == 0) {
             game.findNextPlayer();
             game.collectPoints();

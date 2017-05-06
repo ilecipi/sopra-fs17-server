@@ -383,4 +383,13 @@ public class GameService {
         }
         gameRepository.save(game);
     }
+
+    public int getCounterChanges(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        if(game!=null){
+            return game.getCounterChanges();
+        }else{
+            return 0;
+        }
+    }
 }
