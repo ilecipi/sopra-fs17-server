@@ -192,6 +192,8 @@ public class RoundService {
             int currentRound = game.getRounds().size() - 1;
             Round round1 = game.getRounds().get(currentRound);
             market.setMarketCards(round1.getMarketCards());
+            game.updateCounterChanges();
+            gameRepository.save(game);
             roundRepository.save(round1);
             siteBoardsRepository.save(market);
         }

@@ -298,6 +298,7 @@ public class GameService {
             }
         }
         game.collectPoints();
+        game.updateCounterChanges();
         roundService.addRound(game.getId());
         roundRepository.save(game.getCurrentRound());
         gameRepository.save(game);
@@ -357,6 +358,8 @@ public class GameService {
 
             userRepository.save(u);
         }
+        game.updateCounterChanges();
+        gameRepository.save(game);
     }
 
     public void refillShip(Long gameId){
@@ -381,6 +384,7 @@ public class GameService {
                 userRepository.save(u);
             }
         }
+        game.updateCounterChanges();
         gameRepository.save(game);
     }
 
