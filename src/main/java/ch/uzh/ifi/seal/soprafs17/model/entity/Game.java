@@ -434,6 +434,7 @@ public class Game implements Serializable {
                 }
             }
         }
+        this.updateCounterChanges();
     }
 
     @JsonIgnore
