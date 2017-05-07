@@ -13,6 +13,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.Market;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.SiteBoard;
 import ch.uzh.ifi.seal.soprafs17.model.entity.ships.AShip;
 import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
+import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.RoundService;
 import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
@@ -39,6 +40,9 @@ public class MoveResource extends GenericResource {
     @Autowired
     MoveService moveService;
 
+    @Autowired
+    GameService gameService;
+
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
@@ -55,6 +59,8 @@ public class MoveResource extends GenericResource {
     public synchronized void sailShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken,
                            @RequestParam("siteBoardsType") String siteBoardsType) {
         moveService.sailShip(gameId,roundId,shipId,playerToken,siteBoardsType);
+        gameService.updateCounter(gameId);
+
     }
 
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/users", method = RequestMethod.POST)
