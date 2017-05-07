@@ -158,8 +158,11 @@ public class GameResourceTest {
         HttpEntity<User> httpUserEntity = new HttpEntity<User>(userRequest2);
         //Add second user to the game
         ResponseEntity<User> responseUser = template.exchange(base + "users", HttpMethod.POST, httpUserEntity, User.class);
+
         //http://localhost:8080/games/1/player?token=2
         ResponseEntity<String> responseGame = template.exchange(base + "games" +"/1" +"/player?token=" + userRequest2.getToken(), HttpMethod.POST, httpUserEntity, String.class);
+
+        //check that the user has joined the lobby
         assertEquals(UserStatus.IN_A_LOBBY, userRepository.findByName("Test2").getStatus());
         String ownerUsername= gameRepository.findOne(1L).getOwner();
         String ownerToken = userRepository.findByUsername(ownerUsername).getToken();
@@ -167,10 +170,13 @@ public class GameResourceTest {
         User owner = userRepository.findByToken(ownerToken);
         HttpEntity<User> HttpOwnerEntity = new HttpEntity<>(owner);
         responseGame = template.exchange(base + "games" +"/1" +"?token=" + ownerToken, HttpMethod.PUT, HttpOwnerEntity, String.class);
+
+        //check that the owner is now ready to play
         assertEquals(UserStatus.IS_READY,userRepository.findByToken(ownerToken).getStatus());
 
         responseGame = template.exchange(base + "games" +"/1" +"?token=" + userRequest2.getToken(), HttpMethod.PUT, httpUserEntity, String.class);
 
+        //check that the other user is now ready to play
         assertEquals(UserStatus.IS_READY,userRepository.findByToken(userRequest2.getToken()).getStatus());
     }
 
@@ -194,8 +200,12 @@ public class GameResourceTest {
         wr.flush();
         wr.close();
         int responseCode = con.getResponseCode();
+
+        //check that the game status is now running, which means that the games has started
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
 
+
+        //check that the siteboards are initialized
         ResponseEntity<MarketDTO> responseMarket = template.exchange(base + "games" +"/1"+"/market", HttpMethod.GET, null, MarketDTO.class);
         assertNotNull(responseMarket.getBody());
 
@@ -223,7 +233,8 @@ public class GameResourceTest {
     }
 
     public void fastForward() throws Exception {
-        //TODO: check the size round everytime and at the end the status of the game
+        //use the fastforward function to test the instantiation of new rounds and the numbers of rounds that have been played
+
         ResponseEntity<GameDTO> responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
         assertEquals(1,responseGameDTO.getBody().rounds.size());
 
@@ -257,9 +268,11 @@ public class GameResourceTest {
 
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
 
+        //fast forward to the end of the game
         responseGame = template.exchange(base + "games" +"/1"+"/fastforwardEnd", HttpMethod.PUT, null, String.class);
         assertEquals(HttpStatus.ACCEPTED, responseGame.getStatusCode());
 
+        //Check that the game is finished after having played 6 round
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
         assertEquals(GameStatus.FINISHED,responseGameDTO.getBody().status);
 

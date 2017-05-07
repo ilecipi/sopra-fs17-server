@@ -47,11 +47,6 @@ public class SiteBoardsService {
         return "/game/"+gameId + "/" + temple.getId();
     }
 
-    public StoneBoard getTemple(Long templeId){
-        StoneBoard temple = siteBoardRepository.findById(templeId);
-        return temple;
-    }
-
     public String addPyramid(Long gameId){
         Game game = gameRepository.findOne(gameId);
         StoneBoard pyramid = new Pyramid();
@@ -82,13 +77,7 @@ public class SiteBoardsService {
         return "/game/+gameId" + "/" + burialChamber.getId();
     }
 
-    public StoneBoard getObelisk(Long obeliskId){
-        return siteBoardRepository.findById(obeliskId);
-    }
 
-    public StoneBoard getPyramid(Long pyramidId){
-        return siteBoardRepository.findById(pyramidId);
-    }
 
     public Map<String,Integer> getPyramidPoints(long pyramidId){
         SiteBoard pyramid =siteBoardRepository.findById(pyramidId);
@@ -162,6 +151,48 @@ public class SiteBoardsService {
         }
         return market;
     }
+
+    public BurialChamber getBurialChamber(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        if(game!=null){
+            return game.getBurialChamber();
+        }
+        return null;
+    }
+
+    public Temple getTemple(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        if(game!=null){
+            return game.getTemple();
+        }
+        return null;
+    }
+
+    public Market getMarket(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        if(game!=null){
+            return game.getMarket();
+        }
+        return null;
+    }
+
+    public Pyramid getPyramid(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        if(game!=null){
+            return game.getPyramid();
+        }
+        return null;
+    }
+
+    public Obelisk getObelisk(Long gameId){
+        Game game = gameRepository.findOne(gameId);
+        if(game!=null){
+            return game.getObelisk();
+        }
+        return null;
+    }
+
+
 
 
 

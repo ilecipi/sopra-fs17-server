@@ -63,6 +63,7 @@ public class UserResourceTest {
     @Test
     @SuppressWarnings("unchecked")
     public void UserResourceTestForAll() throws Exception {
+        //test the methods in the right order
         this.addUser();
         this.listUsers();
         this.getUser();
@@ -91,6 +92,7 @@ public class UserResourceTest {
         assertNotNull(usersBefore);
 
         User userRequest1 = new User();
+
         //add user with Name and Username
         userRequest1.setName("testName1234");
         userRequest1.setUsername("testUsername1234");
@@ -103,12 +105,15 @@ public class UserResourceTest {
 
     public void listUsers() throws Exception {
         List<UserDTO> usersAfter = template.getForObject(base + "users", List.class);
+
+        //check that two users have been created
         assertEquals(2,usersAfter.size());
     }
 
 
 
     public void getUser() throws Exception {
+        //get the right user with an http request
         ResponseEntity<UserDTO>  userAfter = template.getForEntity(base + "users/2" , UserDTO.class);
         assertNotNull(userAfter);
         assertEquals("testName123",userAfter.getBody().name);
@@ -123,6 +128,8 @@ public class UserResourceTest {
 
         ResponseEntity<String> responseMessage = template.exchange(base + "users/2/logout?token="+userAfter.getBody().token,HttpMethod.PUT,userAfter,String.class);
         userAfter = template.getForEntity(base + "users/2" , UserDTO.class);
+
+        //check that the user has been logged out successfully
         assertEquals(UserStatus.OFFLINE,userAfter.getBody().status);
 
     }

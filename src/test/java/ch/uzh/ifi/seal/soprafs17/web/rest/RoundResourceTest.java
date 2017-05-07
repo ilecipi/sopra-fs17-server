@@ -178,6 +178,7 @@ public class RoundResourceTest {
     }
 
     public void getSpecificRound() throws Exception{
+        //get a specific round with an http request
         RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1",RoundDTO.class);
         assertNotNull(round);
         assertEquals(""+1L, ""+round.id);
@@ -187,6 +188,7 @@ public class RoundResourceTest {
     public void listRounds() throws Exception{
         List<RoundDTO> roundsAfter = template.getForObject(base + "games"+"/1"+"/rounds", List.class);
         assertNotNull(roundsAfter);
+        //check that a round has been initialized, i.e the firstone
         Assert.assertEquals(1, roundsAfter.size());
     }
 
