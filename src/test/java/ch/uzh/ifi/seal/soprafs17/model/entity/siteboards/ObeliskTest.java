@@ -115,11 +115,17 @@ public class ObeliskTest {
         assertEquals(new Integer(9), pointsThreePlayers.get("white"));
         assertEquals(new Integer(1), pointsThreePlayers.get("brown"));
 
+        //black&white same amount, brown is not on the obelisk
+        obeliskThreePlayers = new Obelisk(3);
+        obeliskThreePlayers.addStone(new Stone("white"));
+        obeliskThreePlayers.addStone(new Stone("black"));
+        pointsThreePlayers.remove("brown");
+        pointsThreePlayers = obeliskThreePlayers.countEndOfGame();
+        assertEquals(new Integer(9), pointsThreePlayers.get("black"));
+        assertEquals(new Integer(9), pointsThreePlayers.get("white"));
+        assertNull(pointsThreePlayers.get("brown"));
+
         //Test for four players
-//        obeliskThreePlayers.addStone(new Stone("black"));
-//        obeliskThreePlayers.addStone(new Stone("white"));
-//        obeliskThreePlayers.addStone(new Stone("brown"));
-//        obeliskThreePlayers.addStone(new Stone("grey"));
         Map<String, Integer> pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
 
         //Same amount of stones
@@ -182,6 +188,52 @@ public class ObeliskTest {
         assertEquals(new Integer(7), pointsFourPlayers.get("white"));
         assertEquals(new Integer(7), pointsFourPlayers.get("brown"));
         assertEquals(new Integer(1), pointsFourPlayers.get("grey"));
+
+        //black&white wins and same, the others different
+        obeliskFourPlayers.addStone(new Stone("white"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(12), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(12), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(5), pointsFourPlayers.get("brown"));
+        assertEquals(new Integer(1), pointsFourPlayers.get("grey"));
+
+        //Three players on the obelisk, the fourth is not on it
+        pointsFourPlayers.remove("grey");
+        obeliskFourPlayers = new Obelisk(4);
+        obeliskFourPlayers.addStone(new Stone("white"));
+        obeliskFourPlayers.addStone(new Stone("black"));
+        obeliskFourPlayers.addStone(new Stone("brown"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+
+        //everybody has the same amount of stones on it
+        assertEquals(new Integer(10), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(10), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(10), pointsFourPlayers.get("brown"));
+
+        //first&second the same, third one different
+        obeliskFourPlayers.addStone(new Stone("white"));
+        obeliskFourPlayers.addStone(new Stone("black"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(12), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(12), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(5), pointsFourPlayers.get("brown"));
+
+        //first different, second and third the same
+        obeliskFourPlayers.addStone(new Stone("black"));
+        obeliskFourPlayers.addStone(new Stone("brown"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(15), pointsFourPlayers.get("black"));
+        assertEquals(new Integer(7), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(7), pointsFourPlayers.get("brown"));
+
+        //Two players on the obelisk
+        pointsFourPlayers.remove("brown");
+        obeliskFourPlayers = new Obelisk(4);
+        obeliskFourPlayers.addStone(new Stone("white"));
+        obeliskFourPlayers.addStone(new Stone("black"));
+        pointsFourPlayers = obeliskFourPlayers.countEndOfGame();
+        assertEquals(new Integer(12), pointsFourPlayers.get("white"));
+        assertEquals(new Integer(12), pointsFourPlayers.get("black"));
     }
 
 }
