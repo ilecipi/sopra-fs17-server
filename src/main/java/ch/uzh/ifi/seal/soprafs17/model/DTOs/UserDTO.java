@@ -10,8 +10,20 @@ import java.util.List;
  * Created by ilecipi on 01.04.17.
  */
 public class UserDTO {
-    UserDTO(){}
 
+    public Long id;
+    public String name;
+    public String username;
+    public String token;
+    public UserStatus status;
+    public List<Long> games;
+    public List<Long> moves;
+    public String color;
+    public int supplySled;
+    public int stoneQuarry;
+    public List<String> cards;
+
+    UserDTO(){}
 
     public UserDTO(Long id, String name, String username, String token, UserStatus status, List<Long> games, List<Long> moves, String color,int supplySled,
                     List<AMarketCard> cards,int stoneQuarry) {
@@ -33,15 +45,4 @@ public class UserDTO {
 
         }
 
-    public Long id;
-    public String name;
-    public String username;
-    public String token;
-    public UserStatus status;
-    public List<Long> games;
-    public List<Long> moves;
-    public String color;
-    public int supplySled;
-    public int stoneQuarry;
-    public List<String> cards;
 }

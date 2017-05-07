@@ -6,6 +6,13 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.Stone;
  * Created by ilecipi on 01.04.17.
  */
 public class ShipDTO {
+    public Long id;
+    public Stone[] stones;
+    public boolean isReady;
+    public int addedStones = 0;
+    public boolean docked;
+    public String siteBoard;
+
     ShipDTO(){}
 
     public ShipDTO(Long id, Stone[] stones, boolean isReady, int addedStones, boolean docked, String siteBoard) {
@@ -17,10 +24,5 @@ public class ShipDTO {
         this.siteBoard = siteBoard;
     }
 
-    public Long id;
-    public Stone[] stones;
-    public boolean isReady;
-    public int addedStones = 0;
-    public boolean docked;
-    public String siteBoard;
+
 }
