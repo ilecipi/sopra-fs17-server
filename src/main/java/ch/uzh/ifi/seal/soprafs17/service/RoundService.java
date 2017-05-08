@@ -194,6 +194,11 @@ public class RoundService {
             Round round1 = game.getRounds().get(currentRound);
             market.setMarketCards(round1.getMarketCards());
             game.updateCounterChanges();
+            for(String c : game.getColors().keySet()){
+                if(!game.getColors().get(c)&&game.getPoints().containsKey(c)){
+                    game.getPoints().remove(c);
+                }
+            }
             gameRepository.save(game);
             roundRepository.save(round1);
             siteBoardsRepository.save(market);

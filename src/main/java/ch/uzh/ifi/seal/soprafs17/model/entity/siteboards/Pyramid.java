@@ -67,15 +67,15 @@ public class Pyramid extends StoneBoard {
                 }
             }
                 return point;
-
     }
 
     private HashMap<String, Integer> fillPoints() {
         return new HashMap<String,Integer>(){{
-            put("black",0);
-            put("white",0);
-            put("brown",0);
-            put("grey",0);
+            for(String c : game.getColors().keySet()){
+                if(game.getColors().get(c)){
+                    put(c,0);
+                    }
+            }
         }};
     }
 
