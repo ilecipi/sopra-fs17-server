@@ -62,6 +62,9 @@ import static org.springframework.data.repository.init.ResourceReader.Type.JSON;
 @IntegrationTest({"server.port=0"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @FixMethodOrder(MethodSorters.JVM)
+/**
+*
+* */
 public class MoveResourceTest {
 
     @Autowired

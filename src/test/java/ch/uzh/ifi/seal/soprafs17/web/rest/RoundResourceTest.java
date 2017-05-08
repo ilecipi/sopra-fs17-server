@@ -47,7 +47,7 @@ import static org.junit.Assert.assertEquals;
 @SpringApplicationConfiguration(Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class RoundResourceTest {
 
     @Autowired
@@ -79,16 +79,6 @@ public class RoundResourceTest {
     }
 
     @Test
-    public void roundResourceTestForAll() throws Exception{
-        this.getSpecificRoundBeforeInstaniating();
-        this.listRoundsBeforeInstantiating();
-        this.instantiateGame();
-        this.getSpecificRound();
-        this.listRounds();
-
-    }
-
-
     public void getSpecificRoundBeforeInstaniating() throws Exception{
         RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1",RoundDTO.class);
         assertNotNull(round);
@@ -96,12 +86,14 @@ public class RoundResourceTest {
 
     }
 
+    @Test
     public void listRoundsBeforeInstantiating() throws Exception{
         List<RoundDTO> roundsAfter = template.getForObject(base + "games"+"/1"+"/rounds", List.class);
         assertNotNull(roundsAfter);
         Assert.assertEquals(0, roundsAfter.size());
     }
 
+    @Test
     public void instantiateGame() throws  Exception {
         //create game
         Game gameRequest = new Game();
@@ -177,7 +169,10 @@ public class RoundResourceTest {
         assertEquals(GameStatus.RUNNING, gameRepository.findOne(1L).getStatus());
     }
 
+    @Test
     public void getSpecificRound() throws Exception{
+        this.instantiateGame();
+
         //get a specific round with an http request
         RoundDTO round = template.getForObject(base + "games" + "/1" + "/rounds" + "/1",RoundDTO.class);
         assertNotNull(round);
@@ -185,7 +180,10 @@ public class RoundResourceTest {
 
     }
 
+    @Test
     public void listRounds() throws Exception{
+        this.instantiateGame();
+
         List<RoundDTO> roundsAfter = template.getForObject(base + "games"+"/1"+"/rounds", List.class);
         assertNotNull(roundsAfter);
         //check that a round has been initialized, i.e the firstone

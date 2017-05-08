@@ -67,7 +67,7 @@ import static sun.audio.AudioPlayer.player;
 @SpringApplicationConfiguration(Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GameResourceTest {
 
     @Autowired
@@ -90,26 +90,9 @@ public class GameResourceTest {
 
 
     @Before
-    public void setUp() throws MalformedURLException {
+    public void addGame() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
         this.template = new TestRestTemplate();
-    }
-
-    @Test
-    public void oneTestForAll() throws Exception {
-        this.addGame();
-        this.listGames();
-        this.getGame();
-        this.createPlayer();
-        this.startGame();
-        this.getPlayer();
-        this.listGames();
-        this.getGame();
-        this.fastForward();
-    }
-
-
-    public void addGame() throws Exception {
         // list games with size = 0
         List<GameDTO> gamesBefore = template.getForObject(base + "games", List.class);
         Assert.assertTrue(gamesBefore.size() == 0);
@@ -140,16 +123,19 @@ public class GameResourceTest {
         Assert.assertEquals(game.getId().intValue(), Integer.parseInt(jsonResponse.get("id").toString()));
     }
 
+    @Test
     public void listGames() throws Exception {
         List<GameDTO> gamesAfter = template.getForObject(base + "games", List.class);
         Assert.assertEquals(1, gamesAfter.size());
     }
 
+    @Test
     public void getGame() throws Exception {
         GameDTO game = template.getForObject(base + "games" + "/1", GameDTO.class);
         Assert.assertNotNull(game);
     }
 
+    @Test
     public void createPlayer() throws Exception {
         User userRequest2 = new User();
         userRequest2.setName("Test2");
@@ -180,8 +166,9 @@ public class GameResourceTest {
         assertEquals(UserStatus.IS_READY,userRepository.findByToken(userRequest2.getToken()).getStatus());
     }
 
+    @Test
     public void startGame() throws Exception {
-
+        this.createPlayer();
 
         Game game = gameRepository.findOne(1L);
         assertNotNull(game);
@@ -225,14 +212,18 @@ public class GameResourceTest {
 
     }
 
+    @Test
     public void getPlayer() throws Exception {
+        this.startGame();
         List<UserDTO> list = template.getForObject(base + "games" + "/1" + "/players",List.class);
         assertNotNull(list);
         UserDTO player = template.getForObject(base + "games" + "/1" + "/players" + "/1",UserDTO.class);
         assertNotNull(player);
     }
 
+    @Test
     public void fastForward() throws Exception {
+        this.startGame();
         //use the fastforward function to test the instantiation of new rounds and the numbers of rounds that have been played
 
         ResponseEntity<GameDTO> responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);

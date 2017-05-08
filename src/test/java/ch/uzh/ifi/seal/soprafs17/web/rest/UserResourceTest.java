@@ -42,7 +42,7 @@ import static org.junit.Assert.*;
 @SpringApplicationConfiguration(Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserResourceTest {
 
 
@@ -60,15 +60,8 @@ public class UserResourceTest {
 
     @Autowired
     UserRepository userRepo;
+
     @Test
-    @SuppressWarnings("unchecked")
-    public void UserResourceTestForAll() throws Exception {
-        //test the methods in the right order
-        this.addUser();
-        this.listUsers();
-        this.getUser();
-        this.logout();
-    }
     public void addUser() throws Exception {
 
         User userRequest2 = new User();
@@ -102,8 +95,10 @@ public class UserResourceTest {
         template.exchange(base + "users", HttpMethod.POST,httpUserEntity,String.class);
     }
 
-
+    @Test
     public void listUsers() throws Exception {
+        this.addUser();
+
         List<UserDTO> usersAfter = template.getForObject(base + "users", List.class);
 
         //check that two users have been created
@@ -111,8 +106,9 @@ public class UserResourceTest {
     }
 
 
-
+    @Test
     public void getUser() throws Exception {
+        this.addUser();
         //get the right user with an http request
         ResponseEntity<UserDTO>  userAfter = template.getForEntity(base + "users/2" , UserDTO.class);
         assertNotNull(userAfter);
@@ -121,7 +117,9 @@ public class UserResourceTest {
 
     }
 
+    @Test
     public void logout() throws Exception {
+        this.addUser();
         ResponseEntity<UserDTO>  userAfter = template.getForEntity(base + "users/2" , UserDTO.class);
         assertEquals(UserStatus.ONLINE,userAfter.getBody().status);
 
