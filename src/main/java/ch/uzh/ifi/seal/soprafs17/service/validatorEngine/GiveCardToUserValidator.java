@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service.validatorEngine;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GiveCardToUserMove;
@@ -18,6 +19,9 @@ public class GiveCardToUserValidator implements IValidator {
     public void validate(Game game, AMove amove) throws ValidationException {
         if(supports(amove)){
             GiveCardToUserMove castedMove = (GiveCardToUserMove)amove;
+            if(castedMove.getGame().getStatus()!= GameStatus.RUNNING){
+                throw new GameFinishedException();
+            }
             if(castedMove.getGame().getMarket().getUserColor().size()==0){
                 throw new NotMoreUsersAvailableException();
             }

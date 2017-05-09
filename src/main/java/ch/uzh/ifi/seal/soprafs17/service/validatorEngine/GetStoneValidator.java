@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service.validatorEngine;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.GetStoneMove;
@@ -18,6 +19,9 @@ public class GetStoneValidator implements IValidator {
     public void validate(Game game, AMove amove) throws ValidationException {
         if(supports(amove)){
             GetStoneMove castedMove = (GetStoneMove) amove;
+            if(castedMove.getGame().getStatus()!= GameStatus.RUNNING){
+                throw new GameFinishedException();
+            }
             if(!BasicValidation.checkCurrentUser(game,amove.getUser())){
                 throw new NotCurrentPlayerException();
             }

@@ -168,6 +168,12 @@ public abstract class GenericResource {
 		logger.error(e.getMessage());
 	}
 
+	@ExceptionHandler(GameFinishedException.class)
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="The game is over")
+	public void validationExceptionHandler(GameFinishedException e) {
+		logger.error(e.getMessage());
+	}
+
 
 
 	//LASTONE IN THE LIST

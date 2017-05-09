@@ -14,6 +14,7 @@ import ch.uzh.ifi.seal.soprafs17.model.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs17.model.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs17.service.GameService;
 import ch.uzh.ifi.seal.soprafs17.service.UserService;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.GameFinishedException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -267,7 +268,7 @@ public class GameResourceTest {
         responseGameDTO = template.exchange(base + "games" +"/1", HttpMethod.GET, null, GameDTO.class);
         assertEquals(GameStatus.FINISHED,responseGameDTO.getBody().status);
 
-    }
 
+    }
 
 }

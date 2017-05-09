@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs17.service.validatorEngine;
 
+import ch.uzh.ifi.seal.soprafs17.constant.GameStatus;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.marketCards.*;
 import ch.uzh.ifi.seal.soprafs17.model.entity.moves.AMove;
@@ -30,6 +31,9 @@ public class PlayMarketCardValidator implements IValidator {
             }
             if(!userOwnsCard){
                 throw new NotYourCardException();
+            }
+            if(castedMove.getGame().getStatus()!= GameStatus.RUNNING){
+                throw new GameFinishedException();
             }
             if(((PlayMarketCardMove)amove).getaMarketCard().isPlayed()){
                 throw  new CardAlreadyPlayedException();
