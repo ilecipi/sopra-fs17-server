@@ -215,7 +215,8 @@ public class GameService {
             String color;
             while (colorNotChosen) {
                 Random rn = new Random();
-                int i = rn.nextInt() % 4;
+                int i = rn.nextInt(4);
+                if(i<0){i=i*(-1);}
                 if (i == 0) {
                     color = "black";
                 } else if (i == 1) {
@@ -227,7 +228,7 @@ public class GameService {
                 }
                 if (!game.getColors().get(color)) {
                     user.setColor(color);
-                    game.getColors().put(color, true);
+                    game.getColors().replace(color,true);
                     user.setStatus(UserStatus.IS_READY);
                     colorNotChosen = false;
 
