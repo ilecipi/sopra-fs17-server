@@ -19,11 +19,11 @@ public class GetStoneValidator implements IValidator {
     public void validate(Game game, AMove amove) throws ValidationException {
         if(supports(amove)){
             GetStoneMove castedMove = (GetStoneMove) amove;
-            if(castedMove.getUser().getStoneQuarry() <= 0){
-                throw new EmptyStoneQuarryException();
-            }
             if(castedMove.getGame().getStatus()!= GameStatus.RUNNING){
                 throw new GameFinishedException();
+            }
+            if(castedMove.getUser().getStoneQuarry() <= 0){
+                throw new EmptyStoneQuarryException();
             }
             if(!BasicValidation.checkCurrentUser(game,amove.getUser())){
                 throw new NotCurrentPlayerException();
