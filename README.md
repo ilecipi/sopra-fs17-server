@@ -11,7 +11,7 @@
 
 
 ## We are Ile Cepilov, Erion Sula, Silvo Sposetti, Antonio De la Torre, Sophy Chhong and Lina Witzel
-and this is the client side of our version of the game 'Imhotep' which we created as part of the lecture
+and this is the server side of our version of the game 'Imhotep' which we created as part of the lecture
 'Softwarepraktikum' at University Zurich!
 
 # Feel free to test it and play the game at: https://sopra-fs17-group11.firebaseapp.com
