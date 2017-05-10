@@ -10,8 +10,6 @@ import java.util.logging.Logger;
  * Created by tonio99tv on 04/04/17.
  */
 
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="ImmediateCardNotPlayedException")
 public class ImmediateCardNotPlayedException extends ValidationException{
 
     private Logger logger;

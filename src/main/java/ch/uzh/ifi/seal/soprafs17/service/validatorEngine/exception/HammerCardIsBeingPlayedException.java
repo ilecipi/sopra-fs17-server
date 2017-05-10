@@ -10,8 +10,6 @@ import java.util.logging.Logger;
  * Created by tonio99tv on 04/04/17.
  */
 
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="HammerCardIsBeingPlayedException")
 public class HammerCardIsBeingPlayedException extends ValidationException{
 
     private Logger logger;

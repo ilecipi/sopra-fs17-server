@@ -10,8 +10,6 @@ import java.util.logging.Logger;
  * Created by tonio99tv on 04/04/17.
  */
 
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Market cards are not taken")
 public class MarketCardsNotTaken extends ValidationException{
 
     private Logger logger;

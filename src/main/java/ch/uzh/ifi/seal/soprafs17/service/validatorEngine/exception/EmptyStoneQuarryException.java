@@ -9,8 +9,7 @@ import java.util.logging.Logger;
 /**
  * Created by erion on 10.05.17.
  */
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="EmptyStoneQuarryException")
+
 public class EmptyStoneQuarryException extends ValidationException{
 
     private Logger logger;

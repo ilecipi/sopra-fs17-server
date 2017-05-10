@@ -7,8 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 /**
  * Created by ilecipi on 04.04.17.
  */
-@EnableWebMvc
-@ResponseStatus(value = HttpStatus.FORBIDDEN,reason = "VALIDATION EXCEPTION")
+
 public class ValidationException extends RuntimeException {
         String message;
 

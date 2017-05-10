@@ -10,8 +10,6 @@ import java.util.logging.Logger;
  * Created by tonio99tv on 04/04/17.
  */
 
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Not More Users Available Exception")
 public class NotMoreUsersAvailableException extends ValidationException{
 
     private Logger logger;

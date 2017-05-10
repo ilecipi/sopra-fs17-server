@@ -10,8 +10,6 @@ import java.util.logging.Logger;
  * Created by tonio99tv on 04/04/17.
  */
 
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="CardAlreadyPlayedException")
 public class CardNotPlayableException extends ValidationException{
 
     private Logger logger;

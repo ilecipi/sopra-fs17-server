@@ -11,8 +11,6 @@ import java.util.logging.Logger;
  * Created by tonio99tv on 04/04/17.
  */
 
-@EnableWebMvc
-@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Ship is not ready to be sailed")
 public class NotReadyShipException extends ValidationException {
 
     public NotReadyShipException() {
