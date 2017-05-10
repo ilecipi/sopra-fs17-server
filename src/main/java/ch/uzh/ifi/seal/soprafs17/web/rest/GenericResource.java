@@ -17,6 +17,12 @@ public abstract class GenericResource {
 
 	Logger logger = LoggerFactory.getLogger(GenericResource.class);
 
+	@ExceptionHandler(EmptyStoneQuarryException.class)
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Your stone quarry is empty")
+	public void validationExceptionHandler(EmptyStoneQuarryException e) {
+		logger.error(e.getMessage());
+	}
+
 	@ExceptionHandler(TransactionSystemException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public void handleTransactionSystemException(Exception exception, HttpServletRequest request) {
@@ -115,7 +121,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(NotYourCardException.class)
-	@ResponseStatus(value= HttpStatus.UNAUTHORIZED,reason="You can not play this card")
+	@ResponseStatus(value= HttpStatus.UNAUTHORIZED,reason="You cannot play this card")
 	public void validationExceptionHandler(NotYourCardException e) {
 		logger.error(e.getMessage());
 	}
@@ -139,7 +145,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(ShipWontBeReadyException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="You can not play this card, a ship will not be ready to be sailed")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="You cannot play this card, a ship will not be ready to be sailed")
 	public void validationExceptionHandler(ShipWontBeReadyException e) {
 		logger.error(e.getMessage());
 	}
@@ -151,7 +157,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(UnavailableShipPlaceException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="You can not place a stone in this position")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="You cannot place a stone in this position")
 	public void validationExceptionHandler(UnavailableShipPlaceException e) {
 		logger.error(e.getMessage());
 	}
@@ -163,7 +169,7 @@ public abstract class GenericResource {
 	}
 
 	@ExceptionHandler(CardNotPlayableException.class)
-	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="This card can not be played")
+	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="This card cannot be played")
 	public void validationExceptionHandler(CardNotPlayableException e) {
 		logger.error(e.getMessage());
 	}
