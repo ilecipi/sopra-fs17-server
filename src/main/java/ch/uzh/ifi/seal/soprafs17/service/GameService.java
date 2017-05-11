@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -142,18 +143,14 @@ public class GameService {
                 game.initShipsCards();
                 game.initMarketCards();
                 game.updateCounterChanges();
-
-                //TODO: DELETE TESTING BEFORE DEADLINE
-                //for testing
-                Random rn = new Random();
                 game=gameRepository.save(game);
-                roundService.addRound(game.getId());
+
                 //add a round to the game
+                roundService.addRound(game.getId());
                 game.setCurrentPlayer(owner);
-                // TODO: Start game in GameService
                 game.setStatus(GameStatus.RUNNING);
                 int initStones=2;
-                int initStoneQuarry=28;
+                int initStoneQuarry=27;
                 for (User u : game.getPlayers()) {
                     game.getPoints().put(u.getColor(),0 );
                     u.setStatus(UserStatus.IS_PLAYING);
@@ -173,7 +170,6 @@ public class GameService {
         if (game != null) {
             return game.getPlayers();
         }
-
         return null;
     }
 
@@ -262,8 +258,10 @@ public class GameService {
         //First Round
         List<Round> rounds = game.getRounds();
         List<User> users = game.getPlayers();
+        Collections.shuffle(users);
         int currentRound = rounds.size()-1;
         List<AShip> ships = rounds.get(currentRound).getShips();
+        Collections.shuffle(ships);
 
         for (AShip s : ships) {
 
