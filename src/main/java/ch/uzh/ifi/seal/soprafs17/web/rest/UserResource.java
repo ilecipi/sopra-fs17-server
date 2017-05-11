@@ -40,7 +40,7 @@ public class UserResource extends GenericResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public synchronized User addUser(@RequestBody User user) {
+    public User addUser(@RequestBody User user) {
         logger.debug("addUser: " + user);
         String token =""+counter++;
         User u = userService.createUser(user.getName(),user.getUsername(), token, UserStatus.OFFLINE, new ArrayList<>());

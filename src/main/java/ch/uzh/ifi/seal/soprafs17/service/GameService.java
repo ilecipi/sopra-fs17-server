@@ -15,6 +15,7 @@ import ch.uzh.ifi.seal.soprafs17.model.entity.siteboards.StoneBoard;
 import ch.uzh.ifi.seal.soprafs17.model.repository.*;
 import ch.uzh.ifi.seal.soprafs17.service.ruleEngine.RuleBook;
 import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.ValidatorManager;
+import ch.uzh.ifi.seal.soprafs17.service.validatorEngine.exception.NullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,6 +212,9 @@ public class GameService {
             String color;
             int counterBreak=0;
             while (colorNotChosen&&counterBreak<400) {
+                if(counterBreak>=380){
+                    throw new NullException();
+                }
                 counterBreak++;
                 Random rn = new Random();
                 int i = rn.nextInt(4);
