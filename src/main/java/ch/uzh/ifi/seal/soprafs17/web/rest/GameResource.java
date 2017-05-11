@@ -108,7 +108,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
+    public synchronized Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
         logger.debug("addGame: " + game);
         Game addedGame = gameService.addGame(game, userToken);
         if (game == null) {
@@ -170,7 +170,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public GameDTO startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
+    public synchronized GameDTO startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
         logger.debug("startGame: " + gameId);
         Game g = gameService.startGame(gameId, userToken);
         if(g!=null) {
@@ -241,7 +241,7 @@ public class GameResource extends GenericResource {
 
     @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
+    public synchronized String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
         logger.debug("addPlayer: " + userToken);
 
         return gameService.addUser(gameId, userToken);
@@ -263,15 +263,9 @@ public class GameResource extends GenericResource {
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
     }
     //when the user joins a game, he becomes a Player.
-
     @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return gameService.createPlayer(gameId, userToken);
     }
 

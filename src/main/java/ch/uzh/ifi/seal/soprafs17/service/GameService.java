@@ -100,6 +100,9 @@ public class GameService {
     public Game addGame(Game game, String userToken){
         User owner = userRepository.findByToken(userToken);
         if (owner != null&&owner.getStatus()==UserStatus.ONLINE) {
+            if(owner.getGames()!=null&&owner.getGames().size()>=1){
+                owner.setColor(null);
+            }
             game.setName(game.getName());
             game.setOwner(owner.getUsername());
             game.setCurrentPlayer(owner);
@@ -180,6 +183,7 @@ public class GameService {
 
         if (game != null && player != null && game.getPlayers().size() < GameConstants.MAX_PLAYERS
                 &&player.getStatus()==UserStatus.ONLINE&&GameStatus.PENDING==game.getStatus()) {
+            player.setColor(null);
             player.getGames().add(game);
             player.setStatus(UserStatus.IN_A_LOBBY);
             if(game.getPlayers().size()==1){                //Set the second player as the nextPlayer
@@ -207,11 +211,12 @@ public class GameService {
         User user = userRepository.findByToken(userToken);
         Game game = gameRepository.findOne(gameId);
         //assign color to user
-        if (game.getPlayers().contains(user)) {
+        if (game.getPlayers().contains(user)&&user.getColor()==null) {
             boolean colorNotChosen = true;
             String color;
             int counterBreak=0;
             while (colorNotChosen&&counterBreak<400) {
+
                 if(counterBreak>=380){
                     throw new NullException();
                 }
@@ -233,7 +238,7 @@ public class GameService {
                     game.getColors().replace(color,true);
                     user.setStatus(UserStatus.IS_READY);
                     colorNotChosen = false;
-
+                    userRepository.save(user);
                 }
             }
 
