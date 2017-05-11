@@ -55,6 +55,7 @@ import static org.springframework.data.repository.init.ResourceReader.Type.JSON;
 
 /**
  * Created by erion on 24.04.17.
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)

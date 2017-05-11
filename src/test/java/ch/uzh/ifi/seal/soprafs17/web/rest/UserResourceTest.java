@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created by erion on 13.04.17.
+ * This Class tests the main method from creating a user until the game is started
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)

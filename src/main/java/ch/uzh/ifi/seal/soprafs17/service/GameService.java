@@ -209,7 +209,9 @@ public class GameService {
         if (game.getPlayers().contains(user)) {
             boolean colorNotChosen = true;
             String color;
-            while (colorNotChosen) {
+            int counterBreak=0;
+            while (colorNotChosen&&counterBreak<400) {
+                counterBreak++;
                 Random rn = new Random();
                 int i = rn.nextInt(4);
                 if(i<0){i=i*(-1);}
