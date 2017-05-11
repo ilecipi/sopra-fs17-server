@@ -263,6 +263,7 @@ public class GameResource extends GenericResource {
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
     }
     //when the user joins a game, he becomes a Player.
+
     @RequestMapping(value = CONTEXT + "/{gameId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String createPlayer(@PathVariable Long gameId, @RequestParam("token") String userToken) {

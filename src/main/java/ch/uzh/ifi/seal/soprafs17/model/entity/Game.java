@@ -439,7 +439,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public Market getMarket(){
-        if (!this.siteBoards.isEmpty()) {
+        if (this.siteBoards!=null&&!this.siteBoards.isEmpty()) {
             for (SiteBoard s : this.siteBoards) {
                 if (s.getDiscriminatorValue().equals("market")) {
                     return ((Market) s);
@@ -451,7 +451,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public BurialChamber getBurialChamber(){
-        if (!this.siteBoards.isEmpty()) {
+        if (this.siteBoards!=null&&!this.siteBoards.isEmpty()) {
             for (SiteBoard s : this.siteBoards) {
                 if (s.getDiscriminatorValue().equals("burialchamber")) {
                     return ((BurialChamber) s);
@@ -463,7 +463,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public Obelisk getObelisk(){
-        if (!this.siteBoards.isEmpty()) {
+        if (this.siteBoards!=null&&!this.siteBoards.isEmpty()) {
             for (SiteBoard s : this.siteBoards) {
                 if (s.getDiscriminatorValue().equals("obelisk")) {
                     return ((Obelisk) s);
@@ -475,7 +475,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public Pyramid getPyramid(){
-        if (!this.siteBoards.isEmpty()) {
+        if (this.siteBoards!=null&&!this.siteBoards.isEmpty()) {
             for (SiteBoard s : this.siteBoards) {
                 if (s.getDiscriminatorValue().equals("pyramid")) {
                     return ((Pyramid) s);
@@ -487,7 +487,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public Temple getTemple(){
-        if (!this.siteBoards.isEmpty()) {
+        if (this.siteBoards!=null&&!this.siteBoards.isEmpty()) {
             for (SiteBoard s : this.siteBoards) {
                 if (s.getDiscriminatorValue().equals("temple")) {
                     return ((Temple) s);
@@ -499,7 +499,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     public Round getCurrentRound(){
-        if(rounds.size()!=0) {
+        if(rounds!=null&&rounds.size()!=0) {
             return this.rounds.get(this.rounds.size() - 1);
         }else{
             return null;
