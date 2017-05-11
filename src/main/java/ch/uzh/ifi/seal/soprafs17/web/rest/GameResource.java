@@ -26,11 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.uzh.ifi.seal.soprafs17.model.entity.Game;
 import ch.uzh.ifi.seal.soprafs17.model.entity.User;
 
-// For this controlles the correspndant service is missing
-// Todo create a GameService in which you implement the logic of the game
-// You can refer to the UserService as example
-// per heroku :D
-
 @RestController
 public class GameResource extends GenericResource {
 
@@ -106,6 +101,12 @@ public class GameResource extends GenericResource {
             return gamesDTO;
     }
 
+    /**
+     *
+     * @param game
+     * @param userToken
+     * @return
+     */
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public synchronized Game addGame(@RequestBody Game game, @RequestParam("token") String userToken) {
@@ -118,6 +119,11 @@ public class GameResource extends GenericResource {
         }
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable Long gameId) {
@@ -168,6 +174,12 @@ public class GameResource extends GenericResource {
         return null;
     }
 
+    /**
+     *
+     * @param gameId
+     * @param userToken
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public synchronized GameDTO startGame(@PathVariable Long gameId, @RequestParam("playerToken") String userToken) {
@@ -218,6 +230,11 @@ public class GameResource extends GenericResource {
         return null;
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listPlayers(@PathVariable Long gameId) {
@@ -239,6 +256,12 @@ public class GameResource extends GenericResource {
         return usersDTO;
     }
 
+    /**
+     *
+     * @param gameId
+     * @param userToken
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public synchronized String addUser(@PathVariable Long gameId, @RequestParam("token") String userToken) {
@@ -247,6 +270,12 @@ public class GameResource extends GenericResource {
         return gameService.addUser(gameId, userToken);
     }
 
+    /**
+     *
+     * @param gameId
+     * @param playerId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getPlayer(@PathVariable Long gameId, @PathVariable Integer playerId) {
@@ -269,6 +298,10 @@ public class GameResource extends GenericResource {
         return gameService.createPlayer(gameId, userToken);
     }
 
+    /**
+     *
+     * @param gameId
+     */
     //fastforward game to 6th round
     @RequestMapping(value = CONTEXT + "/{gameId}/fastforward", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -287,6 +320,10 @@ public class GameResource extends GenericResource {
         gameService.updateCounter(gameId);
     }
 
+    /**
+     *
+     * @param gameId
+     */
     //endGame
     @RequestMapping(value = CONTEXT + "/{gameId}/fastforwardEnd", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -310,6 +347,10 @@ public class GameResource extends GenericResource {
         gameService.updateCounter(gameId);
     }
 
+    /**
+     *
+     * @param gameId
+     */
     //fastforward only 1 round
     @RequestMapping(value = CONTEXT + "/{gameId}/fastforwardoneround", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -317,19 +358,31 @@ public class GameResource extends GenericResource {
         gameService.fastForward(gameId,5);
     }
 
-
+    /**
+     *
+     * @param gameId
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/giveCardsTest", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void giveCardsTest(@PathVariable Long gameId) {
         gameService.giveCardsTest(gameId);
     }
 
+    /**
+     *
+     * @param gameId
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/refillShips", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void refillShip(@PathVariable Long gameId) {
         gameService.refillShip(gameId);
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/counterChanges", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public int counterChanges(@PathVariable Long gameId) {

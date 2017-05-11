@@ -57,7 +57,6 @@ public class Round implements Serializable{
         this.ships = ships;
     }
 
-    //TODO: REVISE WHETHER WE NEED mappedBy or JoinColumn
     @OneToMany
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<AShip> ships;

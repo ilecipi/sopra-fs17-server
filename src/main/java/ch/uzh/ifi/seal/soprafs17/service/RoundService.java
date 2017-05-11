@@ -125,6 +125,8 @@ public class RoundService {
             Random rn = new Random();
             int selectShip;
             int counter = 0;
+
+            //avoid an infinite while loop using a counter
             while (notChosen && counter < 200) {
                 counter++;
                 selectShip = rn.nextInt() % 7;

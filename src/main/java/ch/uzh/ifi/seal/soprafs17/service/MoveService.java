@@ -91,7 +91,6 @@ public class MoveService {
     }
 
     public void addStoneToSiteBoard(Long siteBoardId, String playerToken, Long gameId, Long shipId) {
-        //TODO: no REPOSITORY IN HERE
         StoneBoard stoneBoard = siteBoardRepository.findById(siteBoardId);
         Game game = gameRepository.findOne(gameId);
         User player = userRepository.findByToken(playerToken);

@@ -65,10 +65,6 @@ public class SailShipMove extends AMove {
         return sailShip(game);
     }
 
-    /*TODO IN VERIFIER
-    * -check ship is in roundList (Not yet removed)
-    * -check Siteboard available (No shipped docked)
-    * */
     private Game sailShip(Game game){
         this.ship.setDocked(true);
         ship.setSiteBoard(this.siteBoard);

@@ -159,9 +159,6 @@ public class ObeliskTest {
         assertEquals(new Integer(10), pointsFourPlayers.get("brown"));
         assertEquals(new Integer(1), pointsFourPlayers.get("grey"));
 
-        //TODO: Add test for the other cases
-
-
         //black wins, white second, brown&grey tie
         obeliskFourPlayers.addStone(new Stone("black"));
         obeliskFourPlayers.addStone(new Stone("black"));

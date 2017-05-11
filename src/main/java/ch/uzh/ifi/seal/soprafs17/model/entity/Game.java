@@ -244,10 +244,6 @@ public class Game implements Serializable {
 
     public void initMarketCards() {
         Map<Integer, String> ordered = new HashMap<Integer, String>() {{
-            //For testing cards
-//            for (int i = 0; i < 140; i++) {
-//                put(i , "CHISEL");
-//            }
             put(0, "PAVED_PATH");
             put(1, "PAVED_PATH");
             put(2, "SARCOPHAGUS");
@@ -282,7 +278,6 @@ public class Game implements Serializable {
         int counter = 0;
         for (Integer o : keys) {
             // Access keys/values in a random order
-
             this.marketCards.put(counter++, ordered.get(o));
         }
     }

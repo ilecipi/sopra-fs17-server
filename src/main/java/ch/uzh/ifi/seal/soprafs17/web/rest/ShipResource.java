@@ -30,6 +30,11 @@ public class ShipResource {
 
         static final String CONTEXT = "/games";
 
+        /**
+         *
+         * @param roundId
+         * @return
+         */
         @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships")
         @ResponseStatus(HttpStatus.OK)
         public List<ShipDTO> getShips(@PathVariable Long roundId) {
@@ -50,6 +55,12 @@ public class ShipResource {
                 return shipsDTO;
         }
 
+        /**
+         *
+         * @param roundId
+         * @param shipId
+         * @return
+         */
         @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}")
         @ResponseStatus(HttpStatus.OK)
         public ShipDTO getShip(@PathVariable Long roundId,@PathVariable Long shipId) {

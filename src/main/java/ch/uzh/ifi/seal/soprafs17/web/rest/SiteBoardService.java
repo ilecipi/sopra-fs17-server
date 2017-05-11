@@ -30,6 +30,11 @@ public class SiteBoardService {
     GameRepository gameRepo;
     static final String CONTEXT = "/games";
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber")
     @ResponseStatus(HttpStatus.OK)
     public BurialChamberDTO getBurialChamber(@PathVariable Long gameId){
@@ -38,6 +43,11 @@ public class SiteBoardService {
                                 burialChamber.getSecondRow(),burialChamber.getThirdRow(),burialChamber.isOccupied());
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/temple")
     @ResponseStatus(HttpStatus.OK)
     public TempleDTO getTemple(@PathVariable Long gameId) {
@@ -51,6 +61,11 @@ public class SiteBoardService {
         }
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid")
     @ResponseStatus(HttpStatus.OK)
     public PyramidDTO getPyramid(@PathVariable Long gameId) {
@@ -61,6 +76,11 @@ public class SiteBoardService {
         return null;
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/obelisk")
     @ResponseStatus(HttpStatus.OK)
     public ObeliskDTO getObelisk(@PathVariable Long gameId) {
@@ -68,6 +88,11 @@ public class SiteBoardService {
         return new ObeliskDTO(obelisk.getId(),obelisk.getObelisks(),obelisk.isOccupied());
     }
 
+    /**
+     *
+     * @param gameId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/market")
     @ResponseStatus(HttpStatus.OK)
     public MarketDTO getMarket(@PathVariable Long gameId) {

@@ -36,7 +36,11 @@ public class UserResource extends GenericResource {
     @Autowired
     private UserService userService;
 
-
+    /**
+     *
+     * @param user
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -48,6 +52,10 @@ public class UserResource extends GenericResource {
         return u;
     }
 
+    /**
+     *
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<UserDTO> listUsers() {
@@ -69,7 +77,11 @@ public class UserResource extends GenericResource {
     }
 
 
-
+    /**
+     *
+     * @param userId
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getUser(@PathVariable Long userId) {
@@ -90,6 +102,11 @@ public class UserResource extends GenericResource {
         return new UserDTO(u.getId(),u.getName(),u.getUsername(),u.getToken(),u.getStatus(),gamesId,movesId,u.getColor(),u.getSupplySled(),u.getMarketCards(),u.getStoneQuarry());
     }
 
+    /**
+     *
+     * @param userId
+     * @param userToken
+     */
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(@PathVariable Long userId, @RequestParam("token") String userToken) {

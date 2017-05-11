@@ -43,6 +43,11 @@ public class MoveResource extends GenericResource {
     @Autowired
     GameService gameService;
 
+    /**
+     *
+     * @param moveId
+     * @return
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)
     public MoveDTO getMove(@PathVariable Long moveId) {
@@ -50,11 +55,27 @@ public class MoveResource extends GenericResource {
         return new MoveDTO(m.getId(), m.getUser().getId(), m.getRound().getId(), m.getGame().getId());
     }
 
+    /**
+     *
+     * @param gameId
+     * @param roundId
+     * @param shipId
+     * @param playerToken
+     * @param position
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.POST)
     public synchronized void addStoneToShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken, @RequestParam("position") int position) {
         moveService.addStoneToShip(gameId,playerToken,shipId,roundId,position);
     }
 
+    /**
+     *
+     * @param gameId
+     * @param roundId
+     * @param shipId
+     * @param playerToken
+     * @param siteBoardsType
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}", method = RequestMethod.PUT)
     public synchronized void sailShip(@PathVariable Long gameId, @PathVariable Long roundId, @PathVariable Long shipId, @RequestParam("playerToken") String playerToken,
                            @RequestParam("siteBoardsType") String siteBoardsType) {
@@ -63,22 +84,49 @@ public class MoveResource extends GenericResource {
 
     }
 
+    /**
+     *
+     * @param gameId
+     * @param roundId
+     * @param playerToken
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/users", method = RequestMethod.POST)
     public synchronized void getStones(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken){
             moveService.getStone(gameId,roundId,playerToken);
     }
 
+    /**
+     *
+     * @param gameId
+     * @param roundId
+     * @param playerToken
+     * @param position
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/market", method = RequestMethod.POST)
     public synchronized void giveCardToUser(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken, @RequestParam("position") int position){
             moveService.giveCardToUser(gameId,roundId,playerToken,position);
     }
 
+    /**
+     *
+     * @param gameId
+     * @param roundId
+     * @param playerToken
+     * @param marketCardId
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/marketcard", method = RequestMethod.PUT)
     public synchronized void playMarketCard(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
     @RequestParam("marketCardId") Long marketCardId) {
             moveService.playMarketCard(gameId,roundId,playerToken,marketCardId);
     }
 
+    /**
+     *
+     * @param gameId
+     * @param roundId
+     * @param playerToken
+     * @param userColors
+     */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/lever", method = RequestMethod.PUT)
     public synchronized void playLeverCard(@PathVariable Long gameId,@PathVariable Long roundId,@RequestParam("playerToken") String playerToken,
                                  @RequestParam("userColors") List<String> userColors) {
