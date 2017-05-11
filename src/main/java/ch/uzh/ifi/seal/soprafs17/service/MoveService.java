@@ -246,6 +246,11 @@ public class MoveService {
             for (int i = ship.getStones().length - 1; i >= 0; i--) {
                 if (ship.getStones()[i] != null) {
                     market.addUser(ship.getStones()[i].getColor());
+                    for(User u: game.getPlayers()){
+                        if(ship.getStones()[i].getColor().equals(u.getColor())){
+                            u.setStoneQuarry(u.getStoneQuarry()+1);
+                        }
+                    }
                 }
             }
             game.findNextPlayer();
