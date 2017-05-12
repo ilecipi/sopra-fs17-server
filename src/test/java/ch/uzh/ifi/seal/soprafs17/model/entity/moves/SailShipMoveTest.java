@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by tonio99tv on 03/05/17.
+ * This class tests some property for sailing a ship to a sitebaord (Temple in this case)
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SailShipMoveTest {
@@ -29,14 +30,6 @@ public class SailShipMoveTest {
     private SailShipMove move;
 
 
-
-
-
-    //    @BeforeClass
-//    public static void onlyOnce() {
-//
-//    }
-//
     @Before
     public void beforeEach(){
         //create necessary objects for the move

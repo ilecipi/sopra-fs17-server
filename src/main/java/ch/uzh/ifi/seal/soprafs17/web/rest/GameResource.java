@@ -105,7 +105,7 @@ public class GameResource extends GenericResource {
      *
      * @param game
      * @param userToken
-     * @return
+     * @return the created game
      */
     @RequestMapping(value = CONTEXT, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -122,7 +122,7 @@ public class GameResource extends GenericResource {
     /**
      *
      * @param gameId
-     * @return
+     * @return a game
      */
     @RequestMapping(value = CONTEXT + "/{gameId}")
     @ResponseStatus(HttpStatus.OK)
@@ -178,7 +178,7 @@ public class GameResource extends GenericResource {
      *
      * @param gameId
      * @param userToken
-     * @return
+     * @return the started game
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/start", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -233,7 +233,7 @@ public class GameResource extends GenericResource {
     /**
      *
      * @param gameId
-     * @return
+     * @return a list of players/users in a game
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/players")
     @ResponseStatus(HttpStatus.OK)
@@ -260,7 +260,7 @@ public class GameResource extends GenericResource {
      *
      * @param gameId
      * @param userToken
-     * @return
+     * @return a string with the information of the just added user
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/player", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -274,7 +274,7 @@ public class GameResource extends GenericResource {
      *
      * @param gameId
      * @param playerId
-     * @return
+     * @return a string with the information of the created player (IS_READY)
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/players/{playerId}")
     @ResponseStatus(HttpStatus.OK)
@@ -381,7 +381,7 @@ public class GameResource extends GenericResource {
     /**
      *
      * @param gameId
-     * @return
+     * @return the current state of the server
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/counterChanges", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.ACCEPTED)

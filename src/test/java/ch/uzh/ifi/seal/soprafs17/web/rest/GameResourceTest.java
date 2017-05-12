@@ -62,6 +62,8 @@ import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by ilecipi on 13.04.17.
+ * This classes testes all the methods for creating a game and starting it.
+ * It checks that the rounds are properly added until the end
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)

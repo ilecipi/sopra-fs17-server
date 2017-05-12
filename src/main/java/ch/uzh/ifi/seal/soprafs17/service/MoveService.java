@@ -231,6 +231,8 @@ public class MoveService {
         return siteBoard;
     }
 
+    //Add the users which should take the card to the market
+    // he market cannot have stone, therefore the order of the user is added in a different way
     public void addUserToMarket(Game game, AShip ship) {
         if (!game.getCurrentRound().isActionCardLever()) {
             List<SiteBoard> siteBoards = game.getSiteBoards();
@@ -273,6 +275,7 @@ public class MoveService {
         }
     }
 
+    //In case the market lever is played, the users are added differently with this method
     public void addUserToMarketLever(Game game) {
         roundRepository.save(game.getCurrentRound());
         List<String> userColors = new ArrayList<>();
@@ -366,6 +369,8 @@ public class MoveService {
 
     }
 
+    //When the lever card is played this method is used to either add the user to the market
+    //or to the others stoneboards
     public void addLeverUser(Game game) {
         Long id = game.getTmpSiteBoardId();
         if (game.getMarket().getId().equals(id)) {

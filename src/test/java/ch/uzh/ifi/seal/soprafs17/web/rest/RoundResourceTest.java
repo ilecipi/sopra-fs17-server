@@ -41,6 +41,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by tonio99tv on 20/04/17.
+ * This class tests the http request for retrieving a round or a list of rounds
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)

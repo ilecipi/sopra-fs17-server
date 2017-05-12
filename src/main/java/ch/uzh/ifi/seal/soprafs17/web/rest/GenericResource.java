@@ -13,6 +13,9 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * This class handles all the exceptions that might get thrown when validating a move
+ */
 public abstract class GenericResource {
 
 	Logger logger = LoggerFactory.getLogger(GenericResource.class);
@@ -182,7 +185,7 @@ public abstract class GenericResource {
 
 
 
-	//LASTONE IN THE LIST
+	//This has to be the last one, it's the most generic one
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(value= HttpStatus.FORBIDDEN,reason="Unexpected error from the server")
 	public void validationExceptionHandler(ValidationException e) {

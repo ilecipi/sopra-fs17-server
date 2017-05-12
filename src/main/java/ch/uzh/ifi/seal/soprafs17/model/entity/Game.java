@@ -289,6 +289,9 @@ public class Game implements Serializable {
     @ElementCollection
     Map<String, Integer> TemplePoints;
 
+    /**
+     * This method collects the points for the user when needed
+     */
     public void collectPoints() {
         List<SiteBoard> siteBoards = this.getSiteBoards();
         int currentRound = this.getRounds().size() - 1;
@@ -357,7 +360,7 @@ public class Game implements Serializable {
                 }
             }
         }
-
+        //end of game
         if (this.getRounds().size() == MAX_ROUNDS_POSSIBLE && allShipsDocked) {
             Map<String, Integer> tmpBurialChamberPoints = burialChamber.countEndOfGame();
             Map<String, Integer> tmpObeliskPoints = obelisk.countEndOfGame();

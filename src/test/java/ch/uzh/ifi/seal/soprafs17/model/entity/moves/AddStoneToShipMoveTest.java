@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by tonio99tv on 03/05/17.
+ * This class tests some property of the add stone to ship move
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AddStoneToShipMoveTest {

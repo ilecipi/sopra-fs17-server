@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by tonio99tv on 24/04/17.
+ * This class tests some property for getting a stone
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GetStoneMoveTest {
@@ -30,11 +31,6 @@ public class GetStoneMoveTest {
     GameService gameService;
 
 
-//    @BeforeClass
-//    public static void onlyOnce() {
-//
-//    }
-//
     @Before
     public void beforeEach(){
         this.game = new Game();

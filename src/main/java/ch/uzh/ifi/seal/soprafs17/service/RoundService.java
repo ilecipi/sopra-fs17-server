@@ -83,7 +83,7 @@ public class RoundService {
     public void addRound(Long gameId) {
         Game game = gameRepository.findOne(gameId);
         boolean allShipsAreDocked = true;
-
+        //if the game is started a round should exist
         if (game.getRounds().size() != 0) {
             for (AShip ship : game.getRounds().get(game.getRounds().size() - 1).getShips()) {
                 if (!ship.isDocked()) {
@@ -91,6 +91,7 @@ public class RoundService {
                 }
             }
         }
+        //end of game
         if (game.getRounds().size() >= MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             game.setStatus(GameStatus.FINISHED);
             for (User u : game.getPlayers()) {
@@ -103,6 +104,7 @@ public class RoundService {
                 u.setMarketCards(new ArrayList<>());
             }
         }
+        //if a round can be added
         if (game.getRounds().size() < MAX_ROUNDS_POSSIBLE && allShipsAreDocked) {
             List<SiteBoard> siteBoards = game.getSiteBoards();
             if (!siteBoards.isEmpty()) {
@@ -150,6 +152,7 @@ public class RoundService {
 
                 }
             }
+            //Set the current market cards for the current round
             round.setMarketCards(new ArrayList<AMarketCard>());
             Map<Integer, String> marketCards = game.getMarketCards();
             for (int i = 0; i < 4; i++) {

@@ -33,7 +33,7 @@ public class ShipResource {
         /**
          *
          * @param roundId
-         * @return
+         * @return a list of ships
          */
         @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships")
         @ResponseStatus(HttpStatus.OK)
@@ -59,7 +59,7 @@ public class ShipResource {
          *
          * @param roundId
          * @param shipId
-         * @return
+         * @return a ship
          */
         @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}/ships/{shipId}")
         @ResponseStatus(HttpStatus.OK)

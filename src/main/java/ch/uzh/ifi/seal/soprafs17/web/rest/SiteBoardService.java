@@ -33,7 +33,7 @@ public class SiteBoardService {
     /**
      *
      * @param gameId
-     * @return
+     * @return the burial chamber
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/burialChamber")
     @ResponseStatus(HttpStatus.OK)
@@ -46,7 +46,7 @@ public class SiteBoardService {
     /**
      *
      * @param gameId
-     * @return
+     * @return the temple
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/temple")
     @ResponseStatus(HttpStatus.OK)
@@ -64,7 +64,7 @@ public class SiteBoardService {
     /**
      *
      * @param gameId
-     * @return
+     * @return the pyramid
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/pyramid")
     @ResponseStatus(HttpStatus.OK)
@@ -79,7 +79,7 @@ public class SiteBoardService {
     /**
      *
      * @param gameId
-     * @return
+     * @return the obelisk
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/obelisk")
     @ResponseStatus(HttpStatus.OK)
@@ -91,7 +91,7 @@ public class SiteBoardService {
     /**
      *
      * @param gameId
-     * @return
+     * @return the market
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/market")
     @ResponseStatus(HttpStatus.OK)

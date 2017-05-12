@@ -9,6 +9,8 @@ import static org.junit.Assert.*;
 
 /**
  * Created by erion on 12.04.17.
+ * This class tests that the stone in the temple are properly added and the points
+ * are properly assigned to users
  */
 public class TempleTest {
 

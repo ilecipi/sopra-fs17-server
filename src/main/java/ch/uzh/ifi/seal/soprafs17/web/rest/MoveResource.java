@@ -46,7 +46,7 @@ public class MoveResource extends GenericResource {
     /**
      *
      * @param moveId
-     * @return
+     * @return a move
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/moves/{moveId}")
     @ResponseStatus(HttpStatus.OK)

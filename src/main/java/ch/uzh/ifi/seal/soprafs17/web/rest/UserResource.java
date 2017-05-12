@@ -39,7 +39,7 @@ public class UserResource extends GenericResource {
     /**
      *
      * @param user
-     * @return
+     * @return the added user
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -54,7 +54,7 @@ public class UserResource extends GenericResource {
 
     /**
      *
-     * @return
+     * @return a list of users
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -80,7 +80,7 @@ public class UserResource extends GenericResource {
     /**
      *
      * @param userId
-     * @return
+     * @return a user
      */
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
     @ResponseStatus(HttpStatus.OK)

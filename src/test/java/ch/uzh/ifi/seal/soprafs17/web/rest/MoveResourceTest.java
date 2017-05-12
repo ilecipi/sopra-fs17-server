@@ -55,7 +55,8 @@ import static org.springframework.data.repository.init.ResourceReader.Type.JSON;
 
 /**
  * Created by erion on 24.04.17.
- *
+ *This class tests all the possible move applicable to the game. It covers the cases in which the
+ * game is running until the game is over
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)

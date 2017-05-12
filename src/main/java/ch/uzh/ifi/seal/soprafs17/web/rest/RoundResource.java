@@ -34,7 +34,7 @@ public class RoundResource {
 
     /**
      * @param gameId
-     * @return
+     * @return a list of rounds of a game
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -63,7 +63,7 @@ public class RoundResource {
     /**
      * @param gameId
      * @param roundId
-     * @return
+     * @return a round of a game
      */
     @RequestMapping(value = CONTEXT + "/{gameId}/rounds/{roundId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
